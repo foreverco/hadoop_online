@@ -1,0 +1,24 @@
+@import "./nomalize.scss";
+@import "./config.scss";
+@import "./elementui.scss";
+@import "./theme.scss";
+body {
+  background-size: 100% 100%;
+  background: #f7f7f7;
+}
+@media (min-width: 1400px) {
+  .container {
+    min-width: 1400px;
+    border: 1px solid yellow !important;
+  }
+}
+.lvallcontainer {
+  border: 1px solid blue;
+  width: 100%;
+  margin: 0 auto;
+}
+.lvcontainer {
+  border: 1px solid red;
+  width: 1200px;
+  margin: 0 auto;
+}
