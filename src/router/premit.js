@@ -7,16 +7,16 @@ router.beforeEach((to, from, next) => {
   let params = {
     token: getStore("token")
   };
-  console.log(to);
-  console.log(from);
-  console.log(next);
+  // console.log(to);
+  // console.log(from);
+  // console.log(next);
   // console.log(router.options.routes[1].children);
   const whiteList = router.options.routes[1].children.map(item => item.path);
-  console.log(whiteList.indexOf(to.path));
+  // console.log(whiteList.indexOf(to.path));
 
   userInfo(params)
     .then(res => {
-      console.log(res);
+      // console.log(res);
       if (res.result.state !== 1) {
         // 没登录
         if (whiteList.indexOf(to.path) !== -1) {

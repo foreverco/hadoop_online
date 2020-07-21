@@ -2,7 +2,8 @@ import { RECORD_USERINFO } from "./mutations-type";
 import { setStore } from "@/util/storage";
 const state = {
   login: false, // 是否登录
-  userInfo: null // 用户信息
+  userInfo: null, // 用户信息
+  myChart: []
 };
 const getters = {};
 
