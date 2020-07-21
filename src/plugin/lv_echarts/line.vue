@@ -35,7 +35,7 @@ export default {
         formatter: "2020{name}"
       },
       tooltip: {},
-      color: ["red", "blue", "yellow"],
+      // color: ["red", "blue", "yellow"],
       xAxis: {
         data: this.result.map(item => item.date),
         axisLabel: {

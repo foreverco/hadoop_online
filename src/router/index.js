@@ -10,8 +10,7 @@ import Layout from "../views/Layout";
 
 Vue.use(VueRouter);
 
-let baseRoutes = [
-  {
+let baseRoutes = [{
     path: "/",
     redirect: "/home",
     hiddem: true
@@ -19,8 +18,7 @@ let baseRoutes = [
   {
     path: "/",
     component: Layout,
-    children: [
-      {
+    children: [{
         path: "/login",
         name: "Login",
         hidden: true,
@@ -61,8 +59,7 @@ let baseRoutes = [
           title: "区域规划",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/areaPlan1",
             name: "AreaPlan1",
             class_true: false,
@@ -98,8 +95,7 @@ let baseRoutes = [
           title: "种植指导",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/planting1",
             name: "Planting1",
             class_true: false,
@@ -126,13 +122,103 @@ let baseRoutes = [
         ]
       },
       {
+        path: "/warningModle",
+        name: "WarningModle",
+        class_true: false,
+        component: () => import("@/views/WarningModle"),
+        hidden: false,
+        meta: {
+          title: "预警模型",
+          icon: "WarningModle"
+        }
+      },
+      {
+        path: "/review",
+        name: "Review",
+        class_true: false,
+        component: () => import("@/views/Review"),
+        hidden: false,
+        meta: {
+          title: "追溯源管理",
+          icon: "Review"
+        }
+      },
+      {
+        path: "/market",
+        name: "Market",
+        class_true: false,
+        component: () => import("@/views/Market"),
+        hidden: false,
+        meta: {
+          title: "市场分析",
+          icon: "navmenu"
+        },
+        children: [{
+            path: "/Market1",
+            name: "Market1",
+            class_true: false,
+            component: () => import("@/views/Market/components/Market1.vue"),
+            hidden: false,
+            meta: {
+              title: "市场分析1",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/market2",
+            name: "Market2",
+            class_true: false,
+            component: () => import("@/views/Market/components/Market2.vue"),
+            hidden: false,
+            meta: {
+              title: "市场分析2",
+              icon: "navmenu"
+            }
+          }
+        ]
+      },
+      {
+        path: "/OTC1",
+        name: "OTC",
+        class_true: false,
+        component: () => import("@/views/OTC"),
+        hidden: false,
+        meta: {
+          title: "市场分析",
+          icon: "navmenu"
+        },
+        children: [{
+            path: "/OTC1",
+            name: "OTC1",
+            class_true: false,
+            component: () => import("@/views/OTC/components/OTC1.vue"),
+            hidden: false,
+            meta: {
+              title: "市场分析1",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/OTC2",
+            name: "OTC2",
+            class_true: false,
+            component: () => import("@/views/OTC/components/OTC2.vue"),
+            hidden: false,
+            meta: {
+              title: "市场分析2",
+              icon: "navmenu"
+            }
+          }
+        ]
+      },
+      {
         path: "/insect",
         name: "Insect",
         class_true: false,
         component: () => import("@/views/Insect"),
         hidden: false,
         meta: {
-          title: "虫情分析",
+          title: "道地药材",
           icon: "navmenu"
         }
       },
@@ -143,18 +229,17 @@ let baseRoutes = [
         component: () => import("@/views/Benefit"),
         hidden: false,
         meta: {
-          title: "效益分析",
+          title: "政策资讯",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/benefit1",
             name: "Benefit1",
             class_true: false,
             component: () => import("@/views/Benefit/components/Benefit1.vue"),
             hidden: false,
             meta: {
-              title: "效益分析1",
+              title: "政策资讯1",
               icon: "navmenu"
             }
           },
@@ -165,7 +250,7 @@ let baseRoutes = [
             component: () => import("@/views/Benefit/components/Benefit2.vue"),
             hidden: false,
             meta: {
-              title: "效益分析2",
+              title: "政策资讯2",
               icon: "navmenu"
             }
           }

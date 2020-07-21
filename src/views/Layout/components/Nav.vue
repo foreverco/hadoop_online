@@ -2,7 +2,7 @@
   <div class="nav lvallcontainer">
     <div class="navHeader">
       <div class="headerleft">
-        <img src="@/assets/images/timg.jpg" alt="" />
+        <img src="@/assets/images/timg.jpg" alt>
         大数据分析平台
       </div>
       <ul class="headerright">
@@ -13,9 +13,9 @@
       </ul>
     </div>
     <div class="navContent lvcontainer">
-      <div class="navLogoBox">
-        <img src="@/assets/images/timg.jpg" alt="" />
-      </div>
+      <!-- <div class="navLogoBox">
+        <img src="@/assets/images/timg.jpg" alt>
+      </div>-->
 
       <ul class="navList">
         <template v-for="(item, index) in navList">
@@ -29,7 +29,6 @@
           >
             <router-link :to="item.path">
               <span class="navTxt">{{ item.meta.title }}</span>
-              <span class="navTxt">{{ item.navMouseIn }}</span>
               <i
                 v-if="item.children"
                 :class="
@@ -59,7 +58,7 @@
         <li>虫情预警</li>
         <li>首页</li>
         <li>虫情预警</li>
-      </ul> -->
+      </ul>-->
     </div>
   </div>
 </template>
@@ -73,11 +72,10 @@ export default {
     };
   },
   beforeMount() {
-    this.navList = this.$router.options.routes[1].children;
-    this.navList.forEach(item => {
+    this.$router.options.routes[1].children.forEach(item => {
       item.navMouseIn = false;
     });
-    console.log(this.$router.options.routes[1].children);
+    this.navList = this.$router.options.routes[1].children;
   },
   mounted() {},
   methods: {
@@ -92,7 +90,7 @@ export default {
   .navHeader {
     width: 100%;
     height: 40px;
-    background: $c9;
+    background: #33333380;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -121,20 +119,25 @@ export default {
         &:last-child {
           border-right: 0;
         }
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
   }
   .navContent {
-    background: yellow;
+    // background: yellow;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .navLogoBox {
-      img {
-        height: 50px;
-      }
-    }
+    // .navLogoBox {
+    //   img {
+    //     height: 50px;
+    //   }
+    // }
     .navList {
+      // background: blue;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -143,13 +146,14 @@ export default {
         height: 50px;
         padding: 0 15px;
         margin: 0 15px;
-        border: 1px solid red;
+        // border: 1px solid red;
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
+        transition: all 0.2s linear;
         &:hover {
-          background: #81b25b20;
+          background: #00b6a830;
           cursor: pointer;
           > a {
             span {
@@ -173,13 +177,13 @@ export default {
           justify-content: center;
           align-items: center;
           span {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 600;
             color: $maincolor;
             transition: all 0.2s linear;
           }
           i {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 600;
             color: $maincolor;
             transition: all 0.2s linear;
@@ -209,7 +213,7 @@ export default {
           background: #fff;
           padding: 0 20px;
           box-sizing: content-box;
-          border-top: 1px solid red;
+          // border-top: 1px solid red;
 
           dt {
             width: 100%;

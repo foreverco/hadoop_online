@@ -1,25 +1,20 @@
 <template>
   <div class="home lvallcontainer">
-    <div class="top lvcontainer">123</div>
-    <div class="top lvallcontainer">banner</div>
+    <!-- <div class="top lvcontainer">
+      <img src="../../assets/images/lbt/timg.jpg" alt>
+    </div>-->
+    <div class="swiperBox lvallcontainer">
+      <!-- 123 -->
+      <SwiperVue :imgList="swiperList1" :swiperConfig="swiperConfig"></SwiperVue>
+    </div>
     <div class="amapVue lvcontainer">
-      <AmapVue
-        ref="amap"
-        :options="options_map"
-        @callback="callbackComponent"
-      ></AmapVue>
+      <AmapVue ref="amap" :options="options_map" @callback="callbackComponent"></AmapVue>
     </div>
     <div class="echartsBox lvcontainer">
-      <LineEchartsVue
-        :result="lineData"
-        :lineconfig="lineconfig"
-      ></LineEchartsVue>
+      <LineEchartsVue :result="lineData" :lineconfig="lineconfig"></LineEchartsVue>
     </div>
     <div class="echartsBox lvcontainer">
-      <LineEchartsVue
-        :result="lineData1"
-        :lineconfig="lineconfig"
-      ></LineEchartsVue>
+      <LineEchartsVue :result="lineData1" :lineconfig="lineconfig"></LineEchartsVue>
     </div>
     <div class="top lvcontainer">123</div>
     <div class="top lvcontainer">123</div>
@@ -46,13 +41,33 @@
 </template>
 <script>
 import AmapVue from "../../components/Amap";
+import SwiperVue from "../../components/SwiperVue";
 export default {
   name: "Home",
   components: {
-    AmapVue
+    AmapVue,
+    SwiperVue
   },
   data() {
     return {
+      // 轮播图
+      swiperList1: [
+        {
+          imgUrl:
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2365875079,1507384543&fm=26&gp=0.jpg"
+        },
+        {
+          imgUrl:
+            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3168202692,1753805141&fm=26&gp=0.jpg"
+        },
+        {
+          imgUrl:
+            "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1758533318,3225512303&fm=26&gp=0.jpg"
+        }
+      ],
+      swiperConfig: {
+        slidesPerView: 1
+      },
       // 地图配置
       options_map: {
         mapLoad: true
@@ -110,6 +125,36 @@ export default {
           date: "2020-02",
           sr: 150,
           zc: 140
+        },
+        {
+          date: "2020-01",
+          sr: 100,
+          zc: 120
+        },
+        {
+          date: "2020-02",
+          sr: 150,
+          zc: 140
+        },
+        {
+          date: "2020-01",
+          sr: 100,
+          zc: 120
+        },
+        {
+          date: "2020-02",
+          sr: 150,
+          zc: 140
+        },
+        {
+          date: "2020-01",
+          sr: 100,
+          zc: 120
+        },
+        {
+          date: "2020-02",
+          sr: 150,
+          zc: 140
         }
       ]
     };
@@ -130,6 +175,11 @@ export default {
 .home {
   .top {
     height: 100px;
+  }
+  .swiperBox {
+    // background: pink;
+    // height: 800px;
+    // position: relative;
   }
   .amapVue {
     height: 500px;
