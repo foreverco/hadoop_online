@@ -15,15 +15,15 @@ export default {
     }
   },
   mounted() {
-    // const myChart = this.$echarts.init(this.$refs.chart);
     let series = this.lineconfig.keys.map(item => {
+      console.log(item);
       return {
         name: item.label,
         type: item.type,
         data: this.result.map(i => i[item.value])
       };
     });
-    console.log(series);
+    // console.log(series);
     let option = {
       title: {
         text: this.lineconfig.title,
@@ -34,7 +34,9 @@ export default {
         right: "20",
         formatter: "2020{name}"
       },
-      tooltip: {},
+      tooltip: {
+        trigger: "axis"
+      },
       // color: ["red", "blue", "yellow"],
       xAxis: {
         data: this.result.map(item => item.date),

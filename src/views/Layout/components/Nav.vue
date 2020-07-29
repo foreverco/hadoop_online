@@ -1,15 +1,29 @@
 <template>
   <div class="nav lvallcontainer">
-    <div class="navHeader">
+    <div class="navHeader lvallcontainer">
       <div class="headerleft">
-        <img src="@/assets/images/timg.jpg" alt>
+        <img src="@/assets/images/timg.jpg" alt />
         大数据分析平台
       </div>
+      <div class="searchBox">
+        <el-form>
+          <el-form-item>
+            <el-input v-model="searchForm.content"></el-input>
+            <el-button type="primary" icon="el-icon-search"></el-button>
+          </el-form-item>
+        </el-form>
+      </div>
       <ul class="headerright">
-        <li>登陆</li>
-        <li>注册</li>
-        <li>公众号</li>
-        <li>小程序</li>
+        <li @click="login">登陆</li>
+        <li @click="register">注册</li>
+        <li class="weixinBox">
+          <span>公众号</span>
+          <img src="../../../../public/images/wxerweima.png" alt="" />
+        </li>
+        <li class="cxBox">
+          <span>小程序</span>
+          <img src="../../../../public/images/dy.png" alt="" />
+        </li>
       </ul>
     </div>
     <div class="navContent lvcontainer">
@@ -68,7 +82,10 @@ export default {
   data() {
     return {
       navList: [],
-      navIndex: 0
+      navIndex: 0,
+      searchForm: {
+        contetnt: ""
+      }
     };
   },
   beforeMount() {
@@ -79,7 +96,17 @@ export default {
   },
   mounted() {},
   methods: {
-    navClick() {}
+    navClick() {},
+    register() {
+      this.$router.push({
+        name: "Register"
+      });
+    },
+    login() {
+      this.$router.push({
+        name: "Login"
+      });
+    }
   }
 };
 </script>
@@ -89,14 +116,14 @@ export default {
   width: 100%;
   .navHeader {
     width: 100%;
-    height: 40px;
+    // height: 40px;
     background: #33333380;
     display: flex;
     justify-content: space-between;
     align-items: center;
     .headerleft {
-      margin-left: 10px;
       display: flex;
+      margin-left: 5%;
       justify-content: space-between;
       align-items: center;
       // flex: 4;
@@ -108,19 +135,84 @@ export default {
         margin-right: 10px;
       }
     }
+    .searchBox {
+      border: 1px solid red;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      .el-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .el-form-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .el-form-item__content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .el-input__inner {
+              height: 40px;
+            }
+          }
+        }
+      }
+    }
     .headerright {
       display: flex;
+      margin-right: 5%;
       // flex: 1;
       justify-content: space-between;
       align-items: center;
       li {
-        border-right: 1px solid #ccc;
+        // border-right: 1px solid #ccc;
         padding: 0 10px;
+        height: $NavHeight;
+        line-height: $NavHeight;
         &:last-child {
           border-right: 0;
         }
         &:hover {
           cursor: pointer;
+        }
+      }
+      .weixinBox {
+        position: relative;
+        &:hover {
+          img {
+            display: block;
+          }
+        }
+        img {
+          display: none;
+          position: absolute;
+          top: $NavHeight;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 110;
+        }
+      }
+      .cxBox {
+        position: relative;
+        &:hover {
+          img {
+            display: block;
+          }
+        }
+        img {
+          display: none;
+          position: absolute;
+          top: $NavHeight;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 110;
         }
       }
     }
@@ -145,7 +237,7 @@ export default {
         font-size: 15px;
         height: 50px;
         padding: 0 15px;
-        margin: 0 15px;
+        // margin: 0 15px;
         // border: 1px solid red;
         display: flex;
         justify-content: center;
