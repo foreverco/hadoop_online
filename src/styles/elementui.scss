@@ -86,7 +86,7 @@ el-table th,
 
 /* dialog样式 */
 .el-dialog {
-  width: 60%;
+  // width: 60%;
   margin: 0 auto;
   border-radius: 7px;
   // margin-top: 40vh !important;
@@ -95,7 +95,7 @@ el-table th,
   // top: 0;
   // left: 0;
   .el-dialog__header {
-    background: $maincolor;
+    background: $primary;
     padding: 10px 20px 10px;
     position: relative;
     border-radius: 7px 7px 0 0;

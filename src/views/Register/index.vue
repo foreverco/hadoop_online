@@ -1,6 +1,6 @@
 <template>
   <div class="lvcontainer registerBox">
-    <el-card>
+    <el-card class="wowcss slideInRight">
       <div slot="header" class="clearfix">
         <span>会员注册</span>
       </div>
@@ -14,11 +14,7 @@
         class="demo-ruleForm"
       >
         <el-form-item label="手机号" prop="phone">
-          <el-input
-            v-model.number="ruleForm.phone"
-            autocomplete="off"
-            placeholder="请输入手机号"
-          ></el-input>
+          <el-input v-model.number="ruleForm.phone" autocomplete="off" placeholder="请输入手机号"></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="indentcode">
           <el-input
@@ -32,16 +28,10 @@
             type="primary"
             :disabled="!codeBtnStatus.status"
             @click="getCode"
-            >{{ codeBtnStatus.codemsg }}</el-button
-          >
+          >{{ codeBtnStatus.codemsg }}</el-button>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input
-            type="password"
-            placeholder="请输入密码"
-            v-model="ruleForm.pass"
-            autocomplete="off"
-          ></el-input>
+          <el-input type="password" placeholder="请输入密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
           <el-input
@@ -60,8 +50,7 @@
               :label="item.value"
               size="mini"
               style="margin:0 0 15px 0;width:90px"
-              >{{ item.label }}</el-radio
-            >
+            >{{ item.label }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="isRead" class="readBox">
@@ -79,14 +68,12 @@
             type="primary"
             size="medium"
             @click="submitForm('ruleForm')"
-            >注册</el-button
-          >
+          >注册</el-button>
         </div>
         <div class="toLogin">
           <div>
-            已有账号？<span @click="$router.push({ name: 'Login' })"
-              >登录平台</span
-            >
+            已有账号？
+            <span @click="$router.push({ name: 'Login' })">登录平台</span>
           </div>
         </div>
       </el-form>
@@ -94,7 +81,8 @@
   </div>
 </template>
 <script>
-import { validatePhone } from "../../util/validate";
+import { validatePhone } from "@/util/validate";
+import { WOW } from "wowjs";
 export default {
   data() {
     var checkPhone = (rule, value, callback) => {
@@ -168,6 +156,19 @@ export default {
         ]
       }
     };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      /* wowjs动画 */
+      let wow = new WOW({
+        boxClass: "wowcss",
+        animateClass: "animated",
+        offset: 0,
+        mobile: true,
+        live: false
+      });
+      wow.init();
+    });
   },
   methods: {
     // 获取验证码

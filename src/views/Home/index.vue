@@ -5,32 +5,39 @@
     </div>-->
     <div class="swiperBox lvallcontainer">
       <!-- 123 -->
-      <SwiperVue
-        :imgList="swiperList1"
-        :swiperConfig="swiperConfig"
-      ></SwiperVue>
+      <SwiperVue :imgList="swiperList1" :swiperConfig="swiperConfig"></SwiperVue>
     </div>
     <div class="amapVue lvcontainer">
-      <AmapVue
-        ref="amap"
-        :options="options_map"
-        @callback="callbackComponent"
-      ></AmapVue>
+      <AmapVue ref="amap" :options="options_map" @callback="callbackComponent"></AmapVue>
     </div>
     <div class="echartsBox lvcontainer">
-      <LineEchartsVue
-        :result="lineData"
-        :lineconfig="lineconfig"
-      ></LineEchartsVue>
+      <LineEchartsVue :result="lineData" :lineconfig="lineconfig"></LineEchartsVue>
     </div>
     <div class="echartsBox lvcontainer">
-      <BarEchartsVue
-        :result="barData"
-        :barconfig="barconfig"
-      ></BarEchartsVue>
+      <BarEchartsVue :result="barData" :barconfig="barconfig"></BarEchartsVue>
     </div>
     <div class="tableBox lvcontainer">
-      <TableVue :config="tableConfig"></TableVue>
+      <TableVue :config="tableConfig">
+        <!-- <el-table-column
+          v-if="item.type === 'image'"
+          :key="item.prop"
+          :prop="item.prop"
+          :label="item.label"
+        >
+          <template slot-scope="scope">
+            <el-avatar :src="scope.row.photo"></el-avatar>
+          </template>
+        </el-table-column>-->
+        <template v-slot:image="slotData">
+          <el-avatar :src="slotData.data.photo"></el-avatar>
+        </template>
+        <template v-slot:status="slotData">
+          <el-switch v-model="slotData.data.status" :active-value="1" :inactive-value="0"></el-switch>
+        </template>
+        <template v-slot:opration="slotData">
+          <el-button @click="find(slotData.data)">查看</el-button>
+        </template>
+      </TableVue>
     </div>
     <div class="echartsBox lvcontainer">
       <PieEchartsVue></PieEchartsVue>
@@ -60,6 +67,7 @@
 import AmapVue from "@/components/Amap";
 import SwiperVue from "@/components/SwiperVue";
 import TableVue from "@/components/TableData";
+import { WOW } from "wowjs";
 export default {
   name: "Home",
   components: {
@@ -89,9 +97,14 @@ export default {
             }
           },
           { label: "姓名", prop: "name" },
-          { label: "头像", prop: "photo", type: "image" },
+          { label: "头像", prop: "photo", type: "slot", slotName: "image" },
           { label: "地址", prop: "address" },
-          { label: "操作" }
+          { label: "状态", prop: "status", type: "slot", slotName: "status" },
+          {
+            label: "操作",
+            type: "slot",
+            slotName: "opration"
+          }
         ]
       },
       testArr: [
@@ -237,6 +250,17 @@ export default {
       ]
     };
   },
+  mounted() {
+    /* wowjs动画 */
+    let wow = new WOW({
+      boxClass: "wowcss",
+      animateClass: "animated",
+      offset: 0,
+      mobile: true,
+      live: false
+    });
+    wow.init();
+  },
   methods: {
     callbackComponent(params) {
       if (params.function) {
@@ -245,6 +269,9 @@ export default {
     },
     mapLoad() {
       // console.log(123);
+    },
+    find(e) {
+      console.log(e);
     }
   }
 };

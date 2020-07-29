@@ -1,6 +1,6 @@
 <template>
   <div class="lvcontainer loginBox">
-    <el-card>
+    <el-card class="wow slideInRight">
       <div slot="header" class="clearfix">
         <span>会员登录</span>
       </div>
@@ -14,19 +14,10 @@
         class="demo-ruleForm"
       >
         <el-form-item label="手机号" prop="phone">
-          <el-input
-            v-model.number="ruleForm.phone"
-            placeholder="请输入手机号"
-            autocomplete="off"
-          ></el-input>
+          <el-input v-model.number="ruleForm.phone" placeholder="请输入手机号" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input
-            type="password"
-            v-model="ruleForm.pass"
-            placeholder="请输入密码"
-            autocomplete="off"
-          ></el-input>
+          <el-input type="password" v-model="ruleForm.pass" placeholder="请输入密码" autocomplete="off"></el-input>
         </el-form-item>
         <div style="display:flex;justify-content: center;margin-top:20px">
           <el-button
@@ -34,11 +25,10 @@
             type="primary"
             size="medium"
             @click="submitForm('ruleForm')"
-            >登录</el-button
-          >
+          >登录</el-button>
         </div>
         <div class="forgetBox">
-          <span @click="forgetPass">忘记密码 > </span>
+          <span @click="forgetPass">忘记密码 ></span>
           <div>
             没有账号？
             <span @click="$router.push({ name: 'Register' })">立即注册</span>
@@ -52,6 +42,7 @@
 <script>
 import { validatePhone } from "@/util/validate";
 import DiaLogVue from "./components/dialog";
+import { WOW } from "wowjs";
 export default {
   name: "Login",
   components: {
@@ -68,8 +59,8 @@ export default {
       }
     };
     return {
+      dialog_flag: false,
       ruleForm: {
-        dialog_flag: false,
         phone: "",
         pass: ""
       },
@@ -85,9 +76,21 @@ export default {
       }
     };
   },
+  mounted() {
+    // 在项目加载完成之后初始化wow
+    var wow = new WOW({
+      boxClass: "wow",
+      animateClass: "animated",
+      offset: 0,
+      mobile: true,
+      live: false
+    });
+    wow.init();
+  },
   methods: {
     forgetPass() {
       this.dialog_flag = true;
+      console.log(this.dialog_flag);
     }
   }
 };

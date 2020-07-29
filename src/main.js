@@ -18,6 +18,9 @@ Vue.prototype.$echarts = echarts;
 import LvChart from "@/plugin/lv_echarts";
 Vue.use(LvChart);
 
+/* animate.css */
+import "wowjs/css/libs/animate.css";
+
 new Vue({
   router,
   store,
