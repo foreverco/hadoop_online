@@ -38,7 +38,7 @@
           >
         </div>
         <div class="forgetBox">
-          <span>忘记密码 > </span>
+          <span @click="forgetPass">忘记密码 > </span>
           <div>
             没有账号？
             <span @click="$router.push({ name: 'Register' })">立即注册</span>
@@ -46,12 +46,17 @@
         </div>
       </el-form>
     </el-card>
+    <DiaLogVue :flag.sync="dialog_flag"></DiaLogVue>
   </div>
 </template>
 <script>
 import { validatePhone } from "@/util/validate";
+import DiaLogVue from "./components/dialog";
 export default {
   name: "Login",
+  components: {
+    DiaLogVue
+  },
   data() {
     var checkPhone = (rule, value, callback) => {
       if (!value) {
@@ -64,12 +69,13 @@ export default {
     };
     return {
       ruleForm: {
+        dialog_flag: false,
         phone: "",
         pass: ""
       },
       rules: {
         phone: [{ required: true, validator: checkPhone, trigger: "blur" }],
-        pass:[
+        pass: [
           {
             required: true,
             message: "密码不能为空",
@@ -78,6 +84,11 @@ export default {
         ]
       }
     };
+  },
+  methods: {
+    forgetPass() {
+      this.dialog_flag = true;
+    }
   }
 };
 </script>
@@ -102,15 +113,16 @@ export default {
       .forgetBox {
         // border: 1px solid red;
         margin-top: 20px;
+        margin-bottom: 20px;
         padding: 0 5%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         span {
+          color: firebrick;
           &:hover {
             cursor: pointer;
             text-decoration: underline;
-            color: firebrick;
           }
         }
       }

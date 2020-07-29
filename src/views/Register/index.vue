@@ -25,7 +25,7 @@
             v-model.number="ruleForm.indentcode"
             autocomplete="off"
             placeholder="请输入验证码"
-            style="width:65%;margin-right:3%"
+            style="width:50%;margin-right:16%"
           ></el-input>
           <el-button
             size="small"
@@ -68,19 +68,10 @@
           <el-checkbox-group v-model="ruleForm.isRead">
             <el-checkbox label="success">
               <!-- <el-link disabled>我已阅读并接受</el-link> -->
-              <span>我已阅读并接受</span
-              ><el-link type="primary">《用户协议》</el-link>
+              <span>我已阅读并接受</span>
             </el-checkbox>
-            <!-- <el-checkbox label="复选框 A"></el-checkbox>
-            <el-checkbox label="复选框 B"></el-checkbox>
-            <el-checkbox label="复选框 C"></el-checkbox>
-            <el-checkbox label="禁用" disabled></el-checkbox>
-            <el-checkbox label="选中且禁用" disabled></el-checkbox> -->
           </el-checkbox-group>
-          <!-- <el-checkbox v-model="ruleForm.isRead">
-            <el-link disabled>我已阅读并接受</el-link
-            ><el-link type="primary">《用户协议》</el-link>
-          </el-checkbox> -->
+          <el-link type="primary" @click.stop="getXy">《用户协议》</el-link>
         </el-form-item>
         <div style="display:flex;justify-content: center;margin-top:20px">
           <el-button
@@ -92,7 +83,11 @@
           >
         </div>
         <div class="toLogin">
-          <div>已有账号？<span @click="$router.push({ name: 'Login' })">登录平台</span></div>
+          <div>
+            已有账号？<span @click="$router.push({ name: 'Login' })"
+              >登录平台</span
+            >
+          </div>
         </div>
       </el-form>
     </el-card>
@@ -221,6 +216,10 @@ export default {
         }
       });
     },
+    // 用户协议
+    getXy() {
+      console.log(123);
+    },
     // 重置表单
     resetForm() {
       this.$refs.ruleForm.resetFields();
@@ -230,8 +229,28 @@ export default {
 </script>
 <style lang="scss">
 .readBox {
+  // border: 1px solid red;
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
+  .el-form-item__content {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  .el-checkbox-group {
+    // border: 1px solid blue;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  .el-link {
+    // border: 1px solid blue;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
   .el-checkbox__inner {
     width: 20px;
     height: 20px;
@@ -273,10 +292,10 @@ export default {
         align-items: center;
         margin-top: 20px;
         span {
+          color: firebrick;
           &:hover {
             cursor: pointer;
             text-decoration: underline;
-            color: firebrick;
           }
         }
       }
