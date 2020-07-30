@@ -14,8 +14,30 @@
         </el-form>
       </div>
       <ul class="headerright">
-        <li @click="login">登陆</li>
-        <li @click="register">注册</li>
+        <li v-if="!userMsg" @click="login">登陆</li>
+        <li v-if="!userMsg" @click="register">注册</li>
+        <!-- <li>{{ $store.state.app.token }}</li> -->
+        <li v-if="userMsg" class="userList">
+          <el-dropdown trigger="hover">
+            <span class="el-dropdown-link">
+              {{ (userMsg.info && userMsg.info.nickname) || "空" }}
+              <i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item class="clearfix">
+                姓名
+                <el-badge class="mark" :value="12" />
+              </el-dropdown-item>
+              <el-dropdown-item class="clearfix">
+                姓名姓名姓名
+                <el-badge class="mark" :value="3" />
+              </el-dropdown-item>
+              <el-dropdown-item class="clearfix">
+                <el-button type="success" @click="handlelogout">退出</el-button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </li>
         <li class="weixinBox">
           <span>公众号</span>
           <img src="../../../../public/images/wxerweima.png" alt="" />
@@ -88,13 +110,31 @@ export default {
       }
     };
   },
+  computed: {
+    tokenMsg() {
+      return this.$store.state.app.token;
+    },
+    isLogin() {
+      return this.$store.state.app.isLogin;
+    },
+    userMsg() {
+      console.log(this.$store.state.app.userInfo);
+      if (this.$store.state.app.userInfo) {
+        return this.$store.state.app.userInfo;
+      } else {
+        return this.$store.state.app.userInfo;
+      }
+    }
+  },
   beforeMount() {
     this.$router.options.routes[1].children.forEach(item => {
       item.navMouseIn = false;
     });
     this.navList = this.$router.options.routes[1].children;
   },
-  mounted() {},
+  mounted() {
+    // this.$store.dispatch("app/getUser");
+  },
   methods: {
     navClick() {},
     register() {
@@ -103,9 +143,31 @@ export default {
       });
     },
     login() {
-      this.$router.push({
-        name: "Login"
+      if (this.$route.name != "Login") {
+        this.$router.push({
+          name: "Login"
+        });
+      }
+    },
+    // 登出
+    handlelogout() {
+      this.confirm({
+        tip: "退出",
+        content: "确认退出登陆？",
+        status: "退出成功",
+        fn: this.logout
       });
+    },
+    logout() {
+      let logoutParams = { token: this.tokenMsg };
+      this.$store
+        .dispatch("app/clearUserInfo", logoutParams)
+        .then(res => {
+          this.$message.success(res.data.msg);
+        })
+        .catch(error => {
+          this.$message.success(error.data.msg);
+        });
     }
   }
 };
@@ -181,6 +243,16 @@ export default {
         }
         &:hover {
           cursor: pointer;
+        }
+      }
+      .userList {
+        position: relative;
+        .el-dropdown {
+          color: black;
+          font-size: 15px;
+          .el-dropdown-item {
+            border: 1px solid red;
+          }
         }
       }
       .weixinBox {

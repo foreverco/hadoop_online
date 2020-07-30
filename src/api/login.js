@@ -17,12 +17,34 @@ export function getCode(data) {
   });
 }
 
-// 用户信息
-export function userInfo(parmas) {
-  console.log(parmas);
+// 登录
+export function Login(data) {
+  return service.request({
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    url: "/auth/login/token",
+    params: data
+  });
+}
+
+/* 获取用户详细信息 */
+export function reqallInfo() {
   return service.request({
     method: "get",
-    url: "/auth/login/token",
-    parmas
+    url: "/auth/user/allInfo"
+  });
+}
+
+/* 登出 */
+export function LogOut(data) {
+  return service.request({
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    url: "/auth/logout/token",
+    params: data
   });
 }

@@ -14,10 +14,19 @@
         class="demo-ruleForm"
       >
         <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="ruleForm.phone" placeholder="请输入手机号" autocomplete="off"></el-input>
+          <el-input
+            v-model.number="ruleForm.phone"
+            placeholder="请输入手机号"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm.pass" placeholder="请输入密码" autocomplete="off"></el-input>
+          <el-input
+            type="password"
+            v-model="ruleForm.pass"
+            placeholder="请输入密码"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <div style="display:flex;justify-content: center;margin-top:20px">
           <el-button
@@ -25,7 +34,8 @@
             type="primary"
             size="medium"
             @click="submitForm('ruleForm')"
-          >登录</el-button>
+            >登录</el-button
+          >
         </div>
         <div class="forgetBox">
           <span @click="forgetPass">忘记密码 ></span>
@@ -91,6 +101,46 @@ export default {
     forgetPass() {
       this.dialog_flag = true;
       console.log(this.dialog_flag);
+    },
+    // 登录
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          let loginParams = {
+            username: this.ruleForm.phone,
+            password: this.ruleForm.pass
+          };
+          // this.$router.push({ name: "ViewHomeindex" });
+          this.$store
+            .dispatch("app/login", loginParams)
+            .then(res => {
+              console.log(res);
+              this.getUserMsg();
+              this.$router.push({ name: "ViewHomeindex" });
+              this.$message.success("登录成功");
+            })
+            .catch(error => {
+              console.log(error);
+              this.$message.error("登录失败");
+            });
+        } else {
+          this.$message.error("填写必要信息");
+          return false;
+        }
+      });
+    },
+    // 获取用户信息
+    getUserMsg() {
+      this.$store
+        .dispatch("app/getUser")
+        .then(res => {
+          console.log(res);
+          this.$message.success("获取用户信息成功");
+        })
+        .catch(error => {
+          console.log(error);
+          this.$message.error("获取用户信息失败");
+        });
     }
   }
 };

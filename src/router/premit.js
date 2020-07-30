@@ -1,48 +1,27 @@
-// import router from "./index";
-// import store from "@/store";
-// import {
-//   getStore
-// } from "@/util/storage";
-// import {
-//   userInfo
-// } from "@/api/userInfo";
+import router from "./index";
+import store from "@/store";
+import { getToken, getUsermsg } from "../util/save";
+// import { userInfo } from "@/api/userInfo";
 
-// router.beforeEach((to, from, next) => {
-//   let params = {
-//     token: getStore("token")
-//   };
-//   // console.log(to);
-//   // console.log(from);
-//   // console.log(next);
-//   // console.log(router.options.routes[1].children);
-//   const whiteList = router.options.routes[1].children.map(item => item.path);
-//   // console.log(whiteList.indexOf(to.path));
-//   userInfo(params)
-//     .then(res => {
-//       // console.log(res);
-//       if (res.result.state !== 1) {
-//         // 没登录
-//         if (whiteList.indexOf(to.path) !== -1) {
-//           // 白名单
-//           next();
-//         } else {
-//           next("/login");
-//         }
-//       } else {
-//         store.commit("app/RECORD_USERINFO", {
-//           info: res.result
-//         });
-//         if (to.path === "/login") {
-//           //  跳转到
-//           next({
-//             path: "/"
-//           });
-//         }
-//         next();
-//       }
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       next();
-//     });
-// });
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = "大数据分析平台-" + to.meta.title;
+  }
+  console.log(from);
+  // console.log(to);
+  let token = getToken();
+  let usernmsg = getUsermsg();
+
+  if (getToken()) {
+    store.commit("app/RECORD_TOKEN", token);
+    store.commit("app/RECORD_USERINFO", usernmsg);
+    if (to.path === "/login") {
+      next("/home");
+    } else {
+      next();
+    }
+    /* 路由动态添加 每个角色分配不同菜单 */
+  } else {
+    next();
+  }
+});

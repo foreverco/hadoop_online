@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Message } from "element-ui";
 import Config from "../util/baseApi";
-// import { getToken } from "@/utils/app";
+import { getToken } from "@/util/save";
 import router from "@/router/index";
 import store from "@/store/index";
 
@@ -35,7 +35,8 @@ service.interceptors.request.use(
 
     // 最终目的，在请求头添加参数
     // config.headers["Authorization"] = getToken();
-    // config.headers["token"] = getToken();
+    console.log(getToken());
+    config.headers["Authorization"] = getToken();
     console.log(config);
     //添加一次加载状态
     // store.dispatch("app/addLoading");
