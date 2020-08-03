@@ -65,7 +65,7 @@ export default {
   @include webkit(box-sizing, border-box);
   width: 100%;
   // height: 600px;
-  background: red;
+  // background: red;
   position: relative;
   .imgBox {
     img {

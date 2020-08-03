@@ -11,5 +11,6 @@ export default {
 <style lang="scss">
 @import "./src/styles/main.scss";
 #app {
+  background: #e6f7e7;
 }
 </style>

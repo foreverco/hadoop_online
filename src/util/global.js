@@ -10,8 +10,8 @@ export default {
         center: true
       })
         .then(() => {
-          console.log(params.fn);
           params.fn && params.fn();
+          console.log(params.status);
           Message.success(params.status || "删除成功");
         })
         .catch(() => {

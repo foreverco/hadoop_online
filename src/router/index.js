@@ -10,7 +10,8 @@ import Layout from "../views/Layout";
 
 Vue.use(VueRouter);
 
-let baseRoutes = [{
+let baseRoutes = [
+  {
     path: "/",
     redirect: "/home",
     hiddem: true
@@ -18,7 +19,8 @@ let baseRoutes = [{
   {
     path: "/",
     component: Layout,
-    children: [{
+    children: [
+      {
         path: "/login",
         name: "Login",
         hidden: true,
@@ -59,7 +61,8 @@ let baseRoutes = [{
           title: "区域规划",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/areaPlan1",
             name: "AreaPlan1",
             class_true: false,
@@ -95,7 +98,8 @@ let baseRoutes = [{
           title: "种植指导",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/planting1",
             name: "Planting1",
             class_true: false,
@@ -153,7 +157,8 @@ let baseRoutes = [{
           title: "市场分析",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/Market1",
             name: "Market1",
             class_true: false,
@@ -187,7 +192,8 @@ let baseRoutes = [{
           title: "市场分析",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/OTC1",
             name: "OTC1",
             class_true: false,
@@ -232,7 +238,8 @@ let baseRoutes = [{
           title: "政策资讯",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/benefit1",
             name: "Benefit1",
             class_true: false,
@@ -251,6 +258,81 @@ let baseRoutes = [{
             hidden: false,
             meta: {
               title: "政策资讯2",
+              icon: "navmenu"
+            }
+          }
+        ]
+      },
+      /* 个人中心 */
+      // {
+      //   path: "/personal",
+      //   redirect: "/personal/center",
+      //   hidden: true
+      // },
+      {
+        path: "/personal",
+        name: "Personal",
+        redirect: "/personal/center",
+        class_true: false,
+        component: () => import("@/views/Personal"),
+        hidden: true,
+        meta: {
+          title: "个人中心",
+          icon: "navmenu"
+        },
+        children: [
+          {
+            path: "/personal/center",
+            name: "PerCenter",
+            class_true: false,
+            component: () => import("@/views/Personal/Center"),
+            hidden: false,
+            meta: {
+              title: "个人信息",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/personal/certify",
+            name: "Certify",
+            class_true: false,
+            component: () => import("@/views/Personal/Certify"),
+            hidden: false,
+            meta: {
+              title: "实名认证",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/personal/survey",
+            name: "Survey",
+            class_true: false,
+            component: () => import("@/views/Personal/Survey"),
+            hidden: false,
+            meta: {
+              title: "用户调查",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/personal/saveCenter",
+            name: "SaveCenter",
+            class_true: false,
+            component: () => import("@/views/Personal/SaveCenter"),
+            hidden: false,
+            meta: {
+              title: "安全中心",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/personal/adress",
+            name: "Adress",
+            class_true: false,
+            component: () => import("@/views/Personal/Adress"),
+            hidden: false,
+            meta: {
+              title: "收货地址",
               icon: "navmenu"
             }
           }

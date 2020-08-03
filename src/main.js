@@ -12,6 +12,9 @@ import "./plugin/aMap";
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
+// 全局组件
+import "./components/TitleTxt";
+
 // echarts
 import echarts from "echarts";
 Vue.prototype.$echarts = echarts;

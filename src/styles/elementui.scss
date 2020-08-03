@@ -9,6 +9,36 @@
 //   background-color: #ca1c29;
 //   border-color: #ca1c29;
 // }
+
+.el-tabs__item {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  list-style: none;
+  font-weight: 600;
+  color: #303133;
+  position: relative;
+  // border: 1px solid red;
+  // border-right: 1px solid #ccc;
+  // padding: 5px 0;
+  &:last-child {
+    border-right: 0;
+  }
+}
+.el-tabs__item:hover {
+  color: $maincolor;
+  cursor: pointer;
+}
+.el-tabs__item.is-active {
+  color: $maincolor;
+}
+.el-tabs__active-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: $maincolor;
+}
+
 .el-select-dropdown {
   background: transparent !important;
   .el-select-dropdown__list {
@@ -47,15 +77,16 @@ el-table th,
 .el-table td {
   background-color: transparent !important;
 }
+// 是否需要下边框
 // .el-table td,
-.el-table th.is-leaf,
-.el-table--border,
-.el-table--group {
-  border-color: transparent !important;
-}
-.el-table td {
-  border-bottom: 1px solid #ffffff50;
-}
+// .el-table th.is-leaf,
+// .el-table--border,
+// .el-table--group {
+//   border-color: transparent !important;
+// }
+// .el-table td {
+//   border-bottom: 1px solid #ffffff50;
+// }
 .el-table,
 .el-table__expanded-cell {
   background-color: transparent !important;
@@ -70,6 +101,10 @@ el-table th,
 .el-table__body td {
   padding: 0;
   height: 65px;
+}
+.el-table td,
+.el-table th {
+  text-align: center;
 }
 
 /* 按钮样式 */

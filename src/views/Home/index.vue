@@ -1,66 +1,313 @@
 <template>
   <div class="home lvallcontainer">
-    <!-- <div class="top lvcontainer">
-      <img src="../../assets/images/lbt/timg.jpg" alt>
-    </div>-->
     <div class="swiperBox lvallcontainer">
-      <!-- 123 -->
-      <SwiperVue :imgList="swiperList1" :swiperConfig="swiperConfig"></SwiperVue>
+      <!-- 轮播图 -->
+      <SwiperVue
+        :imgList="swiperList1"
+        :swiperConfig="swiperConfig"
+      ></SwiperVue>
     </div>
-    <div class="amapVue lvcontainer">
-      <AmapVue ref="amap" :options="options_map" @callback="callbackComponent"></AmapVue>
+    <!-- 政策资讯 登陆 -->
+    <div class="InfoLogin lvcontainer">
+      <div class="Information">
+        <Title titleTxt="政策资讯"></Title>
+        <div class="InformationContent">
+          <div class="InfoswiperBox">
+            <!-- 轮播图 -->
+            <SwiperVue
+              :imgList="swiperList2"
+              :swiperConfig="swiperConfig"
+            ></SwiperVue>
+          </div>
+          <div class="InfoTab">
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+              <el-tab-pane label="市场资讯" name="first">
+                <ul>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                  <li>
+                    <span>●</span>
+                    <span>[市场]</span>
+                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                  </li>
+                </ul>
+              </el-tab-pane>
+              <el-tab-pane label="产地资讯" name="second">配置管理</el-tab-pane>
+              <el-tab-pane label="政策法规" name="third">角色管理</el-tab-pane>
+            </el-tabs>
+          </div>
+        </div>
+      </div>
+      <div class="InforightBox">
+        <div class="homeloginBox">
+          <ul class="loginTop">
+            <li>
+              <img src="../../assets/logo.png" alt="" />
+            </li>
+            <li>
+              <p>
+                <span>hi </span>
+                <span> 游客 45586</span>
+              </p>
+              <p>
+                登陆/注册获取更多体验
+              </p>
+            </li>
+            <li>
+              <el-button type="success">登陆/注册</el-button>
+            </li>
+          </ul>
+          <div class="loginBtn">
+            <el-button type="info" :disabled="true">发布供应信息</el-button>
+            <el-button type="info">发布求购信息</el-button>
+          </div>
+        </div>
+        <div class="placeBox">
+          <Title titleTxt="区域规划"></Title>
+          <div class="placeMap">
+            <AmapVue
+              ref="amap"
+              :options="options_map"
+              @callback="callbackComponent"
+            ></AmapVue>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="echartsBox lvcontainer">
-      <LineEchartsVue :result="lineData" :lineconfig="lineconfig"></LineEchartsVue>
-    </div>
-    <div class="echartsBox lvcontainer">
-      <BarEchartsVue :result="barData" :barconfig="barconfig"></BarEchartsVue>
-    </div>
-    <div class="tableBox lvcontainer">
-      <TableVue :config="tableConfig">
-        <!-- <el-table-column
-          v-if="item.type === 'image'"
-          :key="item.prop"
-          :prop="item.prop"
-          :label="item.label"
-        >
-          <template slot-scope="scope">
-            <el-avatar :src="scope.row.photo"></el-avatar>
+    <!-- 人气品种 -->
+    <div class="priceBox lvcontainer">
+      <div class="priceLeft">
+        <div class="tabList">
+          <ul>
+            <li>今日价格</li>
+            <li>市场价格</li>
+            <li>产地价格</li>
+            <li>历史价格</li>
+          </ul>
+          <p>更多 > ></p>
+        </div>
+        <div class="priceTable">
+          <TableVue :config="tableConfig">
+            <!-- <template v-slot:image="slotData">
+            <el-avatar :src="slotData.data.photo"></el-avatar>
           </template>
-        </el-table-column>-->
-        <template v-slot:image="slotData">
-          <el-avatar :src="slotData.data.photo"></el-avatar>
-        </template>
-        <template v-slot:status="slotData">
-          <el-switch v-model="slotData.data.status" :active-value="1" :inactive-value="0"></el-switch>
-        </template>
-        <template v-slot:opration="slotData">
-          <el-button @click="find(slotData.data)">查看</el-button>
-        </template>
-      </TableVue>
+          <template v-slot:status="slotData">
+            <el-switch
+              v-model="slotData.data.status"
+              :active-value="1"
+              :inactive-value="0"
+            ></el-switch>
+          </template> -->
+            <template v-slot:opration="slotData">
+              <el-button @click="find(slotData.data)">查看</el-button>
+            </template>
+          </TableVue>
+        </div>
+      </div>
+      <div class="priceRight">
+        <Title titleTxt="人气品种"></Title>
+        <ul class="typeList">
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+          <li>
+            <i class="el-icon-star-off"></i>
+            <span>123</span>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="echartsBox lvcontainer">
-      <PieEchartsVue></PieEchartsVue>
+
+    <!-- 今日供求 -->
+    <div class="needBox lvcontainer">
+      <div class="needLeft">
+        <Title titleTxt="今日供求"></Title>
+        <div class="tableBox">
+          <TableVue :config="tableConfig">
+            <!-- <template v-slot:image="slotData">
+            <el-avatar :src="slotData.data.photo"></el-avatar>
+          </template>
+          <template v-slot:status="slotData">
+            <el-switch
+              v-model="slotData.data.status"
+              :active-value="1"
+              :inactive-value="0"
+            ></el-switch>
+          </template> -->
+            <template v-slot:opration="slotData">
+              <el-button @click="find(slotData.data)">查看</el-button>
+            </template>
+          </TableVue>
+        </div>
+        <div class="btnBox">
+          <el-button>发布供应信息</el-button>
+        </div>
+      </div>
+      <div class="needRight">
+        <Title titleTxt="今日求购"></Title>
+        <div class="tableBox">
+          <TableVue :config="tableConfig1">
+            <!-- <template v-slot:image="slotData">
+            <el-avatar :src="slotData.data.photo"></el-avatar>
+          </template>
+          <template v-slot:status="slotData">
+            <el-switch
+              v-model="slotData.data.status"
+              :active-value="1"
+              :inactive-value="0"
+            ></el-switch>
+          </template> -->
+            <template v-slot:opration="slotData">
+              <el-button size="mini" @click="find(slotData.data)"
+                >查看</el-button
+              >
+            </template>
+          </TableVue>
+        </div>
+        <div class="btnBox">
+          <el-button>发布供应信息</el-button>
+        </div>
+      </div>
     </div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
-    <div class="top lvcontainer">123</div>
+    <!-- 道地药材 -->
+    <div class="drugBox lvcontainer">
+      <Title titleTxt="道地药材"></Title>
+      <div class="drugContent">
+        <ul class="adressList">
+          <li v-for="(item, index) in adressList" :key="index">
+            <i class="el-icon-location"></i>
+            <span>{{ item.name }}</span>
+          </li>
+        </ul>
+        <ul class="imgList">
+          <li>
+            123
+          </li>
+          <li>
+            123
+          </li>
+          <li>
+            123
+          </li>
+          <li>
+            123
+          </li>
+          <li>
+            123
+          </li>
+          <li>
+            123
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- 视频专区 -->
+    <div class="videoBox lvcontainer"></div>
   </div>
 </template>
 <script>
@@ -79,27 +326,53 @@ export default {
     return {
       // 表格配置
       tableConfig: {
+        checkBox: false,
+        hadBorder: false,
+        tableHeight: "370",
+        headColor: "#D8EFDA",
         tHead: [
-          { label: "日期", prop: "date" },
+          { label: "品名", prop: "name" },
+          { label: "规格", prop: "type", width: "50" },
+          { label: "供应量", prop: "num" },
+          { label: "产地", prop: "adress", width: "150" },
           {
-            label: "类型",
-            prop: "type",
-            type: "function",
-            callback: (row, prop) => {
-              const sexItem = this.testJson[row[prop]];
-              if (sexItem) {
-                return sexItem.sex;
-              }
-              // const data = this.testArr.filter(item => item.value == row[prop]);
-              // if (data && data.length > 0) {
-              //   return data[0].sex;
-              // }
-            }
-          },
-          { label: "姓名", prop: "name" },
-          { label: "头像", prop: "photo", type: "slot", slotName: "image" },
-          { label: "地址", prop: "address" },
-          { label: "状态", prop: "status", type: "slot", slotName: "status" },
+            label: "操作",
+            type: "slot",
+            slotName: "opration"
+          }
+          // {
+          //   label: "类型",
+          //   prop: "type",
+          //   type: "function",
+          //   callback: (row, prop) => {
+          //     const sexItem = this.testJson[row[prop]];
+          //     if (sexItem) {
+          //       return sexItem.sex;
+          //     }
+          //   }
+          // },
+          // { label: "姓名", prop: "name" },
+          // { label: "头像", prop: "photo", type: "slot", slotName: "image" },
+          // { label: "地址", prop: "address" },
+          // { label: "状态", prop: "status", type: "slot", slotName: "status" },
+          // {
+          //   label: "操作",
+          //   type: "slot",
+          //   slotName: "opration"
+          // }
+        ]
+      },
+      // 表格配置
+      tableConfig1: {
+        checkBox: false,
+        headColor: "#FEEED7",
+        tableHeight: "370px",
+        hadBorder: false,
+        tHead: [
+          { label: "品名", prop: "name" },
+          { label: "规格", prop: "type", width: "50" },
+          { label: "供应量", prop: "num" },
+          { label: "产地", prop: "adress", width: "150" },
           {
             label: "操作",
             type: "slot",
@@ -142,6 +415,14 @@ export default {
       swiperConfig: {
         slidesPerView: 1
       },
+      swiperList2: [
+        {
+          imgUrl: require("@/assets/images/test1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/test1.png")
+        }
+      ],
       // 地图配置
       options_map: {
         mapLoad: true
@@ -247,6 +528,27 @@ export default {
           sr: 150,
           zc: 140
         }
+      ],
+      activeName: "first",
+      /* 道地药材 */
+      adressList: [
+        { name: "内蒙古" },
+        { name: "安徽" },
+        { name: "江苏" },
+        { name: "黑龙江" },
+        { name: "内蒙古" },
+        { name: "安徽" },
+        { name: "江苏" },
+        { name: "黑龙江" },
+        { name: "内蒙古" },
+        { name: "安徽" },
+        { name: "江苏" },
+        { name: "黑龙江" },
+        { name: "内蒙古" },
+        { name: "安徽" },
+        { name: "江苏" },
+        { name: "黑龙江" },
+        { name: "内蒙古" }
       ]
     };
   },
@@ -272,6 +574,9 @@ export default {
     },
     find(e) {
       console.log(e);
+    },
+    handleClick(tab, event) {
+      console.log(tab, event);
     }
   }
 };
@@ -281,10 +586,345 @@ export default {
   .top {
     height: 100px;
   }
+  /* 轮播图 */
   .swiperBox {
     // background: pink;
     // height: 800px;
     // position: relative;
+  }
+  /* 政策资讯 登陆 */
+  .InfoLogin {
+    height: 620px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    .Information {
+      background: $boxbg;
+      padding: $boxpadding;
+      width: 980px;
+      .InformationContent {
+        height: 460px;
+        width: 100%;
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        .InfoswiperBox {
+          // border: 1px solid red;
+          width: 600px;
+          // height: 100%;
+        }
+        .InfoTab {
+          width: 320px;
+          // border: 1px solid red;
+          overflow: hidden;
+          ul {
+            // border: 1px solid blue;
+            list-style: circle;
+            margin: 0 20px 0 5px;
+            li {
+              list-style: circle;
+              height: 40px;
+              line-height: 40px;
+              white-space: nowrap; /* 规定文本是否折行 */
+              overflow: hidden; /* 规定超出内容宽度的元素隐藏 */
+              text-overflow: ellipsis;
+              span {
+                &:first-child {
+                  color: $maincolor;
+                }
+                &:nth-child(2) {
+                  margin: 0 2px 0 8px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .InforightBox {
+      width: 410px;
+      display: flex;
+      flex-flow: column;
+      .homeloginBox {
+        background: $boxbg;
+        padding: $boxpadding;
+        height: 308px;
+        flex: 1;
+        .loginTop {
+          border-bottom: 1px solid #ccc;
+          height: 130px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          li {
+            &:first-child {
+              width: 10%;
+              img {
+                width: 100%;
+              }
+            }
+            p {
+              height: 32px;
+              line-height: 32px;
+              color: $graycolor;
+            }
+          }
+        }
+        .loginBtn {
+          height: 150px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap;
+          .el-button {
+            padding: 15px 90px;
+            font-size: 18px;
+            margin-left: 0;
+          }
+        }
+      }
+      .placeBox {
+        background: $boxbg;
+        padding: $boxpadding;
+        // border: 1px solid blue;
+        height: 308px;
+        margin-top: 10px;
+        flex: 1;
+        .placeMap {
+          margin-top: 15px;
+          height: 240px;
+        }
+      }
+    }
+  }
+  /* 人气品种 */
+  .priceBox {
+    // border: 1px solid red;
+    height: 610px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    .priceLeft {
+      width: 980px;
+      padding: $boxpadding;
+      background: $boxbg;
+      .tabList {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+        ul {
+          display: flex;
+          li {
+            width: 100px;
+            border-right: 1px solid #ccc;
+            text-align: center;
+            &:hover {
+              cursor: pointer;
+              color: $maincolor;
+            }
+            &:last-child {
+              border-right: 0;
+            }
+          }
+        }
+        p {
+          color: $maincolor;
+        }
+      }
+      .priceTable {
+        margin-top: 15px;
+        // border: 1px solid red;
+      }
+    }
+    .priceRight {
+      width: 405px;
+      padding: $boxpadding;
+      background: $boxbg;
+      .typeList {
+        // border: 1px solid red;
+        margin-top: 20px;
+        height: 520px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        li {
+          width: 94px;
+          height: 100px;
+          margin-top: 20px;
+          // border: 1px solid red;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap;
+          &:hover {
+            cursor: pointer;
+            i {
+              background: $maincolor;
+              color: #ffffff;
+              transform: scale(1.2);
+            }
+          }
+          i {
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #e6f7e8;
+            color: $maincolor;
+            transition: ease-in-out 0.3s;
+          }
+          span {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+  /* 今日供求 */
+  .needBox {
+    height: 680px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    .needLeft {
+      width: 690px;
+      background: $boxbg;
+      padding: $boxpadding;
+      .tableBox {
+        margin-top: 25px;
+        height: 530px;
+        // overflow-y: auto;
+        border: 1px solid red;
+        .el-button {
+          background: #ebf7ed;
+          color: $maincolor;
+          border: 1px solid $maincolor;
+          padding: 4px 7px;
+        }
+      }
+      .btnBox {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .el-button {
+          background: $maincolor;
+          border: 1px solid $maincolor;
+          color: #ffffff;
+          padding: 9px 90px;
+          border-radius: 10px;
+        }
+      }
+    }
+    .needRight {
+      width: 690px;
+      background: $boxbg;
+      padding: $boxpadding;
+      .tableBox {
+        margin-top: 25px;
+        height: 530px;
+        // overflow-y: auto;
+        border: 1px solid red;
+        .el-button {
+          background: #fef6eb;
+          color: $sencondcolor;
+          border: 1px solid $sencondcolor;
+          padding: 4px 7px;
+        }
+      }
+      .btnBox {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .el-button {
+          background: $sencondcolor;
+          border: 1px solid $sencondcolor;
+          color: #ffffff;
+          padding: 9px 90px;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+  /* 道地药材 */
+  .drugBox {
+    height: 560px;
+    margin-top: 15px;
+    background: $boxbg;
+    padding: $boxpadding;
+    .drugContent {
+      // border: 1px solid red;
+      margin-top: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      .adressList {
+        border-right: 1px solid #ccc;
+        width: 475px;
+        height: 480px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow: auto;
+        li {
+          background: #e7f6e9;
+          border-radius: 5px;
+          width: 135px;
+          height: 38px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-left: 15px;
+          margin-bottom: 40px;
+          i {
+            color: $maincolor;
+            margin-right: 5px;
+            // margin-top: 1px;
+            font-size: 20px;
+          }
+          span {
+            font-size: 16px;
+          }
+        }
+      }
+      .imgList {
+        // border: 1px solid blue;
+        width: 855px;
+        max-height: 480px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow: auto;
+        li {
+          width: 200px;
+          height: 130px;
+          margin-right: 17px;
+          margin-bottom: 15px;
+          border: 1px solid red;
+          &:nth-child(4n) {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+  /* 视频专区 */
+  .videoBox {
+    height: 490px;
+    margin-top: 15px;
+    background: $boxbg;
+    padding: $boxpadding;
   }
   .amapVue {
     height: 500px;

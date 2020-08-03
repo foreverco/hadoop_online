@@ -1,10 +1,11 @@
-$NavHeight: 65px;
+$NavHeight: 40px;
 /* 主色调 */
-$maincolor: #00b6a8;
+$maincolor: #3ab54b;
 /* 辅助色 */
-$sencondcolor: #00b6a850;
-/*  */
-$primary: #409EFF;
+$sencondcolor: #faa838;
+/* 灰色字体颜色 */
+$graycolor: #8a8a8a;
+$primary: #409eff;
 /* 导航色 */
 $navColor: #474747;
 /* 字体 */
@@ -12,16 +13,22 @@ $titlesize: 20px;
 /* 遮罩层 */
 $mainbgF20: #ffffff20;
 
+/* 盒子背景 */
+$boxbg: #ffffff;
+$boxpadding: 15px 12px;
+
+$perNav: 300px;
+
 //滚动条的宽度
-// ::-webkit-scrollbar {
-//   width: 10px;
-//   height: 10px;
-// }
-// //滚动条的滑块
-// ::-webkit-scrollbar-thumb {
-//   background-color: $maincolor;
-//   border-radius: 10px;
-// }
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+//滚动条的滑块
+::-webkit-scrollbar-thumb {
+  background-color: #3ab54b70;
+  border-radius: 10px;
+}
 
 @mixin webkit($type, $value) {
   -webkit-#{$type}: $value;

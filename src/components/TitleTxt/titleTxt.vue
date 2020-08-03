@@ -1,0 +1,48 @@
+<template>
+  <div class="titleTxt">
+    <span class="titleSpan">
+      {{ titleTxt }}
+    </span>
+    <span class="btnSpan">
+      更多 > >
+    </span>
+  </div>
+</template>
+<script>
+export default {
+  name: "titleTxt",
+  props: {
+    titleTxt: {
+      type: String,
+      default: () => ""
+    }
+  }
+};
+</script>
+<style lang="scss" scoped>
+.titleTxt {
+  // border: 1px solid red;
+  // margin-bottom: 10px;
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .titleSpan {
+    font-size: $titlesize;
+    color: $maincolor;
+    font-weight: 700;
+    // border: 3px solid red;
+    // border: 4px solid transparent;
+    border-left: 4px solid $maincolor;
+    display: flex;
+    align-items: center;
+    // padding-top: -2px;
+    // padding-bottom: -2px;
+    padding-left: 8px;
+    letter-spacing: 4px;
+  }
+  .btnSpan {
+    color: $maincolor;
+  }
+}
+</style>
