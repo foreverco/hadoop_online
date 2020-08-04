@@ -54,6 +54,10 @@ export default {
   width: calc(1440px - 400px);
   // width: calc(100vw - $perNav);
   border: 1px solid #ccc;
+  background: #ffffff;
   padding: 20px;
+  .el-breadcrumb {
+    margin-bottom: 20px;
+  }
 }
 </style>

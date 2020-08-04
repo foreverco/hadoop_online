@@ -43,6 +43,9 @@ export default {
   }
   .btnSpan {
     color: $maincolor;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 </style>

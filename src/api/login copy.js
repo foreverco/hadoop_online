@@ -24,13 +24,12 @@ export function getCode(data) {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     },
-    url: "/auth/login/sms",
-    baseURL: Config.proxy.new,
+    url: "https://sms.dun.163.com/v2/sendsms",
     params: data
   });
 }
 
-// 登录
+// 密码登录
 export function Login(data) {
   return service.request({
     method: "post",
@@ -38,8 +37,8 @@ export function Login(data) {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     url: "/auth/login/view/token",
-    baseURL: Config.proxy.new,
-    params: data
+    params: data,
+    baseURL: Config.proxy.new
   });
 }
 

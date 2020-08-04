@@ -48,12 +48,10 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$router);
     let arr = this.$router.options.routes[1].children.filter(item => {
       return item.hidden == false;
     });
     this.navList = arr;
-    console.log(arr);
   }
 };
 </script>

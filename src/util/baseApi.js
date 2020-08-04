@@ -1,8 +1,9 @@
 const config = {
   proxy: {
     default: "/api",
-    hr: "/hr",
-    weather: "/weather"
+    test: "/test",
+    weather: "/weather",
+    new: "/new"
   }
 };
 export default config;

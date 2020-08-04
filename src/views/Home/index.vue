@@ -95,14 +95,21 @@
             <li>
               <p>
                 <span>hi </span>
-                <span> 游客 45586</span>
+                <span v-if="!userMsg"> 游客 45586</span>
+                <span v-else>
+                  {{ (userMsg.info && userMsg.info.nickname) || "空" }}</span
+                >
               </p>
-              <p>
+              <p v-if="!userMsg">
                 登陆/注册获取更多体验
+              </p>
+              <p v-else>
+                欢迎来到蒙中药材网
               </p>
             </li>
             <li>
-              <el-button type="success">登陆/注册</el-button>
+              <el-button v-if="!userMsg" type="success">登陆/注册</el-button>
+              <el-button v-else type="danger">退出</el-button>
             </li>
           </ul>
           <div class="loginBtn">
@@ -127,10 +134,14 @@
       <div class="priceLeft">
         <div class="tabList">
           <ul>
-            <li>今日价格</li>
-            <li>市场价格</li>
-            <li>产地价格</li>
-            <li>历史价格</li>
+            <li
+              v-for="(item, index) in priceTypeList"
+              :key="index"
+              :class="{ priceTypeActive: priceTypeActive == index }"
+              @click="changepriceType(index)"
+            >
+              {{ item.name }}
+            </li>
           </ul>
           <p>更多 > ></p>
         </div>
@@ -147,7 +158,9 @@
             ></el-switch>
           </template> -->
             <template v-slot:opration="slotData">
-              <el-button @click="find(slotData.data)">查看</el-button>
+              <i class="el-icon-s-data iconName"></i>
+              <span v-if="false">{{ slotData }}</span>
+              <!-- <el-button type="primary" icon="el-icon-s-data"></el-button> -->
             </template>
           </TableVue>
         </div>
@@ -307,20 +320,67 @@
       </div>
     </div>
     <!-- 视频专区 -->
-    <div class="videoBox lvcontainer"></div>
+    <div class="videoBox lvcontainer">
+      <div class="videoList"></div>
+      <div class="videoContent">
+        <ul>
+          <li>
+            <VideoVue></VideoVue>
+          </li>
+          <li>
+            <VideoVue></VideoVue>
+          </li>
+          <li>
+            <VideoVue></VideoVue>
+          </li>
+          <li>
+            <VideoVue></VideoVue>
+          </li>
+          <li>
+            <VideoVue></VideoVue>
+          </li>
+          <li>
+            <VideoVue></VideoVue>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import AmapVue from "@/components/Amap";
 import SwiperVue from "@/components/SwiperVue";
 import TableVue from "@/components/TableData";
+import VideoVue from "../../components/video/video";
 import { WOW } from "wowjs";
 export default {
   name: "Home",
   components: {
     AmapVue,
     SwiperVue,
-    TableVue
+    TableVue,
+    VideoVue
+  },
+  computed: {
+    tokenMsg() {
+      return this.$store.state.app.token;
+    },
+    isLogin() {
+      return this.$store.state.app.isLogin;
+    },
+    userMsg() {
+      console.log(typeof this.$store.state.app.userInfo);
+      if (typeof this.$store.state.app.userInfo == "string") {
+        return JSON.parse(this.$store.state.app.userInfo);
+      } else {
+        return this.$store.state.app.userInfo;
+      }
+    }
+  },
+  watch: {
+    userMsg(newVal) {
+      console.log(newVal);
+    }
   },
   data() {
     return {
@@ -530,6 +590,14 @@ export default {
         }
       ],
       activeName: "first",
+      /* 价格趋势 */
+      priceTypeList: [
+        { name: "今日价格", value: 0 },
+        { name: "市场价格", value: 1 },
+        { name: "产地价格", value: 2 },
+        { name: "历史价格", value: 3 }
+      ],
+      priceTypeActive: 0,
       /* 道地药材 */
       adressList: [
         { name: "内蒙古" },
@@ -577,6 +645,10 @@ export default {
     },
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    /* 修改价格类型 */
+    changepriceType(e) {
+      this.priceTypeActive = e;
     }
   }
 };
@@ -628,6 +700,12 @@ export default {
               white-space: nowrap; /* 规定文本是否折行 */
               overflow: hidden; /* 规定超出内容宽度的元素隐藏 */
               text-overflow: ellipsis;
+              &:hover {
+                cursor: pointer;
+                span {
+                  color: $maincolor;
+                }
+              }
               span {
                 &:first-child {
                   color: $maincolor;
@@ -720,6 +798,10 @@ export default {
             width: 100px;
             border-right: 1px solid #ccc;
             text-align: center;
+            &.priceTypeActive {
+              color: $maincolor;
+              font-weight: 600;
+            }
             &:hover {
               cursor: pointer;
               color: $maincolor;
@@ -736,6 +818,10 @@ export default {
       .priceTable {
         margin-top: 15px;
         // border: 1px solid red;
+        .iconName {
+          color: $sencondcolor;
+          font-size: 15px;
+        }
       }
     }
     .priceRight {
@@ -921,10 +1007,39 @@ export default {
   }
   /* 视频专区 */
   .videoBox {
-    height: 490px;
     margin-top: 15px;
     background: $boxbg;
     padding: $boxpadding;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .videoList {
+      width: 140px;
+      height: 490px;
+      border: 1px solid red;
+    }
+    .videoContent {
+      border: 1px solid red;
+      width: 1220px;
+      height: 490px;
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        overflow: auto;
+        li {
+          width: 290px;
+          height: 164px;
+          margin-right: 18px;
+          margin-bottom: 18px;
+          border: 1px solid red;
+          &:nth-child(4n) {
+            margin-right: 0;
+          }
+        }
+      }
+    }
   }
   .amapVue {
     height: 500px;

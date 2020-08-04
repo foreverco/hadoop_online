@@ -142,6 +142,20 @@ module.exports = {
         pathRewrite: {
           "^/api": ""
         }
+      },
+      "/test": {
+        target: "http://www.web-jshtml.cn/api/cars", //API服务器的地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/test": ""
+        }
+      },
+      "/new": {
+        target: "http://192.168.1.151:9000", //API服务器的地址
+        changeOrigin: true,
+        pathRewrite: {
+          "^/new": ""
+        }
       }
     },
     overlay: {

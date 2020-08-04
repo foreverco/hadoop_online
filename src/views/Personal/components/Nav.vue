@@ -1,8 +1,24 @@
 <template>
   <div class="perNav">
-    <div class="navTitle">
-      个人中心
-    </div>
+    <ul class="navTitle">
+      <li>
+        <!-- <img src="../../../assets/logo.png" alt="" /> -->
+        <el-avatar :size="50" :src="touxiang"></el-avatar>
+      </li>
+      <li>
+        吕文明
+      </li>
+      <li>
+        <span class="plangter">种植户</span>
+        <span class="plangter">15151515151</span>
+      </li>
+      <li>
+        <el-button>发布求购信息</el-button>
+      </li>
+      <li>
+        <el-button>发布求购信息</el-button>
+      </li>
+    </ul>
     <el-menu
       class="el-menu-vertical-demo"
       :default-openeds="openeds"
@@ -37,6 +53,7 @@ export default {
     return {
       isCollapse: false,
       openeds: ["0", "1"],
+      touxiang: require("@/assets/images/test1.png"),
       menuList: [
         {
           title: "用户设置",
@@ -77,13 +94,28 @@ export default {
   margin-right: 20px;
   width: $perNav;
   .navTitle {
-    text-align: center;
-    height: 70px;
-    line-height: 70px;
-    font-size: 25px;
-    font-weight: 700;
     // border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     background: #ffffff;
+    li {
+      width: 100%;
+      text-align: center;
+      margin: 10px 0;
+      .plangter {
+        padding: 0 5px;
+        &:first-child {
+          border-right: 1px solid #ccc;
+        }
+      }
+      .el-button {
+        background: $maincolor;
+        padding: 9px 70px;
+        color: #ffffff;
+      }
+    }
   }
   .el-menu {
     .menuTitle {

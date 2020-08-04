@@ -15,6 +15,12 @@ Vue.use(ElementUI);
 // 全局组件
 import "./components/TitleTxt";
 
+// vue-video-player
+import VideoPlayer from "vue-video-player";
+import "vue-video-player/src/custom-theme.css";
+import "video.js/dist/video-js.css";
+Vue.use(VideoPlayer);
+
 // echarts
 import echarts from "echarts";
 Vue.prototype.$echarts = echarts;

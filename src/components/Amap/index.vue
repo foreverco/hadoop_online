@@ -1,18 +1,5 @@
 <template>
   <div class="amap-wrap">
-    <!-- <div class="input-card">
-      <el-radio-group v-model="mapRadio" @change="mapRadioChange(mapRadio)">
-        <el-radio label="marker">画点</el-radio>
-        <el-radio label="polyline">画折线</el-radio>
-        <el-radio label="polygon">画多边形</el-radio>
-        <el-radio label="rectangle">画矩形</el-radio>
-        <el-radio label="circle">画圆</el-radio>
-      </el-radio-group>
-      <div class="input-item">
-        <el-button type="danger" @click="clear">清除</el-button>
-        <el-button type="danger" @click="close">关闭绘图</el-button>
-      </div>
-    </div> -->
     <el-amap
       vid="amapContainer"
       :zoom="zoom"
