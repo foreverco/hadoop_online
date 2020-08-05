@@ -30,7 +30,7 @@
                 autocomplete="off"
               ></el-input>
             </el-form-item>
-            <el-form-item prop="code">
+            <el-form-item prop="captcha">
               <div class="captchaBox">
                 <el-input
                   type="code"
@@ -76,7 +76,7 @@
             label-position="left"
             class="demo-ruleForm"
           >
-            <el-form-item prop="phone">
+            <el-form-item prop="mobile">
               <el-input
                 v-model.number="phoneForm.mobile"
                 placeholder="请输入手机号"
@@ -100,7 +100,7 @@
                 />
               </div>
             </el-form-item> -->
-            <el-form-item prop="indentcode">
+            <el-form-item prop="secret">
               <div class="captchaBox">
                 <el-input
                   v-model.number="phoneForm.secret"
@@ -209,7 +209,7 @@ export default {
         secret: [
           {
             required: true,
-            message: "密码不能为空",
+            message: "验证码不能为空",
             trigger: "blur"
           }
         ]
@@ -321,11 +321,15 @@ export default {
             .dispatch("app/login", loginParams)
             .then(res => {
               console.log(res);
-              // this.getUserMsg();
+              this.getUserMsg();
               this.$router.push({ name: "ViewHomeindex" });
               this.$message.success("登录成功");
             })
             .catch(error => {
+              clearInterval(this.codeBtnStatus.codeTimer);
+              this.codeBtnStatus.codemsg = "重新发送";
+              this.codeBtnStatus.status = true;
+              this.phoneForm.secret = "";
               console.log(error);
               // this.$message.error("登录失败");
             });

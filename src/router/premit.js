@@ -1,7 +1,14 @@
 import router from "./index";
 import store from "@/store";
 import { getToken, getUsermsg } from "../util/save";
+import { Message } from "element-ui";
 // import { userInfo } from "@/api/userInfo";
+const routerList = router.options.routes[1].children;
+const whiteRoutesObjs = routerList.filter(item => {
+  return item.name === "Personal";
+})[0].children;
+const whiteRoutes = whiteRoutesObjs.map(item => item.path);
+// console.log(whiteRoutes);
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
@@ -22,6 +29,11 @@ router.beforeEach((to, from, next) => {
     }
     /* 路由动态添加 每个角色分配不同菜单 */
   } else {
-    next();
+    if (whiteRoutes.indexOf(to.path) === -1) {
+      next();
+    } else {
+      Message.error("没有权限,登陆后访问该页面！");
+      next("/login");
+    }
   }
 });

@@ -3,7 +3,7 @@
     <!-- {{ userMsg }} -->
     <el-form ref="perForm" :model="perForm" label-width="80px">
       <el-form-item label="手机号">
-        <el-input disabled v-model="userMsg.info.mobile"></el-input>
+        <!-- <el-input disabled v-model="userMsg.info.mobile"></el-input> -->
       </el-form-item>
       <el-form-item label="用户名">
         <el-input v-model="perForm.userName"></el-input>

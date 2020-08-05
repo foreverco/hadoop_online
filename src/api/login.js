@@ -29,6 +29,18 @@ export function getCode(data) {
     params: data
   });
 }
+// 注册
+export function Register(data) {
+  return service.request({
+    method: "post",
+    // headers: {
+    //   "Content-Type": "application/x-www-form-urlencoded"
+    // },
+    url: "/auth/login/view/register",
+    baseURL: Config.proxy.new,
+    data: data
+  });
+}
 
 // 登录
 export function Login(data) {
@@ -40,6 +52,15 @@ export function Login(data) {
     url: "/auth/login/view/token",
     baseURL: Config.proxy.new,
     params: data
+  });
+}
+
+/* 获取用户类型 */
+export function reqUserType() {
+  return service.request({
+    method: "get",
+    url: "/auth/role/common/getRoles",
+    baseURL: Config.proxy.new
   });
 }
 

@@ -4,7 +4,6 @@
       :data="table_data"
       :border="table_config.hadBorder"
       size="mini"
-      :height="table_config.tableHeight"
       style="width: 100%"
       :header-cell-style="{
         background: table_config.headColor,

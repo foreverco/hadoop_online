@@ -13,44 +13,72 @@
         label-position="left"
         class="demo-ruleForm"
       >
-        <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="ruleForm.phone" autocomplete="off" placeholder="请输入手机号"></el-input>
-        </el-form-item>
-        <el-form-item label="验证码" prop="indentcode">
+        <el-form-item label="手机号" prop="mobile">
           <el-input
-            v-model.number="ruleForm.indentcode"
+            v-model.number="ruleForm.mobile"
+            autocomplete="off"
+            placeholder="请输入手机号"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="图片验证" prop="captcha">
+          <div class="captchaBox">
+            <el-input
+              type="code"
+              v-model="ruleForm.captcha"
+              placeholder="请输入验证码"
+              autocomplete="off"
+              style="width:50%;margin-right:16%"
+            ></el-input>
+            <img
+              :src="captchaImg"
+              @click="getImgCodeMsg"
+              title="看不清，换一张"
+              alt="111"
+            />
+          </div>
+        </el-form-item>
+        <el-form-item label="验证码" prop="code">
+          <el-input
+            v-model.number="ruleForm.code"
             autocomplete="off"
             placeholder="请输入验证码"
             style="width:50%;margin-right:16%"
           ></el-input>
           <el-button
             size="small"
-            type="primary"
+            type="success"
             :disabled="!codeBtnStatus.status"
             @click="getCode"
-          >{{ codeBtnStatus.codemsg }}</el-button>
+            >{{ codeBtnStatus.codemsg }}</el-button
+          >
         </el-form-item>
-        <el-form-item label="密码" prop="pass">
-          <el-input type="password" placeholder="请输入密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
+        <el-form-item label="密码" prop="password">
+          <el-input
+            type="password"
+            placeholder="请输入密码"
+            v-model="ruleForm.password"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
+        <el-form-item label="确认密码" prop="passwordTwo">
           <el-input
             type="password"
             placeholder="确认密码"
-            v-model="ruleForm.checkPass"
+            v-model="ruleForm.passwordTwo"
             autocomplete="off"
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="用户类型" prop="type">
-          <el-radio-group v-model="ruleForm.type">
+        <el-form-item label="用户类型" prop="userType">
+          <el-radio-group v-model="ruleForm.userType">
             <el-radio
               v-for="(item, index) in userType"
               :key="index"
               :label="item.value"
               size="mini"
               style="margin:0 0 15px 0;width:90px"
-            >{{ item.label }}</el-radio>
+              >{{ item.label }}</el-radio
+            >
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="isRead" class="readBox">
@@ -65,10 +93,11 @@
         <div style="display:flex;justify-content: center;margin-top:20px">
           <el-button
             style="width:90%"
-            type="primary"
+            type="success"
             size="medium"
             @click="submitForm('ruleForm')"
-          >注册</el-button>
+            >注册</el-button
+          >
         </div>
         <div class="toLogin">
           <div>
@@ -82,6 +111,7 @@
 </template>
 <script>
 import { validatePhone } from "@/util/validate";
+import { getImgCode, getCode, Register } from "@/api/login";
 import { WOW } from "wowjs";
 export default {
   data() {
@@ -107,7 +137,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.password) {
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
@@ -122,29 +152,34 @@ export default {
         { label: "种植个体户", value: "planting2" },
         { label: "其他", value: "other" }
       ],
-
+      captchaImg: "",
       codeBtnStatus: {
         status: true,
         codemsg: "请输入验证码",
         codeTimer: null
       },
       ruleForm: {
-        pass: "",
-        checkPass: "",
-        phone: "",
-        indentcode: "",
-        type: "",
+        password: "",
+        passwordTwo: "",
+        mobile: "",
+        code: "",
+        captcha: "",
+        captchaKey: "",
+        userType: "",
         isRead: []
       },
       rules: {
-        pass: [{ required: true, validator: validatePass, trigger: "blur" }],
-        indentcode: [
-          { required: true, message: "请输入验证码", trigger: "blur" }
+        password: [
+          { required: true, validator: validatePass, trigger: "blur" }
         ],
-        checkPass: [
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+        captcha: [
+          { required: true, message: "请输入图片验证码", trigger: "blur" }
+        ],
+        passwordTwo: [
           { required: true, validator: validatePass2, trigger: "blur" }
         ],
-        phone: [{ required: true, validator: checkPhone, trigger: "blur" }],
+        mobile: [{ required: true, validator: checkPhone, trigger: "blur" }],
         type: [{ required: true, message: "请选择类型", trigger: "change" }],
         isRead: [
           {
@@ -158,6 +193,7 @@ export default {
     };
   },
   mounted() {
+    this.getImgCodeMsg();
     this.$nextTick(() => {
       /* wowjs动画 */
       let wow = new WOW({
@@ -171,9 +207,20 @@ export default {
     });
   },
   methods: {
+    /* 获取图片验证码 */
+    getImgCodeMsg() {
+      getImgCode().then(res => {
+        console.log(res);
+        let params = res.data.data;
+        // console.log(params);
+        this.ruleForm.captchaKey = params.key;
+        this.captchaImg = params.image;
+        this.ruleForm.type = this.activeName;
+      });
+    },
     // 获取验证码
     getCode() {
-      let phoneNum = this.ruleForm.phone;
+      let phoneNum = this.ruleForm.mobile;
       if (!phoneNum) {
         this.$notify.error({
           title: "错误",
@@ -189,7 +236,14 @@ export default {
       } else {
         this.codeBtnStatus.status = false;
         this.codeBtnStatus.codemsg = "发送中...";
-        this.codeTimerFun(5);
+        getCode({ mobile: phoneNum })
+          .then(res => {
+            console.log(res);
+            this.codeTimerFun(60);
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     },
     /* 验证码倒计时 */
@@ -207,12 +261,18 @@ export default {
     },
     // 提交注册
     submitForm(formName) {
-      console.log(formName);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          let registerParams = JSON.parse(JSON.stringify(this.ruleForm));
+          console.log(registerParams);
+          Register(registerParams).then(res => {
+            console.log(res);
+            this.$router.push({ name: "ViewHomeindex" });
+            this.$message.success("登录成功");
+          });
+          this.resetForm();
         } else {
-          console.log("error submit!!");
+          this.$message.error("填写必要信息");
           return false;
         }
       });
@@ -276,8 +336,11 @@ export default {
   justify-content: center;
   .el-card {
     .clearfix {
+      text-align: center;
       span {
-        font-size: 22px;
+        font-size: 24px;
+        color: $maincolor;
+        font-weight: 600;
       }
     }
     .el-form {
@@ -286,6 +349,20 @@ export default {
       .el-form-item {
         padding: 0 20px;
         margin: 30px 0;
+        .captchaBox {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: nowrap;
+          img {
+            border: 1px solid #dcdfe6;
+            border-radius: 5px;
+            height: 50px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
       }
       .toLogin {
         display: flex;

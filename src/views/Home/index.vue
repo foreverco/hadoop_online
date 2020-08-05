@@ -235,6 +235,15 @@
         </ul>
       </div>
     </div>
+    <!-- 热点专题 -->
+    <div class="lvcontainer hotMsg">
+      <div class="hotTitle">
+        热点专题
+      </div>
+      <div class="hotSwiper">
+        123
+      </div>
+    </div>
 
     <!-- 今日供求 -->
     <div class="needBox lvcontainer">
@@ -298,49 +307,49 @@
           </li>
         </ul>
         <ul class="imgList">
-          <li>
-            123
-          </li>
-          <li>
-            123
-          </li>
-          <li>
-            123
-          </li>
-          <li>
-            123
-          </li>
-          <li>
-            123
-          </li>
-          <li>
-            123
+          <li v-for="(item, index) in drugList" :key="index">
+            <img :src="item.imgUrl" alt="" />
           </li>
         </ul>
       </div>
     </div>
     <!-- 视频专区 -->
     <div class="videoBox lvcontainer">
-      <div class="videoList"></div>
+      <div class="videoList">
+        <div class="videoListTop">
+          视频专区
+        </div>
+        <div class="videoListBot">
+          <div class="videoListBotTitle">
+            <span>全部</span>
+            <span>更多>></span>
+          </div>
+          <ul class="videoListBotCon">
+            <li>黄芪</li>
+            <li>防风</li>
+            <li>麻黄</li>
+            <li>柴胡</li>
+            <li>柴胡</li>
+            <li>红花</li>
+            <li>白芍</li>
+            <li>黄芪</li>
+            <li>防风</li>
+            <li>麻黄</li>
+            <li>柴胡</li>
+            <li>柴胡</li>
+            <li>红花</li>
+            <li>白芍</li>
+            <li>防风</li>
+            <li>麻黄</li>
+            <li>柴胡</li>
+            <li>柴胡</li>
+          </ul>
+        </div>
+      </div>
       <div class="videoContent">
         <ul>
-          <li>
-            <VideoVue></VideoVue>
-          </li>
-          <li>
-            <VideoVue></VideoVue>
-          </li>
-          <li>
-            <VideoVue></VideoVue>
-          </li>
-          <li>
-            <VideoVue></VideoVue>
-          </li>
-          <li>
-            <VideoVue></VideoVue>
-          </li>
-          <li>
-            <VideoVue></VideoVue>
+          <li v-for="(item, index) in videoList" :key="index">
+            <img :src="item.imgUrl" alt="" />
           </li>
         </ul>
       </div>
@@ -351,15 +360,15 @@
 import AmapVue from "@/components/Amap";
 import SwiperVue from "@/components/SwiperVue";
 import TableVue from "@/components/TableData";
-import VideoVue from "../../components/video/video";
+// import VideoVue from "../../components/video/video";
 import { WOW } from "wowjs";
 export default {
   name: "Home",
   components: {
     AmapVue,
     SwiperVue,
-    TableVue,
-    VideoVue
+    TableVue
+    // VideoVue
   },
   computed: {
     tokenMsg() {
@@ -617,6 +626,72 @@ export default {
         { name: "江苏" },
         { name: "黑龙江" },
         { name: "内蒙古" }
+      ],
+      /* 药材专区 */
+      drugList: [
+        {
+          imgUrl: require("@/assets/images/drugImg/drug1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug2.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug2.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug2.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug2.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug2.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/drug2.png")
+        }
+      ],
+      /* 视频专区 */
+      videoList: [
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/videoImg/videoImg1.png")
+        }
       ]
     };
   },
@@ -818,6 +893,8 @@ export default {
       .priceTable {
         margin-top: 15px;
         // border: 1px solid red;
+        height: 500px;
+        overflow-y: hidden;
         .iconName {
           color: $sencondcolor;
           font-size: 15px;
@@ -874,6 +951,28 @@ export default {
       }
     }
   }
+  /* 热点专题 */
+  .hotMsg {
+    margin-top: 15px;
+    height: 150px;
+    background: $boxbg;
+    padding: $boxpadding;
+    display: flex;
+    justify-content: space-between;
+    .hotTitle {
+      height: 120px;
+      line-height: 60px;
+      font-size: 42px;
+      width: 120px;
+      text-align: center;
+      background: $sencondcolor;
+      color: #fff;
+    }
+    .hotSwiper {
+      border: 1px solid red;
+      width: 1200px;
+    }
+  }
   /* 今日供求 */
   .needBox {
     height: 680px;
@@ -887,8 +986,7 @@ export default {
       .tableBox {
         margin-top: 25px;
         height: 530px;
-        // overflow-y: auto;
-        border: 1px solid red;
+        overflow-y: hidden;
         .el-button {
           background: #ebf7ed;
           color: $maincolor;
@@ -917,8 +1015,7 @@ export default {
       .tableBox {
         margin-top: 25px;
         height: 530px;
-        // overflow-y: auto;
-        border: 1px solid red;
+        overflow-y: hidden;
         .el-button {
           background: #fef6eb;
           color: $sencondcolor;
@@ -997,9 +1094,11 @@ export default {
           height: 130px;
           margin-right: 17px;
           margin-bottom: 15px;
-          border: 1px solid red;
           &:nth-child(4n) {
             margin-right: 0;
+          }
+          img {
+            width: 100%;
           }
         }
       }
@@ -1016,10 +1115,50 @@ export default {
     .videoList {
       width: 140px;
       height: 490px;
-      border: 1px solid red;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      .videoListTop {
+        border: 3px solid $sencondcolor;
+        color: $sencondcolor;
+        width: 120px;
+        height: 120px;
+        line-height: 60px;
+        font-size: 40px;
+        text-align: center;
+      }
+      .videoListBot {
+        height: 330px;
+        margin-top: 20px;
+        width: 100%;
+        .videoListBotTitle {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+          span {
+            &:first-child {
+              color: $maincolor;
+            }
+          }
+        }
+        .videoListBotCon {
+          display: flex;
+          justify-content: flex-start;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          li {
+            margin: 10px 5px;
+            color: #777;
+            &:hover {
+              color: $maincolor;
+              cursor: pointer;
+            }
+          }
+        }
+      }
     }
     .videoContent {
-      border: 1px solid red;
+      // border: 1px solid red;
       width: 1220px;
       height: 490px;
       ul {
@@ -1030,12 +1169,35 @@ export default {
         overflow: auto;
         li {
           width: 290px;
-          height: 164px;
+          height: 200px;
+          position: relative;
+          overflow: hidden;
           margin-right: 18px;
           margin-bottom: 18px;
-          border: 1px solid red;
+          // border: 1px solid red;
+          img {
+            width: 100%;
+          }
           &:nth-child(4n) {
             margin-right: 0;
+          }
+          &:hover {
+            p {
+              top: 0;
+            }
+          }
+          p {
+            position: absolute;
+            bottom: 0;
+            background: #000000;
+            color: #fff;
+            padding-left: 10px;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+            letter-spacing: 5px;
+            transition: ease-in-out 0.5s;
           }
         }
       }

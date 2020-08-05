@@ -12,7 +12,7 @@
         <ul class="headerright">
           <li v-if="!userMsg" @click="login">登陆</li>
           <li v-if="!userMsg" @click="register">注册</li>
-          <li v-if="userMsg" class="userList">
+          <!-- <li v-if="userMsg" class="userList">
             <span>您好！</span>
             <span class="el-dropdown-link">
               {{ (userMsg.info && userMsg.info.nickname) || "空" }}
@@ -32,7 +32,7 @@
                 <el-button type="success" @click="handlelogout">退出</el-button>
               </dt>
             </dl>
-          </li>
+          </li> -->
           <li class="weixinBox">
             <span>公众号</span>
             <img src="../../../../public/images/wxerweima.png" alt="" />
@@ -108,7 +108,7 @@ export default {
       return this.$store.state.app.isLogin;
     },
     userMsg() {
-      console.log(typeof this.$store.state.app.userInfo);
+      console.log(this.$store.state.app);
       if (typeof this.$store.state.app.userInfo == "string") {
         return JSON.parse(this.$store.state.app.userInfo);
       } else {
