@@ -15,9 +15,11 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .Personal {
   display: flex;
-  margin-top: 40px;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 </style>

@@ -1,89 +1,98 @@
 <template>
-  <div class="lvcontainer loginBox">
-    <el-card>
-      <el-tabs
-        class="wow slideInRight"
-        v-model="activeName"
-        @tab-click="handleClick"
-      >
-        <el-tab-pane label="密码登陆" name="PASSWORD">
-          <el-form
-            :model="passForm"
-            status-icon
-            :rules="passrules"
-            ref="passForm"
-            label-position="left"
-            class="demo-ruleForm"
-          >
-            <el-form-item prop="mobile">
-              <el-input
-                v-model.number="passForm.mobile"
-                placeholder="请输入手机号"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item>
-            <el-form-item prop="secret">
-              <el-input
-                type="password"
-                v-model="passForm.secret"
-                placeholder="请输入密码"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item>
-            <el-form-item prop="captcha">
-              <div class="captchaBox">
+  <div class="lvallcontainer allLogin">
+    <div class="lvcontainer loginBox">
+      <div class="imgBox">
+        123
+        <!-- <img src="" alt=""> -->
+      </div>
+      <el-card>
+        <el-tabs
+          class="wow slideInRight"
+          v-model="activeName"
+          @tab-click="handleClick"
+        >
+          <el-tab-pane label="密码登陆" name="PASSWORD">
+            <el-form
+              :model="passForm"
+              status-icon
+              :rules="passrules"
+              ref="passForm"
+              label-position="left"
+              class="demo-ruleForm"
+            >
+              <el-form-item prop="mobile">
                 <el-input
-                  type="code"
-                  v-model="passForm.captcha"
-                  placeholder="请输入验证码"
+                  v-model.number="passForm.mobile"
+                  placeholder="请输入手机号"
                   autocomplete="off"
-                  style="width:50%;margin-right:16%"
                 ></el-input>
-                <img
-                  :src="captchaImg"
-                  @click="getImgCodeMsg"
-                  title="看不清，换一张"
-                  alt="111"
-                />
-              </div>
-            </el-form-item>
-            <div style="display:flex;justify-content: center;margin-top:20px">
-              <el-button
-                style="width:95%"
-                type="success"
-                size="medium"
-                @click="submitForm('passForm')"
-                >登录</el-button
+              </el-form-item>
+              <el-form-item prop="secret">
+                <el-input
+                  type="password"
+                  v-model="passForm.secret"
+                  placeholder="请输入密码"
+                  autocomplete="off"
+                ></el-input>
+              </el-form-item>
+              <el-form-item prop="captcha">
+                <div class="captchaBox">
+                  <el-input
+                    type="code"
+                    v-model="passForm.captcha"
+                    placeholder="请输入验证码"
+                    autocomplete="off"
+                    style="width:50%;margin-right:16%"
+                  ></el-input>
+                  <img
+                    :src="captchaImg"
+                    @click="getImgCodeMsg"
+                    title="看不清，换一张"
+                    alt="111"
+                  />
+                </div>
+              </el-form-item>
+              <div
+                class="loginBtn"
+                style="display:flex;justify-content: center;margin-top:20px"
               >
-            </div>
-            <div class="forgetBox">
-              <span @click="forgetPass">忘记密码 ></span>
-              <div>
-                没有账号？
-                <span @click="$router.push({ name: 'Register' })"
-                  >立即注册</span
+                <el-button
+                  style="width:95%"
+                  type="success"
+                  size="medium"
+                  :disabled="canLogin"
+                  @click="submitForm('passForm')"
+                  >登录</el-button
                 >
               </div>
-            </div>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane label="短信登陆" name="SMS">
-          <el-form
-            :model="phoneForm"
-            status-icon
-            :rules="phonerules"
-            ref="phoneForm"
-            label-position="left"
-            class="demo-ruleForm"
-          >
-            <el-form-item prop="mobile">
-              <el-input
-                v-model.number="phoneForm.mobile"
-                placeholder="请输入手机号"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item>
-            <!-- <el-form-item prop="code">
+              <div class="forgetBox">
+                <span @click="forgetPass">忘记密码 ></span>
+                <div>
+                  没有账号？
+                  <span @click="$router.push({ name: 'Register' })"
+                    >立即注册</span
+                  >
+                </div>
+              </div>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="短信登陆" name="SMS">
+            <el-form
+              :model="phoneForm"
+              status-icon
+              :rules="phonerules"
+              ref="phoneForm"
+              label-position="left"
+              class="demo-ruleForm"
+            >
+              <el-form-item prop="mobile">
+                <el-input
+                  v-model.number="phoneForm.mobile"
+                  placeholder="请输入手机号"
+                  autocomplete="off"
+                ></el-input>
+              </el-form-item>
+              <!-- <el-form-item prop="code">
               <div class="captchaBox">
                 <el-input
                   type="code"
@@ -100,46 +109,50 @@
                 />
               </div>
             </el-form-item> -->
-            <el-form-item prop="secret">
-              <div class="captchaBox">
-                <el-input
-                  v-model.number="phoneForm.secret"
-                  autocomplete="off"
-                  placeholder="请输入验证码"
-                  style="width:50%;margin-right:16%"
-                ></el-input>
-                <el-button
-                  size="small"
-                  type="success"
-                  :disabled="!codeBtnStatus.status"
-                  @click="getCode"
-                  >{{ codeBtnStatus.codemsg }}</el-button
-                >
-              </div>
-            </el-form-item>
-            <div style="display:flex;justify-content: center;margin-top:20px">
-              <el-button
-                style="width:95%"
-                type="success"
-                size="medium"
-                @click="submitForm('phoneForm')"
-                >登录</el-button
+              <el-form-item prop="secret">
+                <div class="captchaBox">
+                  <el-input
+                    v-model.number="phoneForm.secret"
+                    autocomplete="off"
+                    placeholder="请输入验证码"
+                    style="width:50%;margin-right:16%"
+                  ></el-input>
+                  <el-button
+                    size="small"
+                    type="success"
+                    :disabled="!codeBtnStatus.status"
+                    @click="getCode"
+                    >{{ codeBtnStatus.codemsg }}</el-button
+                  >
+                </div>
+              </el-form-item>
+              <div
+                class="loginBtn"
+                style="display:flex;justify-content: center;margin-top:20px"
               >
-            </div>
-            <div class="forgetBox">
-              <span @click="forgetPass">忘记密码 ></span>
-              <div>
-                没有账号？
-                <span @click="$router.push({ name: 'Register' })"
-                  >立即注册</span
+                <el-button
+                  style="width:95%"
+                  type="success"
+                  size="medium"
+                  :disabled="canLogin"
+                  @click="submitForm('phoneForm')"
+                  >登录</el-button
                 >
               </div>
-            </div>
-          </el-form>
-        </el-tab-pane>
-      </el-tabs>
-    </el-card>
-
+              <div class="forgetBox">
+                <span @click="forgetPass">忘记密码 ></span>
+                <div>
+                  没有账号？
+                  <span @click="$router.push({ name: 'Register' })"
+                    >立即注册</span
+                  >
+                </div>
+              </div>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+      </el-card>
+    </div>
     <DiaLogVue :flag.sync="dialog_flag"></DiaLogVue>
   </div>
 </template>
@@ -165,6 +178,8 @@ export default {
     };
     return {
       dialog_flag: false,
+      // 按钮状态
+      canLogin: true,
       activeName: "PASSWORD",
       captchaImg: "",
       codeBtnStatus: {
@@ -234,6 +249,32 @@ export default {
         this.resetPassForm();
         this.phoneForm.type = newVal;
       }
+    },
+    passForm: {
+      handler(newVal) {
+        console.log(newVal);
+        if (
+          this.passForm.mobile &&
+          this.passForm.secret &&
+          this.passForm.captcha
+        ) {
+          this.canLogin = false;
+        } else {
+          this.canLogin = true;
+        }
+      },
+      deep: true
+    },
+    phoneForm: {
+      handler(newVal) {
+        console.log(newVal);
+        if (this.phoneForm.mobile && this.phoneForm.secret) {
+          this.canLogin = false;
+        } else {
+          this.canLogin = true;
+        }
+      },
+      deep: true
     }
   },
   mounted() {
@@ -365,47 +406,85 @@ export default {
 };
 </script>
 <style lang="scss">
-.loginBox {
-  padding-top: 50px;
+.allLogin {
+  background: url("../../assets/images/login/loginbg.png");
+  background-size: 100% 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  .el-tabs {
-    .el-form {
-      width: 600px;
-      .el-form-item {
-        padding: 0 20px;
-        margin: 30px 0;
-        // border: 1px solid red;
-        // height: 80px;
-        .captchaBox {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: nowrap;
-          img {
-            border: 1px solid #dcdfe6;
-            border-radius: 5px;
-            height: 50px;
-            &:hover {
-              cursor: pointer;
+  min-height: calc(100vh - 364px);
+  padding: 20px 0;
+  .loginBox {
+    border: 1px solid blue;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .imgBox {
+      border: 1px solid blue;
+    }
+    .el-tabs {
+      max-height: 500px;
+      padding-top: 20px;
+      padding-bottom: 200px;
+      .el-tabs__item {
+        width: 108px;
+        height: 35px;
+        font-size: 24px;
+        font-family: Adobe Heiti Std;
+        font-weight: normal;
+        // color: rgba(102, 102, 102, 1);
+        line-height: 20px;
+        text-align: center;
+      }
+      .el-tabs__active-bar {
+        width: 108px !important;
+        height: 3px !important;
+      }
+      .el-form {
+        width: 574px;
+        .el-form-item {
+          padding: 0 20px;
+          margin: 30px 0;
+          .captchaBox {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            img {
+              border: 1px solid #dcdfe6;
+              border-radius: 5px;
+              height: 50px;
+              &:hover {
+                cursor: pointer;
+              }
             }
           }
         }
-      }
-      .forgetBox {
-        // border: 1px solid red;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        padding: 0 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        span {
-          color: #333;
-          &:hover {
-            cursor: pointer;
-            text-decoration: underline;
+        .loginBtn {
+          .el-button--success {
+            background: $sencondcolor;
+            border: 1px solid $sencondcolor;
+            &.is-disabled {
+              background: #f4f4f4;
+              border: 1px solid #e0e0e0;
+              color: #666666;
+            }
+          }
+        }
+        .forgetBox {
+          // border: 1px solid red;
+          margin-top: 20px;
+          margin-bottom: 20px;
+          padding: 0 5%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          span {
+            color: #333;
+            &:hover {
+              cursor: pointer;
+              text-decoration: underline;
+            }
           }
         }
       }

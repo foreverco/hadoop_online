@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="indexView">
     <NavVue></NavVue>
     <MainVue></MainVue>
     <FooterVue></FooterVue>
@@ -18,4 +18,8 @@ export default {
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.indexView {
+  position: relative;
+}
+</style>

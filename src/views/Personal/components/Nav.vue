@@ -5,7 +5,7 @@
         <!-- <img src="../../../assets/logo.png" alt="" /> -->
         <el-avatar :size="50" :src="touxiang"></el-avatar>
       </li>
-      <li>
+      <li class="nameBox">
         吕文明
       </li>
       <li>
@@ -90,7 +90,6 @@ export default {
 <style lang="scss">
 .perNav {
   // background: pink;
-  border: 1px solid #ccc;
   margin-right: 20px;
   width: $perNav;
   .navTitle {
@@ -100,10 +99,15 @@ export default {
     align-items: center;
     flex-wrap: wrap;
     background: #ffffff;
+    margin-bottom: 20px;
     li {
       width: 100%;
       text-align: center;
       margin: 10px 0;
+      &.nameBox {
+        font-size: 18px;
+        font-family: Microsoft YaHei;
+      }
       .plangter {
         padding: 0 5px;
         &:first-child {
@@ -112,17 +116,35 @@ export default {
       }
       .el-button {
         background: $maincolor;
-        padding: 9px 70px;
+        width: 215px;
+        // height: 36px;
+        border-radius: 8px;
         color: #ffffff;
+        font-size: 16px;
+        letter-spacing: 5px;
       }
     }
   }
   .el-menu {
+    .el-submenu__title {
+      color: $maincolor;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .el-menu-item.is-active {
+      border-left: 3px solid $maincolor;
+      background-image: linear-gradient(to right, #3ab54c20, transparent);
+      color: #000000;
+      font-weight: 600;
+    }
     .menuTitle {
       font-size: 18px;
     }
     .el-submenu {
       border-top: 1px solid #ccc;
+      &:first-child {
+        border-top: 0;
+      }
     }
   }
 }

@@ -11,7 +11,11 @@
         class="demo-ruleForm"
       >
         <el-form-item label="手机号" prop="phone">
-          <el-input v-model.number="ruleForm.phone" autocomplete="off" placeholder="请输入手机号"></el-input>
+          <el-input
+            v-model.number="ruleForm.phone"
+            autocomplete="off"
+            placeholder="请输入手机号"
+          ></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="indentcode">
           <el-input
@@ -25,10 +29,16 @@
             type="primary"
             :disabled="!codeBtnStatus.status"
             @click="getCode"
-          >{{ codeBtnStatus.codemsg }}</el-button>
+            >{{ codeBtnStatus.codemsg }}</el-button
+          >
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input type="password" placeholder="请输入密码" v-model="ruleForm.pass" autocomplete="off"></el-input>
+          <el-input
+            type="password"
+            placeholder="请输入密码"
+            v-model="ruleForm.pass"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
           <el-input
@@ -44,7 +54,8 @@
             type="primary"
             size="medium"
             @click="submitForm('ruleForm')"
-          >注册</el-button>
+            >注册</el-button
+          >
         </div>
       </el-form>
     </el-dialog>

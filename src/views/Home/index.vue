@@ -97,7 +97,7 @@
                 <span>hi </span>
                 <span v-if="!userMsg"> 游客 45586</span>
                 <span v-else>
-                  {{ (userMsg.info && userMsg.info.nickname) || "空" }}</span
+                  {{ (userMsg.info && userMsg.info.nickname) || "admin" }}</span
                 >
               </p>
               <p v-if="!userMsg">
@@ -241,7 +241,11 @@
         热点专题
       </div>
       <div class="hotSwiper">
-        123
+        <!-- 轮播图 -->
+        <SwiperVue
+          :imgList="hotswiperList"
+          :swiperConfig="hotswiperConfig"
+        ></SwiperVue>
       </div>
     </div>
 
@@ -484,6 +488,18 @@ export default {
       swiperConfig: {
         slidesPerView: 1
       },
+      hotswiperConfig: {
+        slidesPerView: 4,
+        spaceBetween: 10
+      },
+      hotswiperList: [
+        {
+          imgUrl: require("@/assets/images/drugImg/s1.png")
+        },
+        {
+          imgUrl: require("@/assets/images/drugImg/s1.png")
+        }
+      ],
       swiperList2: [
         {
           imgUrl: require("@/assets/images/test1.png")
@@ -897,7 +913,7 @@ export default {
         overflow-y: hidden;
         .iconName {
           color: $sencondcolor;
-          font-size: 15px;
+          font-size: 18px;
         }
       }
     }
@@ -969,7 +985,7 @@ export default {
       color: #fff;
     }
     .hotSwiper {
-      border: 1px solid red;
+      // border: 1px solid red;
       width: 1200px;
     }
   }

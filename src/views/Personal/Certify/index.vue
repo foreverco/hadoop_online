@@ -1,7 +1,14 @@
 <template>
   <div class="CertifyBox">
-    <el-alert :title="warningTitle" type="warning" show-icon :closable="false">
-    </el-alert>
+    <!-- <el-alert :title="warningTitle" type="warning" show-icon :closable="false"> -->
+    <!-- </el-alert> -->
+    <div class="titleShow">
+      <i class="el-icon-video-camera-solid"></i>
+      <span class="title">温馨提示：</span>
+      <span
+        >只有完成实名认证，方可在交易平台发布供求信息，请根据实际情况选择您的认证方式</span
+      >
+    </div>
     <el-form
       :rules="cerifyRules"
       :model="cerifyForm"
@@ -44,6 +51,13 @@
             autocomplete="off"
             style="width:30%"
           ></el-input>
+        </el-form-item>
+        <el-form-item label="户籍所在地" prop="firmOrganizingCode">
+          <el-cascader
+            v-model="firmRegisterPlace"
+            :options="firmRegisterPlaceOptions"
+            @change="handleChange"
+          ></el-cascader>
         </el-form-item>
         <el-form-item prop="cardImg" label="上传身份证">
           <el-upload action="#" list-type="picture-card" :auto-upload="false">
@@ -168,20 +182,30 @@
           ></el-input>
         </el-form-item>
       </template>
-      <div class="btnBox">
+      <el-form-item class="btnBox">
         <el-button type="success" @click="certifySubmit('cerifyForm')"
           >提交审核</el-button
         >
-      </div>
+        <el-button type="success" @click="certifySubmit('cerifyForm')"
+          >重置表单</el-button
+        >
+      </el-form-item>
     </el-form>
+    <DialogVue :flag.sync="dialog_flag"></DialogVue>
   </div>
 </template>
 <script>
 import { mapActions } from "vuex";
+import DialogVue from "./dialog";
 export default {
   name: "Certify",
+  components: {
+    DialogVue
+  },
   data() {
     return {
+      // 弹框状态
+      dialog_flag: false,
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
@@ -272,6 +296,20 @@ export default {
   computed: {
     userTypes() {
       return this.$store.state.user.userTypes;
+    },
+    fatherType() {
+      return this.$store.state.config.autonymType;
+    }
+  },
+  watch: {
+    fatherType(newVal) {
+      this.cerifyForm.autonymType = newVal;
+    },
+    cerifyForm: {
+      handler(newVal) {
+        this.$store.commit("config/updateautonymType", newVal.autonymType);
+      },
+      deep: true
     }
   },
   mounted() {
@@ -284,30 +322,31 @@ export default {
     certifySubmit(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const h = this.$createElement;
-          this.messOption = this.$message.success({
-            duration: 0,
-            message: h("p", { style: "margin-left:20px" }, [
-              h(
-                "p",
-                { style: "margin-bottom: 5px" },
-                "系统消息 (您的申请正在审核中,审核结果会以短信方式发送到您的手机)"
-              ),
-              h("p", null, [
-                h(
-                  "span",
-                  { style: "color: red;margin-right:10px" },
-                  "温馨提示"
-                ),
-                h(
-                  "span",
-                  { style: "margin:0 10px;" },
-                  "完成用户调查后,可以在用户市场优先展示您的供求信息噢！"
-                ),
-                h("el-button", { on: { click: this.closeMess } }, "点击前往")
-              ])
-            ])
-          });
+          this.dialog_flag = true;
+          // const h = this.$createElement;
+          // this.messOption = this.$message.success({
+          //   duration: 0,
+          //   message: h("p", { style: "margin-left:20px" }, [
+          //     h(
+          //       "p",
+          //       { style: "margin-bottom: 5px" },
+          //       "系统消息 (您的申请正在审核中,审核结果会以短信方式发送到您的手机)"
+          //     ),
+          //     h("p", null, [
+          //       h(
+          //         "span",
+          //         { style: "color: red;margin-right:10px" },
+          //         "温馨提示"
+          //       ),
+          //       h(
+          //         "span",
+          //         { style: "margin:0 10px;" },
+          //         "完成用户调查后,可以在用户市场优先展示您的供求信息噢！"
+          //       ),
+          //       h("el-button", { on: { click: this.closeMess } }, "点击前往")
+          //     ])
+          //   ])
+          // });
         } else {
           this.$message.error("请填写必要信息");
         }
@@ -326,7 +365,8 @@ export default {
     },
     handleDownload(file) {
       console.log(file);
-    }
+    },
+    handleChange() {}
   }
 };
 </script>
@@ -337,6 +377,24 @@ export default {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  .titleShow {
+    background: #f4f4f4;
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    i {
+      color: #d82a2a;
+      margin: 0 10px;
+      font-size: 16px;
+    }
+    span {
+      color: #666666;
+      &.title {
+        font-weight: 600;
+        color: #d82a2a;
+      }
+    }
+  }
   .el-form {
     // border: 1px solid blue;
     width: 100%;
@@ -349,8 +407,16 @@ export default {
       margin-left: 40px;
     }
     .btnBox {
-      margin-top: 20px;
-      text-align: center;
+      .el-button {
+        width: 171px;
+        background: $maincolor;
+        border-radius: 5px;
+        &:last-child {
+          background: $sencondcolor;
+          border: 1px solid $sencondcolor;
+          margin-left: 44px;
+        }
+      }
     }
   }
 }

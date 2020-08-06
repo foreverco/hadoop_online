@@ -5,34 +5,9 @@
         <div class="headerleft">
           <span>内蒙古</span>
           <span>多云转晴</span>
-          <span>2020-07-30</span>
-          <span>13：30：00</span>
+          <span>{{ timer | formatTimer }}</span>
         </div>
-
         <ul class="headerright">
-          <li v-if="!userMsg" @click="login">登陆</li>
-          <li v-if="!userMsg" @click="register">注册</li>
-          <!-- <li v-if="userMsg" class="userList">
-            <span>您好！</span>
-            <span class="el-dropdown-link">
-              {{ (userMsg.info && userMsg.info.nickname) || "空" }}
-              <i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <dl>
-              <dt @click="$router.push({ name: 'Personal' })">
-                个人中心
-              </dt>
-              <dt>
-                我的供应
-              </dt>
-              <dt>
-                我的收藏
-              </dt>
-              <dt>
-                <el-button type="success" @click="handlelogout">退出</el-button>
-              </dt>
-            </dl>
-          </li> -->
           <li class="weixinBox">
             <span>公众号</span>
             <img src="../../../../public/images/wxerweima.png" alt="" />
@@ -46,12 +21,39 @@
     </div>
 
     <div class="headerImgBox">
-      <div class="lvcontainer">
-        123
+      <div class="lvcontainer headerImgBoxCon">
+        <div class="imgBox">
+          <img src="@/assets/images/nav/navlogo.png" alt="" />
+          <div class="headerImgBoxtxt">
+            <p>蒙中药材网</p>
+            <p>专注内蒙古中药材种种销售</p>
+          </div>
+        </div>
+        <div class="leftBox">
+          <p v-if="$route.path == '/login' || $route.path == '/register'">
+            <span v-if="$route.path == '/register'"
+              >已有账号,<text @click="login">马上登陆</text></span
+            >
+            <span v-if="$route.path == '/login'"
+              >没有账号,<text @click="register">立即注册</text></span
+            >
+            <span>|</span>
+            <span @click="$router.push({ name: 'ViewHomeindex' })"
+              >返回首页</span
+            >
+          </p>
+          <div class="headSearch" v-else>
+            <el-input placeholder="请输入关键字"></el-input>
+            <el-button type="success">搜索</el-button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="navContent">
+    <div
+      class="navContent"
+      v-if="$route.path !== '/register' && $route.path !== '/login'"
+    >
       <div class="navMsg lvcontainer">
         <ul class="navList">
           <template v-for="(item, index) in navList">
@@ -83,6 +85,32 @@
             </li>
           </template>
         </ul>
+        <ul class="headerright">
+          <li>|</li>
+          <li v-if="!userMsg" @click="login">登陆</li>
+          <li v-if="!userMsg" @click="register">注册</li>
+          <li v-if="userMsg" class="userList">
+            <span>您好！</span>
+            <span class="el-dropdown-link">
+              {{ (userMsg.info && userMsg.info.nickname) || "admin" }}
+              <i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <dl>
+              <dt @click="$router.push({ name: 'Personal' })">
+                个人中心
+              </dt>
+              <dt>
+                我的供应
+              </dt>
+              <dt>
+                我的收藏
+              </dt>
+              <dt>
+                <el-button type="success" @click="handlelogout">退出</el-button>
+              </dt>
+            </dl>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -92,6 +120,7 @@ export default {
   name: "Nav",
   data() {
     return {
+      timer: new Date(),
       navList: [],
       navIndex: 0,
       logOutMsg: "",
@@ -99,6 +128,23 @@ export default {
         contetnt: ""
       }
     };
+  },
+  filters: {
+    formatTimer: function(value) {
+      let date = new Date(value);
+      let y = date.getFullYear();
+      let MM = date.getMonth() + 1;
+      MM = MM < 10 ? "0" + MM : MM;
+      let d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      let h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      let m = date.getMinutes();
+      m = m < 10 ? "0" + m : m;
+      let s = date.getSeconds();
+      s = s < 10 ? "0" + s : s;
+      return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
+    }
   },
   computed: {
     tokenMsg() {
@@ -144,7 +190,7 @@ export default {
       this.confirm({
         tip: "退出",
         content: "确认退出登陆？",
-        status: this.logOutMsg,
+        status: "账号退出成功",
         fn: this.logout
       });
     },
@@ -153,8 +199,11 @@ export default {
       this.$store
         .dispatch("app/clearUserInfo", logoutParams)
         .then(res => {
+          console.log(res);
           // this.$message.success(res.data.msg);
-          this.logOutMsg = res.data.msg;
+          // this.logOutMsg = res.data.msg;
+          // console.log(this.logOutMsg);
+          this.$router.push({ name: "Login" });
         })
         .catch(error => {
           this.$message.success(error.data.msg);
@@ -169,6 +218,7 @@ export default {
   width: 100%;
   .navHeaderContainer {
     background: $maincolor;
+    height: 30px;
     display: flex;
     align-items: center;
     .navHeader {
@@ -205,49 +255,6 @@ export default {
         }
         .userList {
           position: relative;
-          // .el-dropdown {
-          //   color: black;
-          //   font-size: 15px;
-          //   .el-dropdown-item {
-          //     border: 1px solid red;
-          //   }
-          // }
-          &:hover {
-            dl {
-              height: 280px;
-            }
-          }
-          dl {
-            width: 150%;
-            position: absolute;
-            top: $NavHeight;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 110;
-            background: #fff;
-            height: 0;
-            overflow: hidden;
-            transition: ease-in-out 0.6s;
-            dt {
-              text-align: center;
-              background: #fff;
-              height: 70px;
-              color: $maincolor;
-              // border: 1px solid red;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              &:hover {
-                background: #cccccc90;
-              }
-              &:last-child {
-                border-radius: 0 0 10px 10px;
-                &:hover {
-                  background: #fff;
-                }
-              }
-            }
-          }
         }
         .weixinBox {
           position: relative;
@@ -287,9 +294,83 @@ export default {
 
   .headerImgBox {
     // background: #ccc;
-    height: 200px;
-    background: url("../../../../public/images/home/test.png") no-repeat;
-    background-size: cover;
+    background: url("../../../assets/images/nav/navbg.png") no-repeat;
+    background-size: 100% 100%;
+    .headerImgBoxCon {
+      // border: 1px solid red;
+      height: 138px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .imgBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          // width: 100%;
+        }
+        .headerImgBoxtxt {
+          margin-left: 18px;
+          margin-top: 14px;
+          p {
+            font-size: 40px;
+            font-family: CTXingKaiSJ;
+            font-weight: 400;
+            text-align: center;
+            letter-spacing: 5px;
+            &:last-child {
+              font-size: 14px;
+              font-family: Microsoft YaHei;
+              font-weight: 400;
+              height: 42px;
+              line-height: 42px;
+            }
+          }
+        }
+      }
+      .leftBox {
+        .headSearch {
+          // border: 1px solid red;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          // position: relative;
+          .el-input {
+            border: 1px solid #ffffff;
+            border-radius: 5px 0 0 5px;
+            width: 300px;
+            // position: absolute;
+            .el-input__inner {
+              background: #ffffff;
+              border: 1px solid #ffffff;
+            }
+          }
+          .el-button {
+            // position: absolute;
+            border-radius: 0 5px 5px 0;
+          }
+        }
+        p {
+          span {
+            letter-spacing: 5px;
+            margin: 0 8px;
+            text {
+              color: $sencondcolor;
+              &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+              }
+            }
+            &:last-child {
+              &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .navContent {
@@ -298,12 +379,10 @@ export default {
     // align-items: center;
     background: $maincolor;
     .navMsg {
-      border: 1px solid blue;
-      // display: flex;
-      // justify-content: space-between;
-      // align-items: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       .navList {
-        border: 1px solid red;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -311,7 +390,8 @@ export default {
         li {
           font-size: 15px;
           height: 50px;
-          padding: 0 15px;
+          // padding: 0 15px;
+          width: 120px;
           // margin: 0 15px;
           display: flex;
           justify-content: center;
@@ -407,6 +487,70 @@ export default {
                 display: inline-block;
                 padding: 10px;
                 transition: all 0.2s linear;
+              }
+            }
+          }
+        }
+      }
+      .headerright {
+        display: flex;
+        // flex: 1;
+        justify-content: space-between;
+        align-items: center;
+        li {
+          padding: 0 10px;
+          height: $NavHeight;
+          line-height: $NavHeight;
+          color: #fff;
+          &:last-child {
+            border-right: 0;
+          }
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        .userList {
+          position: relative;
+          // .el-dropdown {
+          //   color: black;
+          //   font-size: 15px;
+          //   .el-dropdown-item {
+          //     border: 1px solid red;
+          //   }
+          // }
+          &:hover {
+            dl {
+              height: 280px;
+            }
+          }
+          dl {
+            width: 150%;
+            position: absolute;
+            top: $NavHeight;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 110;
+            background: #fff;
+            height: 0;
+            overflow: hidden;
+            transition: ease-in-out 0.6s;
+            dt {
+              text-align: center;
+              background: #fff;
+              height: 70px;
+              color: $maincolor;
+              // border: 1px solid red;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              &:hover {
+                background: #cccccc90;
+              }
+              &:last-child {
+                border-radius: 0 0 10px 10px;
+                &:hover {
+                  background: #fff;
+                }
               }
             }
           }

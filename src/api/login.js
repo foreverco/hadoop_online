@@ -68,7 +68,8 @@ export function reqUserType() {
 export function reqallInfo() {
   return service.request({
     method: "get",
-    url: "/auth/user/allInfo"
+    url: "/auth/user/allInfo",
+    baseURL: Config.proxy.new
   });
 }
 
@@ -80,6 +81,7 @@ export function LogOut(data) {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     url: "/auth/logout/token",
-    params: data
+    params: data,
+    baseURL: Config.proxy.new
   });
 }

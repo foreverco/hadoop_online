@@ -29,7 +29,11 @@ export default {
     },
     swiperConfig: {
       type: Object,
-      default: () => {}
+      default: () => {
+        return {
+          slidesPerView: 1
+        };
+      }
     }
   },
   watch: {},
@@ -39,6 +43,9 @@ export default {
       // nowTem: {},
       swiperOption: {
         slidesPerView: this.swiperConfig.slidesPerView,
+        spaceBetween: this.swiperConfig.spaceBetween
+          ? this.swiperConfig.spaceBetween
+          : false,
         loop: true,
         autoplay: {
           delay: 3500,
