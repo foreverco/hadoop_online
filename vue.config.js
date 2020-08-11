@@ -137,26 +137,28 @@ module.exports = {
         // target: "http://192.168.1.151:9001", //API服务器的地址
         // target: "http://192.168.1.205:9000", //API服务器的地址
         // target: "http://2449i4t062.zicp.vip:11770", //API服务器的地址
-        target: "http://192.168.1.130:30000", //API服务器的地址
+        // target: "http://192.168.1.130:30000", //API服务器的地址
+        target: "http://192.168.1.151:9000", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""
         }
       },
       "/test": {
-        target: "http://www.web-jshtml.cn/api/cars", //API服务器的地址
+        // target: "http://www.web-jshtml.cn/api/cars", //API服务器的地址
+        target: "http://a.amap.com/jsapi_demos/static", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/test": ""
         }
-      },
-      "/new": {
-        target: "http://192.168.1.151:9000", //API服务器的地址
-        changeOrigin: true,
-        pathRewrite: {
-          "^/new": ""
-        }
       }
+      // "/new": {
+      //   target: "http://192.168.1.151:9000", //API服务器的地址
+      //   changeOrigin: true,
+      //   pathRewrite: {
+      //     "^/new": ""
+      //   }
+      // }
     },
     overlay: {
       warnings: true,

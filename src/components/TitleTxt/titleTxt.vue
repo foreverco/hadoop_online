@@ -3,7 +3,7 @@
     <span class="titleSpan">
       {{ titleTxt }}
     </span>
-    <span class="btnSpan">
+    <span class="btnSpan" v-if="btnShow">
       更多 > >
     </span>
   </div>
@@ -15,6 +15,10 @@ export default {
     titleTxt: {
       type: String,
       default: () => ""
+    },
+    btnShow: {
+      type: Boolean,
+      default: true
     }
   }
 };

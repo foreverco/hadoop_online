@@ -35,9 +35,9 @@ service.interceptors.request.use(
 
     // 最终目的，在请求头添加参数
     // config.headers["Authorization"] = getToken();
-    console.log(getToken());
+    // console.log(getToken());
     config.headers["Authorization"] = getToken();
-    console.log(config);
+    // console.log(config);
     //添加一次加载状态
     // store.dispatch("app/addLoading");
     return config;

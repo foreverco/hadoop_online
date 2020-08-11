@@ -1,11 +1,11 @@
 import service from "@/util/request";
-import Config from "@/util/baseApi";
-export function getCity(data = {}) {
-  console.log(data);
+import requestUrl from "./requestUrl";
+console.log(requestUrl);
+export function getTableData(params) {
+  console.log(params);
   return service.request({
-    method: "POST",
-    url: "/cityPicker/",
-    data,
-    baseURL: Config.proxy.test
+    method: "get",
+    url: requestUrl[params.url],
+    params: params.data
   });
 }

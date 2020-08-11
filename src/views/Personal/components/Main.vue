@@ -14,7 +14,7 @@
       <el-breadcrumb-item
         v-for="(item, index) in routerList"
         :key="index"
-        :to="{ path: '/' }"
+        :to="{ path: item.path }"
         >{{ item.meta.title }}</el-breadcrumb-item
       >
     </el-breadcrumb>
@@ -51,8 +51,7 @@ export default {
   },
 
   watch: {
-    $route(newVal) {
-      console.log(newVal);
+    $route() {
       this.getRouter(this.$route);
       // let targetRoute = this.$route.matched.filter(item => {
       //   return item.path == newVal.path;
@@ -65,7 +64,7 @@ export default {
   },
   methods: {
     getRouter(routeName) {
-      console.log(routeName.matched);
+      // console.log(routeName.matched);
       let targetRoute = routeName.matched.filter(item => {
         return item.path == routeName.path;
       })[0];

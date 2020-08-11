@@ -314,6 +314,7 @@ export default {
   },
   mounted() {
     this.getUserTypes();
+    this.cerifyForm.autonymType = this.fatherType;
   },
   methods: {
     // 获取用户类型

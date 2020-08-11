@@ -22,7 +22,7 @@
     <el-menu
       class="el-menu-vertical-demo"
       :default-openeds="openeds"
-      :default-active="$route.path"
+      :default-active="$route.name"
       @open="handleOpen"
       @close="handleClose"
       :collapse="isCollapse"
@@ -39,7 +39,8 @@
         <el-menu-item
           v-for="(i, ind) in item.submenuList"
           :key="ind"
-          :index="i.subIndex"
+          :index="i.name"
+          :route="{ path: i.subIndex }"
           >{{ i.label }}
         </el-menu-item>
       </el-submenu>
@@ -59,11 +60,31 @@ export default {
           title: "用户设置",
           itemIndex: "1",
           submenuList: [
-            { label: "个人信息", subIndex: "/personal/center" },
-            { label: "实名认证", subIndex: "/personal/certify" },
-            { label: "用户调查", subIndex: "/personal/survey" },
-            { label: "安全中心", subIndex: "/personal/saveCenter" },
-            { label: "收货地址", subIndex: "/personal/adress" }
+            {
+              label: "个人信息",
+              name: "PerCenter",
+              subIndex: "/personal/center"
+            },
+            {
+              label: "实名认证",
+              name: "Certify",
+              subIndex: "/personal/certify"
+            },
+            {
+              label: "用户调查",
+              name: "Survey",
+              subIndex: "/personal/survey"
+            },
+            {
+              label: "安全中心",
+              name: "SaveCenter",
+              subIndex: "/personal/saveCenter"
+            },
+            {
+              label: "收货地址",
+              name: "Adress",
+              subIndex: "/personal/adress"
+            }
           ]
         },
         {

@@ -24,6 +24,30 @@
   color: $maincolor;
 }
 
+/* 联级选择器 */
+.el-cascader {
+  width: 300px;
+}
+/* placeholder样式 */
+.cascader {
+  ::-webkit-input-placeholder {
+    /* WebKit, Blink, Edge */
+    color: #888;
+  }
+  :-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #888;
+  }
+  ::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #888;
+  }
+  :-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #888;
+  }
+}
+
 .el-tabs__item {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -109,12 +133,12 @@ el-table th,
 .el-table__header tr,
 .el-table__header th {
   padding: 0;
-  height: 65px;
+  height: 60px;
 }
 .el-table__body tr,
 .el-table__body td {
   padding: 0;
-  height: 65px;
+  height: 60px;
 }
 .el-table td,
 .el-table th {

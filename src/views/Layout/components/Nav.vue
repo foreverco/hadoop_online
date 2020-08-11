@@ -60,7 +60,7 @@
             <li
               :key="index"
               v-if="!item.hidden"
-              :class="index == navIndex ? 'active' : ''"
+              :class="{ navactive: item.class_true }"
               @click="navClick(index, item.name, item)"
               @mouseover="item.navMouseIn = true"
               @mouseleave="item.navMouseIn = false"
@@ -122,7 +122,7 @@ export default {
     return {
       timer: new Date(),
       navList: [],
-      navIndex: 0,
+      navIndex: 1,
       logOutMsg: "",
       searchForm: {
         contetnt: ""
@@ -169,7 +169,12 @@ export default {
     this.navList = this.$router.options.routes[1].children;
   },
   mounted() {
-    // this.$store.dispatch("app/getUser");
+    this.initActive();
+  },
+  watch: {
+    $route() {
+      this.initActive();
+    }
   },
   methods: {
     navClick() {},
@@ -177,6 +182,40 @@ export default {
       this.$router.push({
         name: "Register"
       });
+    },
+    initActive() {
+      let navListArr = this.$router.options.routes[1].children;
+      // 当前路由name
+      let curRouteName = this.$route.name;
+      console.log(333);
+      console.log(curRouteName);
+      // 父级路由path
+      let parentPath = "";
+      navListArr.map(item => {
+        // console.log(item);
+        if (item.children) {
+          item.children.map(j => {
+            if (j.name === curRouteName) {
+              parentPath = item.path;
+            }
+          });
+        } else {
+          // 没有子级，直接判断父级name
+          if (item.name === curRouteName) {
+            parentPath = item.path;
+          }
+        }
+      });
+      this.navList = this.$router.options.routes[1].children;
+      this.navList.forEach(item => {
+        // 判断父级path等于菜单数据path字段，设置样式选中
+        if (parentPath === item.path) {
+          item.class_true = true;
+        } else {
+          item.class_true = false;
+        }
+      });
+      console.log();
     },
     login() {
       if (this.$route.name != "Login") {
@@ -386,27 +425,37 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
+        .navactive {
+          #line {
+            width: 90%;
+            bottom: 2px;
+            height: 2px;
+            background-color: #ffffff;
+          }
+        }
         li {
           font-size: 15px;
-          height: 50px;
-          // padding: 0 15px;
+          height: 60px;
           width: 120px;
-          // margin: 0 15px;
+          // border-bottom: 2px solid #fff;
+          // margin-bottom: 2px;
           display: flex;
           justify-content: center;
           align-items: center;
           position: relative;
           transition: all 0.2s linear;
+
           &:hover {
-            background: #00b6a830;
+            background: #ffffff;
             cursor: pointer;
             > a {
               span {
-                transform: translateY(-5px);
+                color: $maincolor;
+                // transform: translateY(-5px);
               }
               i {
-                transform: translateY(-5px);
+                color: $maincolor;
+                // transform: translateY(-5px);
               }
             }
             dl {
@@ -416,6 +465,7 @@ export default {
               width: 100%;
             }
           }
+
           > a {
             width: 100%;
             height: 100%;
@@ -451,39 +501,38 @@ export default {
           dl {
             display: none;
             position: absolute;
-            width: 125px;
+            width: 155px;
             top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 103;
+            left: 0;
+            // left: 50%;
+            // transform: translateX(-50%);
+            z-index: 203;
             // box-shadow: 0 0 3px 1px #ccc;
             background: #fff;
-            padding: 0 20px;
             box-sizing: content-box;
-            // border-top: 1px solid red;
-
             dt {
               width: 100%;
-              /* padding: 10px; */
-              color: #fff;
               height: 100%;
-              width: 100%;
               text-align: center;
               transition: all 0.2s linear;
+              box-sizing: content-box;
+              padding: 10px 0;
               &:hover {
-                transform: translateX(5px);
+                // transform: translateX(5px);
+                background: #3ab54c20;
                 a {
-                  color: #24585290;
+                  color: #333333;
                 }
               }
               a {
                 color: $maincolor;
-                border-bottom: 1px solid #fff;
+                // border-bottom: 1px solid #fff;
                 font-size: 14px;
                 text-align: center;
                 text-decoration: none;
                 height: 100%;
                 width: 90%;
+                color: #333333;
                 display: inline-block;
                 padding: 10px;
                 transition: all 0.2s linear;

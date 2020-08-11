@@ -3,11 +3,14 @@
     <el-table
       :data="table_data"
       :border="table_config.hadBorder"
+      v-loading="loadingTable"
+      element-loading-text="加载中"
       size="mini"
       style="width: 100%"
+      header-row-class-name="tableHead"
       :header-cell-style="{
         background: table_config.headColor,
-        color: 'black'
+        color: table_config.headTxtColor
       }"
     >
       <el-table-column
@@ -22,6 +25,7 @@
           :key="item.prop"
           :prop="item.prop"
           :label="item.label"
+          :width="item.width"
         >
           <template slot-scope="scope">
             <span
@@ -34,6 +38,7 @@
           :key="item.prop"
           :prop="item.prop"
           :label="item.label"
+          :width="item.width"
         >
           <template slot-scope="scope">
             <slot :name="item.slotName" :data="scope.row"></slot>
@@ -42,6 +47,7 @@
 
         <el-table-column
           v-else
+          :show-overflow-tooltip="table_config.tooltip"
           :key="item.prop"
           :prop="item.prop"
           :width="item.width"
@@ -49,97 +55,116 @@
         ></el-table-column>
       </template>
     </el-table>
+    <el-row>
+      <el-col :span="20">0</el-col>
+      <el-col :span="4">
+        <el-pagination
+          v-if="table_config.pagination"
+          class="pull-right"
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[1, 2, 3, 10]"
+          :page-size="table_config.data.pageSize"
+          layout="total,sizes,prev,pager,next,jumper"
+          :total="total"
+        ></el-pagination>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import { getTableData } from "@/api/common";
+// import { reqpolicyNews } from "@/api/news";
 export default {
   name: "TableData",
   data() {
     return {
+      loadingTable: true,
       table_config: {
         tHead: [],
         checkBox: true,
         hadBorder: true,
         tableHeight: false,
-        headColor: "#000000"
+        headColor: "#000000",
+        headTxtColor: "#000000",
+        tooltip: false,
+        url: "",
+        pagination: true,
+        data: {}
       },
+      total: 0,
+      // 当前页
+      currentPage: 1,
       table_data: [
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        },
-        {
-          name: "黄芪",
-          type: 1,
-          num: "300t",
-          adress: "上海市普陀区金沙江路"
-        }
         // {
-        //   date: "2016-05-02",
+        //   name: "黄芪",
         //   type: 1,
-        //   status: 1,
-        //   name: "王小虎",
-        //   photo:
-        //     "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595409508794&di=0a56dcc883332ba5ae12e4962b06af2c&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F6e8f56b2543cce8bffa35b22d03684fae76a1b2c56c32-COdswi_fw658",
-        //   address: "上海市普陀区金沙江路 1518 弄"
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // }
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
         // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // },
+        // {
+        //   name: "黄芪",
+        //   type: 1,
+        //   num: "300t",
+        //   adress: "上海市普陀区金沙江路"
+        // }
       ]
     };
   },
@@ -157,15 +182,74 @@ export default {
       immediate: true
     }
   },
+  beforeMount() {
+    // this.getPolicyNews();
+  },
   methods: {
+    // 获取政策新闻
+    // getPolicyNews() {
+    //   let newParams = {
+    //     page: 1,
+    //     pageSize: 4
+    //   };
+    //   reqpolicyNews(newParams).then(res => {
+    //     console.log(res);
+    //     const resData = res.data.data;
+    //     this.table_data = resData.records;
+    //   });
+    // },
+    //初始化配置
     initConfig() {
       for (let key in this.config) {
         if (Object.keys(this.table_config).includes(key)) {
           this.table_config[key] = this.config[key];
         }
       }
+      // 配置完调取接口
+      this.loadingData();
+    },
+    loadingData() {
+      let newsParams = {
+        url: this.table_config.url,
+        data: this.table_config.data
+      };
+      getTableData(newsParams)
+        .then(res => {
+          console.log(res);
+          const resData = res.data.data;
+          if (resData) {
+            this.table_data = resData.records;
+          }
+          this.total = resData.total;
+          this.loadingTable = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.loadingTable = false;
+        });
+    },
+    requestData(params = "") {
+      if (params) {
+        this.table_config.data = params;
+      }
+      this.loadingData();
+    },
+    handleSizeChange(val) {
+      console.log(val);
+      this.table_config.data.pageSize = val;
+      this.loadingData();
+    },
+    handleCurrentChange(val) {
+      console.log(val);
+      this.table_config.data.page = val;
+      this.loadingData();
     }
   }
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.tableHead {
+  font-size: 20px !important;
+  font-weight: 300;
+}
+</style>

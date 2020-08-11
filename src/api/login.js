@@ -1,5 +1,5 @@
 import service from "@/util/request";
-import Config from "@/util/baseApi";
+// import Config from "@/util/baseApi";
 /**
  * 获取用户角色
  */
@@ -10,8 +10,8 @@ import Config from "@/util/baseApi";
 export function getImgCode() {
   return service.request({
     method: "get",
-    url: "/auth/captcha",
-    baseURL: Config.proxy.new
+    url: "/auth/captcha"
+    // baseURL: Config.proxy.new
   });
 }
 
@@ -25,7 +25,7 @@ export function getCode(data) {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     url: "/auth/login/sms",
-    baseURL: Config.proxy.new,
+    // baseURL: Config.proxy.new,
     params: data
   });
 }
@@ -37,7 +37,7 @@ export function Register(data) {
     //   "Content-Type": "application/x-www-form-urlencoded"
     // },
     url: "/auth/login/view/register",
-    baseURL: Config.proxy.new,
+    // baseURL: Config.proxy.new,
     data: data
   });
 }
@@ -50,7 +50,7 @@ export function Login(data) {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     url: "/auth/login/view/token",
-    baseURL: Config.proxy.new,
+    // baseURL: Config.proxy.new,
     params: data
   });
 }
@@ -59,8 +59,8 @@ export function Login(data) {
 export function reqUserType() {
   return service.request({
     method: "get",
-    url: "/auth/role/common/getRoles",
-    baseURL: Config.proxy.new
+    url: "/auth/role/common/getRoles"
+    // baseURL: Config.proxy.new
   });
 }
 
@@ -68,8 +68,8 @@ export function reqUserType() {
 export function reqallInfo() {
   return service.request({
     method: "get",
-    url: "/auth/user/allInfo",
-    baseURL: Config.proxy.new
+    url: "/auth/user/allInfo"
+    // baseURL: Config.proxy.new
   });
 }
 
@@ -81,7 +81,7 @@ export function LogOut(data) {
       "Content-Type": "application/x-www-form-urlencoded"
     },
     url: "/auth/logout/token",
-    params: data,
-    baseURL: Config.proxy.new
+    params: data
+    // baseURL: Config.proxy.new
   });
 }

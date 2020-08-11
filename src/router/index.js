@@ -119,7 +119,7 @@ let baseRoutes = [
               import("@/views/Planting/components/Planting2.vue"),
             hidden: false,
             meta: {
-              title: "种植指导2",
+              title: "专家教学视频",
               icon: "navmenu"
             }
           }
@@ -132,7 +132,7 @@ let baseRoutes = [
         component: () => import("@/views/WarningModle"),
         hidden: false,
         meta: {
-          title: "预警模型",
+          title: "植保监测",
           icon: "WarningModle"
         }
       },
@@ -312,7 +312,21 @@ let baseRoutes = [
             meta: {
               title: "用户调查",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/personal/survey/add",
+                name: "Survey",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Survey/components/add.vue"),
+                hidden: false,
+                meta: {
+                  title: "新建",
+                  icon: "navmenu"
+                }
+              }
+            ]
           },
           {
             path: "/personal/saveCenter",
