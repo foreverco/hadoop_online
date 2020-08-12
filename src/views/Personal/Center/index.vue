@@ -8,11 +8,27 @@
       :formHandle="formHandle"
       :formConfig="formConfig"
     >
-      <template v-slot:photo>
+      <template v-slot:headUrl>
         <div class="photoBox">
-          <el-avatar :size="100" fit="fill" :src="perForm.photo"></el-avatar>
+          <el-upload
+            class="avatar-uploader"
+            action="/api/media/file/upload"
+            :show-file-list="false"
+            :headers="{ Authorization: tokenMsg }"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img
+              v-if="formData.headUrl"
+              :src="formData.headUrl"
+              class="avatar"
+              style="width:100px;height:100px;border-radius:100px"
+            />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <!-- <el-avatar :size="100" fit="fill" :src="formData.headUrl"></el-avatar> -->
           <p>
-            {{ userMsg.info.username }}
+            {{ userMsg.info.nickname }}
             <span>修改</span>
           </p>
         </div>
@@ -20,9 +36,10 @@
       <template v-slot:city="slotData">
         <p v-if="false">{{ slotData }}</p>
         <CascaderVue
-          :areaValue.sync="area"
+          :areaValue.sync="formData.city"
           ref="cascader"
           :areaConfig="{ mapLocation: false }"
+          @callback="callbackComponents"
           style="width:70%"
         ></CascaderVue>
       </template>
@@ -32,6 +49,7 @@
 <script>
 import CascaderVue from "@/components/Cascader";
 import FormVue from "@/components/form";
+import { edituserInfo } from "../../../api/userInfo";
 export default {
   name: "PerCenter",
   components: {
@@ -52,12 +70,13 @@ export default {
     return {
       // 表单数据配置
       formData: {
-        photo: "",
-        phone: "",
-        userName: "",
+        headUrl: "",
+        mobile: "",
+        nickname: "",
         sex: "",
-        city: "",
-        adress: ""
+        city: [],
+        addressDetail: "",
+        address: ""
       },
       // 表单配置
       formConfig: {
@@ -67,14 +86,14 @@ export default {
       formItem: [
         {
           type: "Slot",
-          slotName: "photo",
-          prop: "photo"
+          slotName: "headUrl",
+          prop: "headUrl"
         },
         {
           type: "Input",
           label: "手机号",
           placeholder: "请输入手机号",
-          prop: "phone",
+          prop: "mobile",
           width: "380px",
           disable: true,
           validator: [{ validator: validateNumber, trigger: "change" }]
@@ -83,9 +102,10 @@ export default {
           type: "Input",
           label: "用户名",
           placeholder: "请输入用户名",
-          prop: "userName",
+          prop: "nickname",
           width: "100%",
-          validator: [{ validator: validateNumber, trigger: "change" }]
+          required: true
+          // validator: [{ validator: validateNumber, trigger: "change" }]
         },
         {
           type: "Radio",
@@ -107,7 +127,7 @@ export default {
           label: "详细地址",
           required: true,
           placeholder: "请输入详细地址",
-          prop: "adress",
+          prop: "addressDetail",
           width: "100%"
         }
       ],
@@ -126,13 +146,13 @@ export default {
         }
       ],
 
-      perForm: {
-        userName: "",
-        sex: 1,
-        area: [],
-        adress: "",
-        photo: require("../../../assets/images/nav/navlogo.png")
-      },
+      // perForm: {
+      //   nickname: "",
+      //   sex: 1,
+      //   area: [],
+      //   addressDetail: "",
+      //   headUrl: require("@/assets/images/nav/navlogo.png")
+      // },
       area: []
     };
   },
@@ -144,7 +164,7 @@ export default {
       return this.$store.state.app.isLogin;
     },
     userMsg() {
-      console.log(typeof this.$store.state.app.userInfo);
+      // console.log(typeof this.$store.state.app.userInfo);
       if (typeof this.$store.state.app.userInfo === "string") {
         return JSON.parse(this.$store.state.app.userInfo);
       } else {
@@ -155,26 +175,87 @@ export default {
   watch: {
     userMsg: {
       handler(newVal) {
-        console.log(newVal);
-        this.formData.phone = newVal.info.username;
+        // console.log(newVal);
+        // this.formData.mobile = newVal.info.username;
+        // this.formData.nickname = newVal.info.nickname;
+        // this.formData.sex = newVal.info.sex;
+        // this.formData.sex = newVal.info.sex;
+        this.formData = newVal.info;
+        this.formData.mobile = newVal.info.username;
+        this.formData.city = [];
+        this.formData.city[0] = newVal.info.addressProvince;
+        this.formData.city[1] = newVal.info.addressCity;
+        this.formData.city[2] = newVal.info.addressArea;
       },
       immediate: true
     }
   },
+  // created() {
+  //   this.getUserMsg();
+  // },
+  mounted() {
+    console.log(this.userMsg);
+    this.getAdressCh(this.userMsg.info.address);
+  },
   methods: {
+    // 提交用户修改
     add() {
-      console.log(this.formData);
+      // console.log(this.formData);
+      let userFormParams = JSON.parse(JSON.stringify(this.formData));
+      userFormParams.addressProvince = this.formData.city[0];
+      userFormParams.addressCity = this.formData.city[1];
+      userFormParams.addressArea = this.formData.city[2];
       this.$refs.vueForm.$refs.form.validate(valid => {
         if (valid) {
-          alert("submit!");
+          edituserInfo(userFormParams).then(res => {
+            console.log(res);
+            this.$message.success(res.data.msg);
+            this.getUserMsg();
+          });
         } else {
           console.log("error submit!!");
           return false;
         }
       });
     },
+
     del() {
       alert(444);
+    },
+    // 获取用户信息
+    getUserMsg() {
+      this.$store
+        .dispatch("app/getUser")
+        .then(res => {
+          console.log(res);
+          // this.$message.success("获取用户信息成功");
+        })
+        .catch(error => {
+          console.log(error);
+          // this.$message.error("获取用户信息失败");
+        });
+    },
+    callbackComponents(params) {
+      if (params.function) {
+        this[params.function](params.data.adress);
+      }
+    },
+    adressShow(data) {
+      this.formData.address = data;
+      console.log(this.formData.address);
+    },
+    getAdressCh(e) {
+      this.$refs.cascader.initPlaceHodler(e);
+    },
+    handleAvatarSuccess(res, file) {
+      console.log("上传成功！");
+      console.log(res);
+      console.log(file);
+      this.formData.headUrl = res.data;
+      this.add();
+    },
+    beforeAvatarUpload(e) {
+      console.log(e);
     }
   }
 };
@@ -183,6 +264,7 @@ export default {
 .perCenter {
   .perCenterForm {
     .el-button {
+      border: 1px solid red;
       width: 170px !important;
       background: $maincolor;
       border: 1px solid $maincolor;
@@ -239,7 +321,7 @@ export default {
         }
       }
       &.btnBox {
-        margin-top: 70px;
+        margin-top: 20px;
       }
     }
   }

@@ -72,7 +72,7 @@ export default {
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
 .footer {
-  // margin-top: 170px;
+  margin-top: 35px;
   // height: 170px;
   // width: 100%;
   // position: absolute;

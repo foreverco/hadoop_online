@@ -2,7 +2,7 @@
   <div class="lvallcontainer allLogin">
     <div class="lvcontainer loginBox">
       <div class="imgBox">
-        123
+        <img src="../../assets/images/login/loginLogo.png" alt="" />
         <!-- <img src="" alt=""> -->
       </div>
       <el-card>
@@ -415,12 +415,14 @@ export default {
   min-height: calc(100vh - 364px);
   padding: 20px 0;
   .loginBox {
-    border: 1px solid blue;
     display: flex;
     align-items: center;
     justify-content: space-around;
     .imgBox {
-      border: 1px solid blue;
+      img {
+        width: 718px;
+        height: 486px;
+      }
     }
     .el-tabs {
       max-height: 500px;

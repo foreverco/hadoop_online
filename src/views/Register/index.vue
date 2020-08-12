@@ -73,12 +73,12 @@
           <el-form-item label="用户类型" prop="userType">
             <el-radio-group v-model="ruleForm.userType">
               <el-radio
-                v-for="(item, index) in userType"
+                v-for="(item, index) in userTypes"
                 :key="index"
-                :label="item.value"
+                :label="item.roleCode"
                 size="mini"
                 style="margin:0 0 15px 0;width:90px"
-                >{{ item.label }}</el-radio
+                >{{ item.roleName }}</el-radio
               >
             </el-radio-group>
           </el-form-item>
@@ -112,10 +112,17 @@
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 import { validatePhone } from "@/util/validate";
 import { getImgCode, getCode, Register } from "@/api/login";
 import { WOW } from "wowjs";
 export default {
+  computed: {
+    userTypes() {
+      console.log(this.$store.state.user.userTypes);
+      return this.$store.state.user.userTypes;
+    }
+  },
   data() {
     var checkPhone = (rule, value, callback) => {
       if (!value) {
@@ -146,12 +153,12 @@ export default {
       }
     };
     return {
-      userType: [
-        { label: "医药企业", value: "yiyao" },
-        { label: "初加工厂", value: "jiagong" },
-        { label: "种植企业", value: "planting1" },
-        { label: "种植个体户", value: "planting2" }
-      ],
+      // userType: [
+      //   { label: "医药企业", value: "yiyao" },
+      //   { label: "初加工厂", value: "jiagong" },
+      //   { label: "种植企业", value: "planting1" },
+      //   { label: "种植个体户", value: "planting2" }
+      // ],
       captchaImg: "",
       codeBtnStatus: {
         status: true,
@@ -207,6 +214,8 @@ export default {
     });
   },
   methods: {
+    // 获取用户类型
+    ...mapActions(["getUserTypes"]),
     /* 获取图片验证码 */
     getImgCodeMsg() {
       getImgCode().then(res => {

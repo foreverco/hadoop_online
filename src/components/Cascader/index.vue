@@ -103,6 +103,13 @@ export default {
             adress: this.adress.join("")
           }
         });
+      } else {
+        this.$emit("callback", {
+          function: "adressShow",
+          data: {
+            adress: this.adress.join("/")
+          }
+        });
       }
     }
   }

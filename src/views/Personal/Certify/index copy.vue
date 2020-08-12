@@ -53,13 +53,11 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="户籍所在地" prop="firmOrganizingCode">
-          <CascaderVue
-            :areaValue.sync="cerifyForm.city"
-            ref="cascader"
-            :areaConfig="{ mapLocation: false }"
-            @callback="callbackComponents"
-            style="width:70%"
-          ></CascaderVue>
+          <el-cascader
+            v-model="firmRegisterPlace"
+            :options="firmRegisterPlaceOptions"
+            @change="handleChange"
+          ></el-cascader>
         </el-form-item>
         <el-form-item prop="cardImg" label="上传身份证">
           <el-upload action="#" list-type="picture-card" :auto-upload="false">
@@ -199,14 +197,11 @@
 <script>
 import { mapActions } from "vuex";
 import DialogVue from "./dialog";
-import CascaderVue from "@/components/Cascader";
 // import { editauthentic } from "@/api/userInfo";
-import { checkauthentic } from "@/api/userInfo";
 export default {
   name: "Certify",
   components: {
-    DialogVue,
-    CascaderVue
+    DialogVue
   },
   data() {
     return {
@@ -242,7 +237,6 @@ export default {
         }
       ],
       cerifyForm: {
-        city: [],
         // 用户类型
         roleCode: "",
         // 认证类型
@@ -302,27 +296,15 @@ export default {
   },
   computed: {
     userTypes() {
-      console.log(this.$store.state.user.userTypes);
-      // return this.$store.state.user.userTypes;
-      if (this.fatherType == 0) {
-        return this.$store.state.user.userTypes.filter(item => {
-          return item.roleCode == "client_plant";
-        });
-      } else {
-        return this.$store.state.user.userTypes;
-      }
+      return this.$store.state.user.userTypes;
     },
     fatherType() {
       return this.$store.state.config.autonymType;
     }
   },
   watch: {
-    fatherType: {
-      handler(newVal) {
-        this.cerifyForm.autonymType = newVal;
-        console.log(this.cerifyForm.autonymType);
-      },
-      immediate: true
+    fatherType(newVal) {
+      this.cerifyForm.autonymType = newVal;
     },
     cerifyForm: {
       handler(newVal) {
@@ -331,9 +313,6 @@ export default {
       deep: true
     }
   },
-  created() {
-    this.checkStatus();
-  },
   mounted() {
     this.getUserTypes();
     this.cerifyForm.autonymType = this.fatherType;
@@ -341,25 +320,11 @@ export default {
   methods: {
     // 获取用户类型
     ...mapActions(["getUserTypes"]),
-    // 检查审核状态
-    checkStatus() {
-      console.log("checkStatus");
-      checkauthentic()
-        .then(res => {
-          console.log("res");
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     // 提交审核
     certifySubmit(formName) {
-      console.log(this.cerifyForm);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.dialog_flag = true;
-
           // const h = this.$createElement;
           // this.messOption = this.$message.success({
           //   duration: 0,
@@ -403,16 +368,7 @@ export default {
     handleDownload(file) {
       console.log(file);
     },
-    handleChange() {},
-    callbackComponents(params) {
-      if (params.function) {
-        this[params.function](params.data.adress);
-      }
-    },
-    adressShow(data) {
-      this.cerifyForm.address = data;
-      console.log(this.cerifyForm.address);
-    }
+    handleChange() {}
   }
 };
 </script>

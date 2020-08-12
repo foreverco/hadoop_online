@@ -240,6 +240,17 @@ let baseRoutes = [
         },
         children: [
           {
+            path: "/marketInfo",
+            name: "MarketInfo",
+            class_true: false,
+            component: () => import("@/views/Benefit/components/MarketInfo"),
+            hidden: false,
+            meta: {
+              title: "市场资讯",
+              icon: "navmenu"
+            }
+          },
+          {
             path: "/benefit1",
             name: "Benefit1",
             class_true: false,

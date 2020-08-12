@@ -32,10 +32,10 @@
         <div class="leftBox">
           <p v-if="$route.path == '/login' || $route.path == '/register'">
             <span v-if="$route.path == '/register'"
-              >已有账号,<text @click="login">马上登陆</text></span
+              >已有账号,<b @click="login">马上登陆</b></span
             >
             <span v-if="$route.path == '/login'"
-              >没有账号,<text @click="register">立即注册</text></span
+              >没有账号,<b @click="register">立即注册</b></span
             >
             <span>|</span>
             <span @click="$router.push({ name: 'ViewHomeindex' })"
@@ -154,7 +154,7 @@ export default {
       return this.$store.state.app.isLogin;
     },
     userMsg() {
-      console.log(this.$store.state.app);
+      // console.log(this.$store.state.app);
       if (typeof this.$store.state.app.userInfo == "string") {
         return JSON.parse(this.$store.state.app.userInfo);
       } else {
@@ -187,8 +187,8 @@ export default {
       let navListArr = this.$router.options.routes[1].children;
       // 当前路由name
       let curRouteName = this.$route.name;
-      console.log(333);
-      console.log(curRouteName);
+      // console.log(333);
+      // console.log(curRouteName);
       // 父级路由path
       let parentPath = "";
       navListArr.map(item => {
@@ -215,7 +215,6 @@ export default {
           item.class_true = false;
         }
       });
-      console.log();
     },
     login() {
       if (this.$route.name != "Login") {
@@ -393,7 +392,8 @@ export default {
           span {
             letter-spacing: 5px;
             margin: 0 8px;
-            text {
+            b {
+              font-weight: 600;
               color: $sencondcolor;
               &:hover {
                 text-decoration: underline;

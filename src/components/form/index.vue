@@ -65,7 +65,7 @@
         </el-date-picker>
         <!-- 按钮 -->
       </el-form-item>
-      <el-form-item style="margin-top:50px;">
+      <el-form-item style="margin-top:30px;">
         <el-button
           :type="item.type"
           v-for="(item, index) in formHandle"

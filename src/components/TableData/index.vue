@@ -55,22 +55,22 @@
         ></el-table-column>
       </template>
     </el-table>
-    <el-row>
-      <el-col :span="20">0</el-col>
-      <el-col :span="4">
-        <el-pagination
-          v-if="table_config.pagination"
-          class="pull-right"
-          background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[1, 2, 3, 10]"
-          :page-size="table_config.data.pageSize"
-          layout="total,sizes,prev,pager,next,jumper"
-          :total="total"
-        ></el-pagination>
-      </el-col>
+    <el-row
+      :style="{ justifyContent: table_config.pagePosition }"
+      style="border:1px solid red;display:flex;align-items: center;"
+    >
+      <el-pagination
+        v-if="table_config.pagination"
+        class="pull-right"
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[1, 2, 3, 10]"
+        :page-size="table_config.data.pageSize"
+        layout="total,sizes,prev,pager,next,jumper"
+        :total="total"
+      ></el-pagination>
     </el-row>
   </div>
 </template>
@@ -91,6 +91,7 @@ export default {
         headColor: "#000000",
         headTxtColor: "#000000",
         tooltip: false,
+        pagePosition: "flex-end",
         url: "",
         pagination: true,
         data: {}
@@ -99,72 +100,72 @@ export default {
       // 当前页
       currentPage: 1,
       table_data: [
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // }
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // },
-        // {
-        //   name: "黄芪",
-        //   type: 1,
-        //   num: "300t",
-        //   adress: "上海市普陀区金沙江路"
-        // }
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        },
+        {
+          name: "黄芪",
+          type: 1,
+          num: "300t",
+          adress: "上海市普陀区金沙江路"
+        }
       ]
     };
   },

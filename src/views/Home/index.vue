@@ -401,6 +401,7 @@ export default {
       tableConfig: {
         checkBox: false,
         hadBorder: false,
+        pagination: false,
         tableHeight: "370",
         headColor: "#D8EFDA",
         tHead: [
@@ -441,6 +442,7 @@ export default {
         headColor: "#FEEED7",
         tableHeight: "370px",
         hadBorder: false,
+        pagination: false,
         tHead: [
           { label: "品名", prop: "name" },
           { label: "规格", prop: "type", width: "50" },
