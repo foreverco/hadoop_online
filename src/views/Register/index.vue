@@ -199,6 +199,9 @@ export default {
       }
     };
   },
+  created() {
+    this.getUserTypes();
+  },
   mounted() {
     this.getImgCodeMsg();
     this.$nextTick(() => {
@@ -280,6 +283,7 @@ export default {
             this.$message.success("注册成功");
           });
           this.resetForm();
+          this.$router.push("/login");
         } else {
           this.$message.error("填写必要信息");
           return false;

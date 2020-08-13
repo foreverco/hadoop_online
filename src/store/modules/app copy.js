@@ -52,6 +52,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       reqallInfo()
         .then(res => {
+          console.log(res);
           commit("RECORD_USERINFO", res.data.data);
           resolve(res);
         })

@@ -87,10 +87,13 @@
         </ul>
         <ul class="headerright">
           <li>|</li>
-          <li v-if="!userMsg" @click="login">登陆</li>
-          <li v-if="!userMsg" @click="register">注册</li>
-          <li v-if="userMsg" class="userList">
-            <span>您好！</span>
+          <li v-if="!userMsg || userMsg == 'undefined'" @click="login">登陆</li>
+          <li v-if="!userMsg || userMsg == 'undefined'" @click="register">
+            注册
+          </li>
+          <li v-if="userMsg && userMsg != 'undefined'" class="userList">
+            <!-- <span>您好！</span> -->
+            <el-avatar :size="30" :src="userMsg.info.headUrl"></el-avatar>
             <span class="el-dropdown-link">
               {{ (userMsg.info && userMsg.info.nickname) || "admin" }}
               <i class="el-icon-caret-bottom el-icon--right"></i>
@@ -154,8 +157,11 @@ export default {
       return this.$store.state.app.isLogin;
     },
     userMsg() {
-      // console.log(this.$store.state.app);
-      if (typeof this.$store.state.app.userInfo == "string") {
+      console.log(this.$store.state.app.userInfo);
+      if (
+        typeof this.$store.state.app.userInfo == "string" &&
+        this.$store.state.app.userInfo != "undefined"
+      ) {
         return JSON.parse(this.$store.state.app.userInfo);
       } else {
         return this.$store.state.app.userInfo;
@@ -560,6 +566,8 @@ export default {
         }
         .userList {
           position: relative;
+          // border: 1px solid red;
+          width: 150px;
           // .el-dropdown {
           //   color: black;
           //   font-size: 15px;
@@ -567,6 +575,12 @@ export default {
           //     border: 1px solid red;
           //   }
           // }
+          .el-dropdown-link {
+            // border: 1px solid blue;
+            position: absolute;
+            // width: 100px;
+            margin-left: 10px;
+          }
           &:hover {
             dl {
               height: 280px;

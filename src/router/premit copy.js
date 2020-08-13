@@ -1,7 +1,6 @@
 import router from "./index";
 import store from "@/store";
-import { getToken } from "../util/save";
-import { getUsermsg } from "../util/storage";
+import { getToken, getUsermsg } from "../util/save";
 import { Message } from "element-ui";
 // import { userInfo } from "@/api/userInfo";
 const routerList = router.options.routes[1].children;

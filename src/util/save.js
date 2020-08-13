@@ -17,7 +17,7 @@ export function removeToken() {
 }
 // 设置用户信息
 export function setUsermsg(usermsg) {
-  return Cookie.set(adminUserName, usermsg);
+  return Cookie.set(adminUserName, JSON.stringify(usermsg));
 }
 // 获取用户信息
 export function getUsermsg() {

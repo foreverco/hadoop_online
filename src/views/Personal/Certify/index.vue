@@ -15,6 +15,7 @@
       ref="cerifyForm"
       label-position="right"
       label-width="100px"
+      v-if="showForm"
     >
       <p>请选择实名认证方式</p>
       <el-form-item label="认证方式" prop="autonymType">
@@ -52,7 +53,7 @@
             style="width:30%"
           ></el-input>
         </el-form-item>
-        <el-form-item label="户籍所在地" prop="firmOrganizingCode">
+        <el-form-item label="种植所在地" prop="firmOrganizingCode">
           <CascaderVue
             :areaValue.sync="cerifyForm.city"
             ref="cascader"
@@ -193,6 +194,9 @@
         >
       </el-form-item>
     </el-form>
+    <div v-else class="hidebox">
+      <StautsBox :firmRegisterMsg="firmRegisterMsg"></StautsBox>
+    </div>
     <DialogVue :flag.sync="dialog_flag"></DialogVue>
   </div>
 </template>
@@ -200,16 +204,21 @@
 import { mapActions } from "vuex";
 import DialogVue from "./dialog";
 import CascaderVue from "@/components/Cascader";
-// import { editauthentic } from "@/api/userInfo";
-import { checkauthentic } from "@/api/userInfo";
+import { checkauthentic, editauthentic } from "@/api/userInfo";
+import StautsBox from "./components/statusBox";
 export default {
   name: "Certify",
   components: {
     DialogVue,
-    CascaderVue
+    CascaderVue,
+    StautsBox
   },
   data() {
     return {
+      // 是否已实名认证
+      showForm: true,
+      // 实名认证信息
+      firmRegisterMsg: {},
       // 弹框状态
       dialog_flag: false,
       dialogImageUrl: "",
@@ -219,7 +228,12 @@ export default {
         "温馨提示: 只有完成实名认证,方可在交易平台发布供求信息,请根据实际情况选择您的认证方式。",
       messOption: null,
       // 注册资本列表
-      firmFundList: [],
+      firmFundList: [
+        { label: "100万以下", value: "100万以下" },
+        { label: "100-1000万", value: "100-1000万" },
+        { label: "1000-5000万", value: "1000-5000万" },
+        { label: "5000万以上", value: "5000万以上" }
+      ],
       //
       firmRegisterPlace: [],
       // 测试地址
@@ -271,8 +285,10 @@ export default {
         firmTaxpayerNumber: "",
         // 组织机构代码
         firmOrganizingCode: "",
-        // 详细地址
+        // 企业认证详细地址
         firmRegisterLocation: "",
+        // 个人认证详细地址
+        privateArea: "",
         // 企业经营范围
         firmBusinessScope: ""
       },
@@ -301,8 +317,18 @@ export default {
     };
   },
   computed: {
+    userMsg() {
+      if (
+        typeof this.$store.state.app.userInfo == "string" &&
+        this.$store.state.app.userInfo != "undefined"
+      ) {
+        return JSON.parse(this.$store.state.app.userInfo);
+      } else {
+        return this.$store.state.app.userInfo;
+      }
+    },
     userTypes() {
-      console.log(this.$store.state.user.userTypes);
+      // console.log(this.$store.state.user.userTypes);
       // return this.$store.state.user.userTypes;
       if (this.fatherType == 0) {
         return this.$store.state.user.userTypes.filter(item => {
@@ -320,19 +346,35 @@ export default {
     fatherType: {
       handler(newVal) {
         this.cerifyForm.autonymType = newVal;
-        console.log(this.cerifyForm.autonymType);
+        // console.log(this.cerifyForm.autonymType);
       },
       immediate: true
     },
     cerifyForm: {
       handler(newVal) {
         this.$store.commit("config/updateautonymType", newVal.autonymType);
+        // console.log(this.userTypes);
       },
       deep: true
+    },
+    "cerifyForm.autonymType": {
+      handler: function() {
+        let isroleCode = this.userTypes.filter(item => {
+          return item.roleCode == this.mainRoleCode;
+        });
+        console.log(isroleCode);
+        console.log(this.mainRoleCode);
+        if (isroleCode.length === 0) {
+          this.cerifyForm.roleCode = "";
+        } else {
+          this.cerifyForm.roleCode = this.mainRoleCode;
+        }
+      }
     }
   },
   created() {
     this.checkStatus();
+    console.log(this.userMsg);
   },
   mounted() {
     this.getUserTypes();
@@ -343,11 +385,27 @@ export default {
     ...mapActions(["getUserTypes"]),
     // 检查审核状态
     checkStatus() {
-      console.log("checkStatus");
+      // console.log("checkStatus");
       checkauthentic()
         .then(res => {
-          console.log("res");
+          // console.log("res");
           console.log(res);
+          if (res.data.data.roleCode == "client_plant") {
+            this.cerifyForm.autonymType = 0;
+          } else {
+            this.cerifyForm.autonymType = 1;
+          }
+          if (res.data.data.autonym == 0) {
+            this.cerifyForm.roleCode = res.data.data.roleCode;
+            this.mainRoleCode = res.data.data.roleCode;
+          }
+          console.log(res.data.data.auditResult);
+          if (!res.data.data.auditResult) {
+            this.showForm = true;
+          } else {
+            this.showForm = false;
+            this.firmRegisterMsg = res.data.data;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -355,35 +413,18 @@ export default {
     },
     // 提交审核
     certifySubmit(formName) {
-      console.log(this.cerifyForm);
+      // console.log(this.cerifyForm);
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.dialog_flag = true;
-
-          // const h = this.$createElement;
-          // this.messOption = this.$message.success({
-          //   duration: 0,
-          //   message: h("p", { style: "margin-left:20px" }, [
-          //     h(
-          //       "p",
-          //       { style: "margin-bottom: 5px" },
-          //       "系统消息 (您的申请正在审核中,审核结果会以短信方式发送到您的手机)"
-          //     ),
-          //     h("p", null, [
-          //       h(
-          //         "span",
-          //         { style: "color: red;margin-right:10px" },
-          //         "温馨提示"
-          //       ),
-          //       h(
-          //         "span",
-          //         { style: "margin:0 10px;" },
-          //         "完成用户调查后,可以在用户市场优先展示您的供求信息噢！"
-          //       ),
-          //       h("el-button", { on: { click: this.closeMess } }, "点击前往")
-          //     ])
-          //   ])
-          // });
+          // this.dialog_flag = true;
+          let formParams = JSON.parse(JSON.stringify(this.cerifyForm));
+          formParams.nativeProvince = this.cerifyForm.city[0];
+          formParams.nativeCity = this.cerifyForm.city[1];
+          formParams.nativeArea = this.cerifyForm.city[2];
+          console.log(formParams);
+          editauthentic(formParams).then(res => {
+            console.log(res);
+          });
         } else {
           this.$message.error("请填写必要信息");
         }
@@ -464,6 +505,9 @@ export default {
         }
       }
     }
+  }
+  .hidebox {
+    width: 100%;
   }
 }
 </style>

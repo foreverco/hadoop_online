@@ -3,7 +3,10 @@
     <div
       class="breadcrumbBox lvcontainer"
       v-if="
-        !$route.path.includes('/personal') && !$route.path.includes('/home')
+        !$route.path.includes('/personal') &&
+          !$route.path.includes('/home') &&
+          !$route.path.includes('/login') &&
+          !$route.path.includes('/register')
       "
     >
       <el-breadcrumb separator-class="el-icon-arrow-right">

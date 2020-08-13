@@ -89,14 +89,17 @@
       <div class="InforightBox">
         <div class="homeloginBox">
           <ul class="loginTop">
-            <li>
+            <li v-if="userMsg && userMsg != 'undefined'">
+              <el-avatar :size="30" :src="userMsg.info.headUrl"></el-avatar>
+            </li>
+            <li v-if="!userMsg">
               <img src="../../assets/logo.png" alt="" />
             </li>
             <li>
               <p>
                 <span>hi </span>
                 <span v-if="!userMsg"> 游客 45586</span>
-                <span v-else>
+                <span v-if="userMsg && userMsg != 'undefined'">
                   {{ (userMsg.info && userMsg.info.nickname) || "admin" }}</span
                 >
               </p>
@@ -382,8 +385,11 @@ export default {
       return this.$store.state.app.isLogin;
     },
     userMsg() {
-      console.log(typeof this.$store.state.app.userInfo);
-      if (typeof this.$store.state.app.userInfo == "string") {
+      console.log(this.$store.state.app.userInfo);
+      if (
+        typeof this.$store.state.app.userInfo == "string" &&
+        this.$store.state.app.userInfo != "undefined"
+      ) {
         return JSON.parse(this.$store.state.app.userInfo);
       } else {
         return this.$store.state.app.userInfo;

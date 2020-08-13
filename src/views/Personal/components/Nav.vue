@@ -3,14 +3,16 @@
     <ul class="navTitle">
       <li>
         <!-- <img src="../../../assets/logo.png" alt="" /> -->
-        <el-avatar :size="50" :src="touxiang"></el-avatar>
+        <el-avatar :size="50" :src="userMsg.info.headUrl"></el-avatar>
       </li>
       <li class="nameBox">
-        吕文明
+        {{ userMsg.info.nickname }}
       </li>
       <li>
-        <span class="plangter">种植户</span>
-        <span class="plangter">15151515151</span>
+        <span class="plangter">{{
+          userMsg.role.length == 0 ? "未实名认证" : userMsg.role[0].roleName
+        }}</span>
+        <span class="plangter">{{ userMsg.info.username }}</span>
       </li>
       <li>
         <el-button>发布求购信息</el-button>
@@ -50,6 +52,18 @@
 <script>
 export default {
   name: "PerNav",
+  computed: {
+    userMsg() {
+      if (
+        typeof this.$store.state.app.userInfo == "string" &&
+        this.$store.state.app.userInfo != "undefined"
+      ) {
+        return JSON.parse(this.$store.state.app.userInfo);
+      } else {
+        return this.$store.state.app.userInfo;
+      }
+    }
+  },
   data() {
     return {
       isCollapse: false,

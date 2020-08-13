@@ -238,3 +238,20 @@ el-table th,
     }
   }
 }
+
+/* 步骤条样式 */
+.el-steps {
+  .el-step__head.is-finish {
+    color: $maincolor;
+    border-color: $maincolor;
+  }
+  .el-step__title.is-finish {
+    color: $maincolor;
+  }
+  .el-step__description {
+    color: #a6a6a6;
+  }
+  // .el-step__description.is-finish {
+  //   color: $maincolor;
+  // }
+}
