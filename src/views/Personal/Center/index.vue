@@ -49,7 +49,7 @@
 <script>
 import CascaderVue from "@/components/Cascader";
 import FormVue from "@/components/form";
-import { edituserInfo } from "../../../api/userInfo";
+import { edituserInfo } from "@/api/userInfo";
 export default {
   name: "PerCenter",
   components: {

@@ -14,6 +14,9 @@ Vue.use(ElementUI);
 
 // 全局组件
 import "./components/TitleTxt";
+// upload
+import PermissionUpload from "./components/PermissionUpload/index";
+Vue.component("per-upload", PermissionUpload);
 
 // vue-video-player
 import VideoPlayer from "vue-video-player";

@@ -10,6 +10,18 @@
         {{ item.name }}
       </li>
     </ul>
+
+    <ul class="rzList" v-if="$route.path == '/personal/supply'">
+      <li
+        v-for="(item, index) in supplyList"
+        @click="changeType(index)"
+        :key="index"
+        :class="{ active: fatherType == index }"
+      >
+        {{ item.label }}
+        {{ `(${item.count})` }}
+      </li>
+    </ul>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item
         v-for="(item, index) in routerList"
@@ -28,6 +40,18 @@ export default {
   name: "PerMain",
   data() {
     return {
+      supplyList: [
+        // 全部供应
+        { status: 0, label: "全部供应", count: 20 },
+        // 审核中
+        { status: 1, label: "审核中", count: 3 },
+        // 审核通过
+        { status: 2, label: "审核通过", count: 5 },
+        // 已下架
+        { status: 3, label: "已下架", count: 6 },
+        // 审核未通过
+        { status: 4, label: "审核未通过", count: 6 }
+      ],
       routerList: [],
       typeList: [
         {
@@ -93,7 +117,7 @@ export default {
       height: 60px;
       text-align: center;
       line-height: 60px;
-      width: 80px;
+      width: 120px;
       margin-left: 44px;
       color: #666666;
       &:hover {

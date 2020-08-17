@@ -3,7 +3,15 @@
     <swiper ref="mySwiper" class="swiper" :options="swiperOption">
       <swiper-slide v-for="(item, index) in imgList" :key="index">
         <div class="imgBox">
-          <img :src="item.imgUrl" alt />
+          <img
+            :src="item.imgUrl"
+            :style="{ height: swiperConfig.imgheight }"
+            alt
+          />
+          <ul v-if="swiperConfig.textShow">
+            <li>{{ item.title }}</li>
+            <li>{{ item.con }}</li>
+          </ul>
         </div>
       </swiper-slide>
       <div class="swiper-button-prev" slot="button-prev"></div>
@@ -31,7 +39,9 @@ export default {
       type: Object,
       default: () => {
         return {
-          slidesPerView: 1
+          slidesPerView: 1,
+          textShow: false,
+          imgheight: "100%"
         };
       }
     }
@@ -78,6 +88,29 @@ export default {
     img {
       height: 100%;
       width: 100%;
+    }
+    ul {
+      background: #ffffff;
+      padding: 20px;
+      padding-top: 10px;
+      height: 100px;
+      border-radius: 0 0 10px 10px;
+      border: 1px solid $maincolor;
+      li {
+        text-align: center;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 22px;
+        &:first-child {
+          color: $maincolor;
+          font-size: 24px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          margin-bottom: 10px;
+        }
+      }
     }
   }
   &:hover {

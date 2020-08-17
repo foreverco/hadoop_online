@@ -134,11 +134,8 @@ module.exports = {
     hotOnly: false,
     proxy: {
       "/api": {
-        // target: "http://192.168.1.151:9001", //API服务器的地址
-        // target: "http://192.168.1.205:9000", //API服务器的地址
-        // target: "http://2449i4t062.zicp.vip:11770", //API服务器的地址
-        // target: "http://192.168.1.130:30000", //API服务器的地址
         target: "http://192.168.1.151:9000", //API服务器的地址
+        // target: "http://192.168.1.108:9000", //API服务器的地址
         changeOrigin: true,
         pathRewrite: {
           "^/api": ""

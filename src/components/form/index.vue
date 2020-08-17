@@ -36,7 +36,7 @@
             :key="index"
             :label="i.value"
             :style="{ width: item.width }"
-            >{{ i.sex }}</el-radio
+            >{{ i.label }}</el-radio
           >
         </el-radio-group>
         <!-- 下拉框 -->
@@ -44,6 +44,7 @@
           v-if="item.type == 'Select'"
           v-model="formData[item.prop]"
           placeholder="请选择"
+          filterable
           :style="{ width: item.width }"
         >
           <el-option

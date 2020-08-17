@@ -75,7 +75,28 @@ const actions = {
           reject(error);
         });
     });
+  },
+  //清空用户信息
+  clearAllInfo({ commit }) {
+    // alert(123)
+    commit("RECORD_TOKEN", "");
+    commit("RECORD_USERINFO", null);
+    removeToken();
+    removeUsermsg();
   }
+
+  //清空用户信息
+  //  clearUserInfo({commit}){
+  //   commit('SET_TOKEN','')
+  //   window.localStorage.removeItem('BIG_SCREEN_TOKEN')
+  //   commit('SET_NAME','')
+  //   commit('SET_PERMISSION',[])
+  //   commit('SET_USER_INFO',{})
+  //   commit('SET_MENUS',[])
+  //   localStorage.removeItem("BIG_SCREEN_MENUS")
+
+  //   router.addRoutes(InitializeRouter())
+  // }
 };
 
 export default {

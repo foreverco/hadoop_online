@@ -57,7 +57,7 @@
     </el-table>
     <el-row
       :style="{ justifyContent: table_config.pagePosition }"
-      style="border:1px solid red;display:flex;align-items: center;"
+      style="display:flex;align-items: center"
     >
       <el-pagination
         v-if="table_config.pagination"
@@ -104,67 +104,67 @@ export default {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         },
         {
           name: "黄芪",
           type: 1,
           num: "300t",
-          adress: "上海市普陀区金沙江路"
+          adress: "上海市普陀区"
         }
       ]
     };

@@ -63,41 +63,66 @@
           ></CascaderVue>
         </el-form-item>
         <el-form-item prop="cardImg" label="上传身份证">
-          <el-upload action="#" list-type="picture-card" :auto-upload="false">
-            <i slot="default" class="el-icon-plus"></i>
-            <div slot="file" slot-scope="{ file }">
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="file.url"
-                alt=""
-              />
-              <span class="el-upload-list__item-actions">
-                <span
-                  class="el-upload-list__item-preview"
-                  @click="handlePictureCardPreview(file)"
-                >
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleDownload(file)"
-                >
-                  <i class="el-icon-download"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt="" />
-          </el-dialog>
+          <el-row>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :cropperOption="{
+                  autoCropWidth: 200,
+                  autoCropHeight: 120,
+                  fixedBox: true,
+                  fixedNumber: [2, 1]
+                }"
+                :on-success="FrontPicMethod"
+                :before-upload="beforeAvatarUpload"
+                style="{border:1px solid blue}"
+              >
+                <img
+                  v-if="cerifyForm.privateIdcardFront"
+                  :src="cerifyForm.privateIdcardFront"
+                  class="avatar"
+                  width="200"
+                  height=""
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/身份证正面照.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+            </el-col>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :on-success="BackPicMethod"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img
+                  v-if="cerifyForm.privateIdcardBack"
+                  :src="cerifyForm.privateIdcardBack"
+                  class="avatar"
+                  width="200"
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/back.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+            </el-col>
+          </el-row>
         </el-form-item>
       </template>
       <template v-else>
@@ -163,11 +188,13 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="企业注册地址" prop="firmOrganizingCode">
-          <el-cascader
-            v-model="firmRegisterPlace"
-            :options="firmRegisterPlaceOptions"
-            @change="handleChange"
-          ></el-cascader>
+          <CascaderVue
+            :areaValue.sync="cerifyForm.qycity"
+            ref="cascader"
+            :areaConfig="{ mapLocation: false }"
+            @callback="callbackComponents"
+            style="width:70%"
+          ></CascaderVue>
         </el-form-item>
         <el-form-item>
           <el-input
@@ -184,6 +211,81 @@
             style="width:50%"
           ></el-input>
         </el-form-item>
+        <el-form-item label="企业资质上传">
+          <p>
+            请留意照片上的文字须清晰可见，照片支持jpg、gif、bmp、png格式，每张图片不超过10MB
+          </p>
+          <el-row>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :cropperOption="{
+                  autoCropWidth: 200,
+                  autoCropHeight: 120,
+                  fixedBox: true,
+                  fixedNumber: [2, 1]
+                }"
+                :on-success="LicensePicMethod"
+                :before-upload="beforeAvatarUpload"
+                style="{border:1px solid blue}"
+              >
+                <img
+                  v-if="cerifyForm.firmBusinessLicenseImage"
+                  :src="cerifyForm.firmBusinessLicenseImage"
+                  class="avatar"
+                  width="200"
+                  height=""
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/身份证正面照.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+              <p style="text-align:center;width:200px;">营业执照</p>
+            </el-col>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :cropperOption="{
+                  autoCropWidth: 200,
+                  autoCropHeight: 120,
+                  fixedBox: true,
+                  fixedNumber: [2, 1]
+                }"
+                :on-success="rationMethod"
+                :before-upload="beforeAvatarUpload"
+                style="{border:1px solid blue}"
+              >
+                <img
+                  v-if="cerifyForm.firmTaxRegistrationImage"
+                  :src="cerifyForm.firmTaxRegistrationImage"
+                  class="avatar"
+                  width="200"
+                  height=""
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/身份证正面照.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+              <p style="text-align:center;width:200px;">税务登记证</p>
+            </el-col>
+          </el-row>
+        </el-form-item>
       </template>
       <el-form-item class="btnBox">
         <el-button type="success" @click="certifySubmit('cerifyForm')"
@@ -195,7 +297,10 @@
       </el-form-item>
     </el-form>
     <div v-else class="hidebox">
-      <StautsBox :firmRegisterMsg="firmRegisterMsg"></StautsBox>
+      <StautsBox
+        :firmRegisterMsg="firmRegisterMsg"
+        :showForm.sync="showForm"
+      ></StautsBox>
     </div>
     <DialogVue :flag.sync="dialog_flag"></DialogVue>
   </div>
@@ -221,8 +326,8 @@ export default {
       firmRegisterMsg: {},
       // 弹框状态
       dialog_flag: false,
-      dialogImageUrl: "",
-      dialogVisible: false,
+      // dialogImageUrl: "",
+      // dialogVisible: false,
       disabled: false,
       warningTitle:
         "温馨提示: 只有完成实名认证,方可在交易平台发布供求信息,请根据实际情况选择您的认证方式。",
@@ -257,6 +362,7 @@ export default {
       ],
       cerifyForm: {
         city: [],
+        qycity: [],
         // 用户类型
         roleCode: "",
         // 认证类型
@@ -265,6 +371,10 @@ export default {
         privateName: "",
         // 身份证号
         privateIdcard: "",
+        // 个人身份证正面照片url
+        privateIdcardFront: "",
+        //个人身份证背面照片url
+        privateIdcardBack: "",
         // 企业名称
         firmName: "",
         // 法定代表人
@@ -290,7 +400,11 @@ export default {
         // 个人认证详细地址
         privateArea: "",
         // 企业经营范围
-        firmBusinessScope: ""
+        firmBusinessScope: "",
+        // 营业执照url
+        firmBusinessLicenseImage: "",
+        // 企业税务登记证图片url
+        firmTaxRegistrationImage: ""
       },
       cerifyRules: {
         autonymType: [
@@ -413,14 +527,21 @@ export default {
     },
     // 提交审核
     certifySubmit(formName) {
-      // console.log(this.cerifyForm);
+      console.log(this.cerifyForm);
+      console.log(this.cerifyForm.autonymType);
       this.$refs[formName].validate(valid => {
         if (valid) {
           // this.dialog_flag = true;
           let formParams = JSON.parse(JSON.stringify(this.cerifyForm));
-          formParams.nativeProvince = this.cerifyForm.city[0];
-          formParams.nativeCity = this.cerifyForm.city[1];
-          formParams.nativeArea = this.cerifyForm.city[2];
+          if (this.cerifyForm.autonymType == 0) {
+            formParams.nativeProvince = this.cerifyForm.city[0];
+            formParams.nativeCity = this.cerifyForm.city[1];
+            formParams.nativeArea = this.cerifyForm.city[2];
+          } else if (this.cerifyForm.autonymType == 1) {
+            formParams.nativeProvince = this.cerifyForm.city1[0];
+            formParams.nativeCity = this.cerifyForm.city1[1];
+            formParams.nativeArea = this.cerifyForm.city1[2];
+          }
           console.log(formParams);
           editauthentic(formParams).then(res => {
             console.log(res);
@@ -434,16 +555,16 @@ export default {
       this.messOption ? this.messOption.close() : null;
       this.$router.push({ name: "Survey" });
     },
-    handleRemove(file) {
-      console.log(file);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    handleDownload(file) {
-      console.log(file);
-    },
+    // handleRemove(file) {
+    //   console.log(file);
+    // },
+    // handlePictureCardPreview(file) {
+    //   this.dialogImageUrl = file.url;
+    //   this.dialogVisible = true;
+    // },
+    // handleDownload(file) {
+    //   console.log(file);
+    // },
     handleChange() {},
     callbackComponents(params) {
       if (params.function) {
@@ -453,6 +574,49 @@ export default {
     adressShow(data) {
       this.cerifyForm.address = data;
       console.log(this.cerifyForm.address);
+    },
+    // 正面身份证
+    FrontPicMethod(res) {
+      console.log(res);
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.privateIdcardFront = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    // 背面身份证
+    BackPicMethod(res) {
+      console.log(res);
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.privateIdcardBack = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    // 营业执照
+    LicensePicMethod(res) {
+      console.log(res);
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.firmBusinessLicenseImage = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    // 税务登记url
+    rationMethod(res) {
+      console.log(res);
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.firmTaxRegistrationImage = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    beforeAvatarUpload(e) {
+      console.log(e);
     }
   }
 };

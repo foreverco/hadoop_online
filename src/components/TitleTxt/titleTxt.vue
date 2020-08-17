@@ -3,8 +3,8 @@
     <span class="titleSpan">
       {{ titleTxt }}
     </span>
-    <span class="btnSpan" v-if="btnShow">
-      更多 > >
+    <span class="btnSpan" v-if="btnShow" @click="titleClick">
+      {{ btnMsg }} > >
     </span>
   </div>
 </template>
@@ -19,6 +19,15 @@ export default {
     btnShow: {
       type: Boolean,
       default: true
+    },
+    btnMsg: {
+      type: String,
+      default: "更多"
+    }
+  },
+  methods: {
+    titleClick() {
+      this.$emit("titleClick");
     }
   }
 };

@@ -62,12 +62,14 @@ service.interceptors.response.use(
     // console.log(data);
     // debugger;
     // store.dispatch("app/cancelLoading");
+
     if (data.code != 200) {
       //取消一次加载状态
       // store.dispatch("app/cancelLoading");
       if (data.code == 2000) {
+        // console.log(data);
         Message.error(data.msg);
-        // store.dispatch("app/clearUserInfo");
+        store.dispatch("app/clearAllInfo");
         router.push({
           name: "Login"
         });

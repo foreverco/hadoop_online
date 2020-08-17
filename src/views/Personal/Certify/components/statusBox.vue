@@ -6,7 +6,7 @@
       <el-step
         :icon="statusNow == 5 ? 'el-icon-error' : 'el-icon-success'"
         :title="statusNow == 5 ? '审核失败' : '审核成功'"
-        description="审核成功后"
+        :description="initfirmRegisterData.reason"
       ></el-step>
     </el-steps>
     <div class="statusMsg">
@@ -16,10 +16,26 @@
           <span>{{ item.title }}</span>
           <span>{{ item.con }}</span>
         </li>
+        <li>
+          <span>身份证照片</span>
+          <p>
+            <img
+              v-for="(item, index) in imgList"
+              :key="index"
+              :src="item"
+              width="200"
+              height="120"
+              alt=""
+            />
+          </p>
+        </li>
       </ul>
       <div class="btnBox">
         <el-button type="success">返回首页</el-button>
-        <el-button type="success" :disabled="statusNow === 2"
+        <el-button
+          type="success"
+          :disabled="statusNow === 2"
+          @click="changefirmRegister"
           >更改认证</el-button
         >
       </div>
@@ -33,6 +49,10 @@ export default {
     firmRegisterMsg: {
       type: Object,
       default: () => {}
+    },
+    showForm: {
+      type: Boolean,
+      default: () => false
     }
   },
   data() {
@@ -45,6 +65,7 @@ export default {
         REJECT: 5
       },
       statusNow: 1,
+      imgList: [],
       statusMsg: [
         {
           title: "企业名称",
@@ -108,6 +129,7 @@ export default {
     }
   },
   methods: {
+    // 初始化认证信息
     initfirmRegisterMsg() {
       console.log(123);
       this.initfirmRegisterData = JSON.parse(
@@ -129,13 +151,21 @@ export default {
             obj.con = this.initfirmRegisterData[key];
             arr.push(obj);
           } else if (key == "address") {
-            obj.title = "种植所在地";
+            obj.title = "种植地址";
             obj.con = this.initfirmRegisterData[key];
             arr.push(obj);
+          } else if (key == "privateIdcardFront") {
+            // obj.title = "身份证照片";
+            this.imgList.push(this.initfirmRegisterData[key]);
+          } else if (key == "privateIdcardBack") {
+            this.imgList.push(this.initfirmRegisterData[key]);
           }
         }
       }
       this.statusMsg = arr;
+    },
+    changefirmRegister() {
+      this.$emit("update:showForm", true);
     }
   }
 };
@@ -154,7 +184,7 @@ export default {
     }
     ul {
       li {
-        height: 60px;
+        min-height: 60px;
         span {
           display: inline-block;
           // border: 1px solid red;
@@ -163,6 +193,15 @@ export default {
             width: 130px;
             margin-right: 30px;
             text-align: right;
+          }
+        }
+        &:last-child {
+          display: flex;
+        }
+        p {
+          display: inline-block;
+          img {
+            margin-right: 20px;
           }
         }
       }

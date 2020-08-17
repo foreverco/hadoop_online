@@ -68,7 +68,11 @@
               <router-link :to="item.path">
                 <span class="navTxt">{{ item.meta.title }}</span>
                 <i
-                  v-if="item.children"
+                  v-if="
+                    item.children &&
+                      item.children.length > 0 &&
+                      !item.childrenhide
+                  "
                   :class="
                     item.navMouseIn
                       ? 'el-icon-caret-bottom'
@@ -77,7 +81,13 @@
                 ></i>
                 <div id="line"></div>
               </router-link>
-              <dl v-if="item.children && item.children.length > 0">
+              <dl
+                v-if="
+                  item.children &&
+                    item.children.length > 0 &&
+                    !item.childrenhide
+                "
+              >
                 <dt v-for="(i, n) in item.children" :key="n">
                   <router-link :to="i.path">{{ i.meta.title }}</router-link>
                 </dt>
@@ -157,7 +167,7 @@ export default {
       return this.$store.state.app.isLogin;
     },
     userMsg() {
-      console.log(this.$store.state.app.userInfo);
+      // console.log(this.$store.state.app.userInfo);
       if (
         typeof this.$store.state.app.userInfo == "string" &&
         this.$store.state.app.userInfo != "undefined"

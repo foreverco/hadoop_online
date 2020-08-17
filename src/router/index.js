@@ -189,7 +189,7 @@ let baseRoutes = [
         component: () => import("@/views/OTC"),
         hidden: false,
         meta: {
-          title: "市场分析",
+          title: "交易平台",
           icon: "navmenu"
         },
         children: [
@@ -200,7 +200,7 @@ let baseRoutes = [
             component: () => import("@/views/OTC/components/OTC1.vue"),
             hidden: false,
             meta: {
-              title: "市场分析1",
+              title: "交易平台1",
               icon: "navmenu"
             }
           },
@@ -211,22 +211,63 @@ let baseRoutes = [
             component: () => import("@/views/OTC/components/OTC2.vue"),
             hidden: false,
             meta: {
-              title: "市场分析2",
+              title: "交易平台2",
               icon: "navmenu"
             }
           }
         ]
       },
       {
-        path: "/insect",
-        name: "Insect",
+        path: "/drug",
+        name: "Drug",
         class_true: false,
-        component: () => import("@/views/Insect"),
+        component: () => import("@/views/Drug"),
         hidden: false,
+        childrenhide: true,
         meta: {
           title: "道地药材",
           icon: "navmenu"
-        }
+        },
+        children: [
+          {
+            path: "/drug",
+            redirect: "/drug/index",
+            hidden: true
+          },
+          {
+            path: "/drug/index",
+            name: "DrugIndex",
+            class_true: false,
+            component: () => import("@/views/Drug/components/drugIndex"),
+            hidden: false,
+            meta: {
+              title: "道地药材",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/drug/drugMsg",
+            name: "DrugMsg",
+            class_true: false,
+            component: () => import("@/views/Drug/components/drugMsg"),
+            hidden: false,
+            meta: {
+              title: "道地药材详情",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/drug/drugMapping",
+            name: "drugMapping",
+            class_true: false,
+            component: () => import("@/views/Drug/components/drugMapping"),
+            hidden: false,
+            meta: {
+              title: "知识图谱",
+              icon: "navmenu"
+            }
+          }
+        ]
       },
       {
         path: "/benefit",
@@ -241,14 +282,51 @@ let baseRoutes = [
         children: [
           {
             path: "/marketInfo",
-            name: "MarketInfo",
+            name: "MarketInfoIndex",
             class_true: false,
             component: () => import("@/views/Benefit/components/MarketInfo"),
             hidden: false,
             meta: {
               title: "市场资讯",
               icon: "navmenu"
-            }
+            },
+
+            children: [
+              {
+                path: "/marketInfo",
+                // redirect: "/marketInfo/marketMsg",
+                redirect: "/marketInfo/marketList",
+                hidden: true
+              },
+              {
+                path: "/marketInfo/marketList",
+                name: "MarketInfo",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Benefit/components/MarketInfo/components/MarketList"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "市场资讯",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/marketInfo/marketMsg",
+                name: "marketMsg",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Benefit/components/MarketInfo/components/marketMsg"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "市场资讯详情",
+                  icon: "navmenu"
+                }
+              }
+            ]
           },
           {
             path: "/benefit1",
@@ -357,12 +435,86 @@ let baseRoutes = [
             component: () => import("@/views/Personal/Adress"),
             hidden: false,
             meta: {
-              title: "收货地址",
+              title: "我的地址",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/personal/adress",
+                redirect: "/personal/adress/list",
+                hidden: true
+              },
+              {
+                path: "/personal/adress/list",
+                name: "Adress",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Adress/components/list"),
+                hidden: false,
+                meta: {
+                  title: "收货地址",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/personal/adress/add",
+                name: "Adress",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Adress/components/add"),
+                hidden: false,
+                meta: {
+                  title: "新建收货地址",
+                  icon: "navmenu"
+                }
+              }
+            ]
+          },
+          {
+            path: "/personal/supply",
+            name: "Supply",
+            class_true: false,
+            component: () => import("@/views/Personal/Supply"),
+            hidden: false,
+            meta: {
+              title: "我的供应",
+              icon: "navmenu"
+            },
+            children: [
+              {
+                path: "/personal/supply",
+                redirect: "/personal/supply/tableView",
+                hidden: true
+              },
+              {
+                path: "/personal/supply/tableView",
+                name: "SupplyTable",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Supply/components/tableTree"),
+                hidden: false,
+                meta: {
+                  // title: "我的供应",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/personal/supply/addsupply",
+                name: "SupplyAdd",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Supply/components/addSupply"),
+                hidden: false,
+                meta: {
+                  title: "发布供应",
+                  icon: "navmenu"
+                }
+              }
+            ]
           }
         ]
       },
+
       // {
       //   path: "/soil",
       //   name: "Soil",

@@ -105,7 +105,7 @@ export default {
           title: "需求管理",
           itemIndex: "1",
           submenuList: [
-            { label: "我的供应", subIndex: "2-1" },
+            { label: "我的供应", name: "Supply", subIndex: "/personal/supply" },
             { label: "我的求购", subIndex: "2-2" }
           ]
         }

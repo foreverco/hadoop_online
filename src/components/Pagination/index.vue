@@ -6,8 +6,8 @@
     @current-change="handleCurrentChange"
     :page-size="size"
     :total="total"
-    :page-sizes="[10, 15, 20, 30]"
-    layout="total,sizes,prev, pager, next"
+    :page-sizes="[1, 2, 3, 5]"
+    :layout="pageLayout"
   >
   </el-pagination>
 </template>
@@ -35,6 +35,10 @@ export default {
     total: {
       type: Number,
       default: 0
+    },
+    pageLayout: {
+      type: String,
+      default: () => "total,sizes,prev, pager, next"
     }
   },
   methods: {

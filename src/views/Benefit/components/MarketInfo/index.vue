@@ -1,17 +1,10 @@
 <template>
   <div class="marketInfo lvcontainer">
     <div class="leftBox">
-      <div class="titleBox">
-        <div>
-          <Title titleTxt="市场资讯" :btnShow="false"></Title>
-        </div>
-        <ul>
-          <li>产地资讯</li>
-          <li>产地资讯</li>
-          <li>产地资讯</li>
-        </ul>
+      <div>
+        <router-view></router-view>
+        <!-- <MarketList></MarketList> -->
       </div>
-      <MarketList></MarketList>
     </div>
     <div class="rightBox">
       <div class="topBox">
@@ -44,7 +37,7 @@
         <ul class="toptenBox">
           <li v-for="(item, index) in toptenList" :key="index">
             <span>{{ index + 1 }}</span>
-            <span>{{ item.content }}</span>
+            <span>{{ item.title }}</span>
           </li>
         </ul>
       </div>
@@ -60,14 +53,18 @@
   </div>
 </template>
 <script>
-import MarketList from "./components/MarketList";
+// import MarketList from "./components/MarketList";
+// import MarketMsg from "./components/marketMsg";
+import { reqhotList } from "@/api/news";
 export default {
   name: "MarketInfo",
-  components: {
-    MarketList
-  },
+  // components: {
+  //   MarketList,
+  //   MarketMsg
+  // },
   data() {
     return {
+      newsId: "",
       toptenList: [
         {
           content: "玉林市场丁香淡季走动量有限近日行情有下滑"
@@ -115,6 +112,27 @@ export default {
         }
       ]
     };
+  },
+  mounted() {},
+  created() {
+    this.gethotList();
+    // console.log(this.$route.query.id);
+    // this.newsId = this.$route.query.id;
+  },
+  // watch: {
+  //   "$route.query.id"(newval) {
+  //     console.log(newval);
+  //     this.newsId = newval;
+  //   }
+  // },
+  methods: {
+    /* 获取热文榜单列表 */
+    gethotList() {
+      reqhotList().then(res => {
+        console.log(res);
+        this.toptenList = res.data.data;
+      });
+    }
   }
 };
 </script>
@@ -139,27 +157,8 @@ export default {
   justify-content: space-between;
   .leftBox {
     width: 980px;
-    padding: $boxpadding;
-    background: $boxbg;
-    .titleBox {
-      // border: 1px solid red;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      ul {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        li {
-          color: $graycolor;
-          border-right: 1px solid $graycolor;
-          padding: 0 12px;
-          &:last-child {
-            border-right: 0;
-          }
-        }
-      }
-    }
+    // padding: $boxpadding;
+    // background: $boxbg;
   }
   .rightBox {
     display: flex;

@@ -205,20 +205,25 @@ el-table th,
 
 /* 消息确认框 */
 .el-message-box {
-  display: inline-block;
-  width: 2.1875rem;
-  padding-bottom: 0.052083rem;
-  vertical-align: middle;
-  // background-color: #00000050;
-  border-radius: 0.020833rem;
-  border: 0.005208rem solid #ebeef5;
-  font-size: 0.09375rem;
-  -webkit-box-shadow: 0 0.010417rem 0.0625rem 0 rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0.010417rem 0.0625rem 0 rgba(0, 0, 0, 0.1);
-  text-align: left;
-  overflow: hidden;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  border: 1px solid red;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  // display: inline-block;
+  // width: 2.1875rem;
+  // // padding-bottom: 0.052083rem;
+  // vertical-align: middle;
+  // // background-color: #00000050;
+  // border-radius: 0.020833rem;
+  // border: 0.005208rem solid #ebeef5;
+  // font-size: 0.09375rem;
+  // -webkit-box-shadow: 0 0.010417rem 0.0625rem 0 rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 0.010417rem 0.0625rem 0 rgba(0, 0, 0, 0.1);
+  // text-align: left;
+  // overflow: hidden;
+  // -webkit-backface-visibility: hidden;
+  // backface-visibility: hidden;
   p {
     color: #000;
   }
@@ -228,8 +233,8 @@ el-table th,
   .el-message-box__btns {
     .el-button {
       &:first-child {
-        background: $sencondcolor;
-        border: 1px solid $sencondcolor;
+        // background: $sencondcolor;
+        // border: 1px solid $sencondcolor;
       }
       &:last-child {
         background: $maincolor;
@@ -254,4 +259,13 @@ el-table th,
   // .el-step__description.is-finish {
   //   color: $maincolor;
   // }
+}
+
+/* 分页插件样式 */
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: $maincolor;
+  color: #fff;
+}
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+  color: $maincolor;
 }

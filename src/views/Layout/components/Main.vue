@@ -6,7 +6,9 @@
         !$route.path.includes('/personal') &&
           !$route.path.includes('/home') &&
           !$route.path.includes('/login') &&
-          !$route.path.includes('/register')
+          !$route.path.includes('/register') &&
+          !$route.path.includes('/drug/index') &&
+          !$route.path.includes('/insect')
       "
     >
       <el-breadcrumb separator-class="el-icon-arrow-right">
