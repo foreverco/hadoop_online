@@ -1,9 +1,12 @@
 <template>
   <div class="supplyTable">
-    <TableVue :config="tableConfig">
+    <TableVue :config="tableConfig" ref="applyTable">
       <template v-slot:supplyAmount="scope">
         {{ scope.data.supplyAmount }}
         {{ scope.data.supplyUnit }}
+      </template>
+      <template v-slot:price="scope">
+        {{ `${scope.data.price}元${scope.data.priceUnitName}` }}
       </template>
       <template v-slot:opration="scope">
         <div class="btnBox">
@@ -35,6 +38,22 @@ export default {
     TableVue,
     AddDialogVue
   },
+  computed: {
+    status() {
+      return this.$store.state.config.status;
+    }
+  },
+  watch: {
+    status: {
+      handler(newVal) {
+        alert(newVal);
+        this.tableConfig.data.status = newVal;
+        this.$refs.applyTable.requestData(this.tableConfig.data);
+        // setApplyForm(this.formData);
+      },
+      deep: true
+    }
+  },
   data() {
     return {
       dialogFlag: false,
@@ -51,14 +70,15 @@ export default {
         tooltip: true,
         data: {
           page: 1,
-          pageSize: 10
+          pageSize: 10,
+          status: 0
         },
         tHead: [
           { label: "品名", prop: "medinceName" },
           { label: "规格", prop: "specificationName" },
           // { label: "供应量", prop: "supplyAmount" },
           { label: "供应量", type: "slot", slotName: "supplyAmount" },
-          { label: "售价", prop: "price" },
+          { label: "售价", type: "slot", slotName: "price" },
           { label: "状态", prop: "statusName" },
           { label: "有效期", prop: "yxq" },
           {

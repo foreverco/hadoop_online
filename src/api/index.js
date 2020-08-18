@@ -1,9 +1,9 @@
 import service from "@/util/request";
 
-/* 添加/编辑收货地址 */
+/* 获取药材品类 */
 export function reqDruglist(data) {
   return service.request({
-    url: "/view/medince/getSupplySummaryInfos",
+    url: "/view/medince/getMedinces",
     method: "get",
     data
   });

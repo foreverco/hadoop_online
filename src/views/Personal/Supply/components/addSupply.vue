@@ -1,73 +1,671 @@
 <template>
   <div class="supplyDialog">
-    {{ drugList }}
     <FormVue
       ref="addsupplyForm"
       :formData="formData"
       :formItem="formItem"
       :formHandle="formHandle"
       :formConfig="formConfig"
-    ></FormVue>
+    >
+      <template v-slot:drugcd="slotData">
+        <p v-if="false">{{ slotData }}</p>
+        <CascaderVue
+          :areaValue.sync="formData.drugcd"
+          ref="cascader"
+          :areaConfig="{ mapLocation: false }"
+          @callback="callbackdrugcd"
+          style="width:70%"
+        ></CascaderVue>
+      </template>
+      <template v-slot:drugck="slotData">
+        <p v-if="false">{{ slotData }}</p>
+        <CascaderVue
+          :areaValue.sync="formData.drugck"
+          ref="cascader"
+          :areaConfig="{ mapLocation: false }"
+          @callback="callbackdrugck"
+          style="width:70%"
+        ></CascaderVue>
+      </template>
+      <template v-slot:upload="slotData">
+        <p v-if="false">{{ slotData }}</p>
+        <per-upload
+          class="avatar-uploader"
+          :limit="1"
+          action="/media/file/upload"
+          :show-file-list="false"
+          cropper
+          :cropperOption="{
+            autoCropWidth: 200,
+            autoCropHeight: 120,
+            fixedBox: true,
+            fixedNumber: [2, 1]
+          }"
+          :on-success="picMethod"
+          :before-upload="beforeAvatarUpload"
+          style="{border:1px solid blue}"
+        >
+          <img
+            v-if="formData.medicincePic"
+            :src="formData.medicincePic"
+            class="avatar"
+            width="200"
+            height=""
+          />
+          <img
+            v-else
+            src="@/assets/images/common/身份证正面照.png"
+            class="avatar"
+            width="200"
+          />
+        </per-upload>
+      </template>
+    </FormVue>
   </div>
 </template>
 <script>
 import FormVue from "@/components/form";
+import CascaderVue from "@/components/Cascader";
+import { mapActions } from "vuex";
+import { reqAddsupply, reqsupplyTypeList } from "@/api/userInfo";
+import { validatePhone } from "@/util/validate";
+import { setApplyForm, getApplyForm } from "@/util/storage";
 export default {
   components: {
-    FormVue
+    FormVue,
+    CascaderVue
   },
   computed: {
-    tokenMsg() {
-      return this.$store.state.config.drugList;
+    status() {
+      return this.$store.state.config.status;
+    },
+    formItem() {
+      let validatePhoneNum = (rule, value, callback) => {
+        if (!value) {
+          callback(new Error("请输入手机号"));
+        } else if (validatePhone(value)) {
+          callback(new Error("请输入正确的手机号"));
+        } else {
+          callback();
+        }
+      };
+      return [
+        {
+          type: "Select",
+          label: "药材品名:",
+          placeholder: "请输入药材品名",
+          prop: "medicineId",
+          width: "380px",
+          options: this.$store.state.config.drugList,
+          required: true
+        },
+        {
+          type: "Select",
+          label: "规格:",
+          placeholder: "请输入药材规格",
+          prop: "specificationId",
+          width: "380px",
+          options: this.formTypeList["药品规格"],
+          required: true
+        },
+        {
+          type: "Input",
+          label: "供应量:",
+          placeholder: "请输入供应量",
+          selPlaceHolder: "单位",
+          prop: "supplyAmount",
+          width: "380px",
+          selslot: true,
+          selProp: "supplyUnit",
+          selslotOptions: this.formTypeList["重量单位"],
+          required: true
+        },
+        {
+          type: "Input",
+          label: "起售量:",
+          placeholder: "请输入起售量",
+          selPlaceHolder: "单位",
+          prop: "startSaleAmount",
+          width: "380px",
+          selslot: true,
+          selProp: "startSaleUnit",
+          selslotOptions: this.formTypeList["重量单位"],
+          required: true
+        },
+        {
+          type: "Select",
+          label: "售价方式:",
+          placeholder: "请选择售价方式",
+          prop: "disclosePriceName",
+          width: "180px",
+          options: this.formTypeList["售价方式"],
+          required: true
+        },
+        {
+          type: "Input",
+          label: "无票售价:",
+          placeholder: "不含发票和运费的售价",
+          selPlaceHolder: "单位",
+          prop: "price",
+          width: "380px",
+          selslot: true,
+          selProp: "priceUnitName",
+          selslotOptions: this.formTypeList["重量单位"],
+          required: true
+        },
+        {
+          type: "Select",
+          label: "可供票据:",
+          placeholder: "可供票据",
+          prop: "invoiceName",
+          width: "380px",
+          options: this.formTypeList["票据方式"],
+          required: true
+        },
+        {
+          type: "Slot",
+          slotName: "drugcd",
+          prop: "drugcd",
+          required: true,
+          label: "地理位置"
+        },
+        {
+          type: "Slot",
+          slotName: "drugck",
+          prop: "drugck",
+          required: true,
+          label: "地理位置"
+        },
+        {
+          type: "Select",
+          label: "质量标准:",
+          placeholder: "请选择质量标准",
+          prop: "qualityStandard",
+          width: "380px",
+          options: this.formTypeList["质量标准"],
+          required: true
+        },
+        {
+          type: "Select",
+          label: "资质标准:",
+          placeholder: "请选择资质标准",
+          prop: "qualificationStandard",
+          width: "380px",
+          options: this.formTypeList["资质标准"],
+          required: true
+        },
+        {
+          type: "Select",
+          label: "有无样品:",
+          placeholder: "请选择资质标准",
+          prop: "isSample",
+          width: "380px",
+          options: this.formTypeList["有无"],
+          required: true
+        },
+        {
+          type: "Select",
+          label: "付款方式:",
+          placeholder: "请选择资质标准",
+          prop: "paymentMethod",
+          width: "380px",
+          options: this.formTypeList["付款方式"],
+          required: true
+        },
+        {
+          type: "Slot",
+          slotName: "upload",
+          prop: "medicincePic",
+          required: true,
+          label: "图片上传"
+        },
+        {
+          type: "Input",
+          label: "联系人:",
+          placeholder: "请输入联系人",
+          prop: "contactPerson",
+          width: "380px",
+          required: true
+        },
+        {
+          type: "Input",
+          label: "联系电话:",
+          placeholder: "请输入联系电话",
+          prop: "contactNumber",
+          width: "380px",
+          validator: [{ validator: validatePhoneNum, trigger: "change" }]
+        }
+      ];
+    }
+  },
+  watch: {
+    status: {
+      handler(newVal) {
+        console.log(newVal);
+        setApplyForm(this.formData);
+        this.$router.push("/personal/supply/tableView");
+      },
+      deep: true
+    },
+    "formData.disclosePriceName": {
+      handler(newVal) {
+        if (newVal == "specific_price") {
+          let ispush = this.formItem.filter(item => {
+            return item.label === "无票售价:";
+          });
+          if (ispush && ispush.length == 0) {
+            this.formItem.splice(5, 0, {
+              type: "Input",
+              label: "无票售价:",
+              placeholder: "不含发票和运费的售价",
+              selPlaceHolder: "单位",
+              prop: "price",
+              width: "380px",
+              selslot: true,
+              selProp: "priceUnit",
+              selslotOptions: this.formTypeList["重量单位"],
+              required: true
+            });
+          }
+        } else {
+          let ispush = this.formItem.filter(item => {
+            return item.label === "无票售价:";
+          });
+          if (ispush && ispush.length > 0) {
+            this.formItem.splice(5, 1);
+          }
+        }
+      },
+      // 初始化监听
+      immediate: true
     }
   },
   data() {
     return {
       dialog_flag: false,
+      // formTypeList: [
+      //   { name: "重量单位" },
+      //   { name: "售价方式" },
+      //   { name: "票据方式" },
+      //   { name: "质量标准" },
+      //   { name: "资质标准" },
+      //   { name: "有无" },
+      //   { name: "付款方式" }
+      // ],
+      formTypeList: {
+        重量单位: [],
+        售价方式: [],
+        票据方式: [],
+        质量标准: [],
+        资质标准: [],
+        有无: [],
+        付款方式: [],
+        药品规格: []
+      },
       formConfig: {
         itemMargin: "28px",
-        labelWidth: "70px"
+        labelWidth: "100px"
       },
-      formData: {},
-      formItem: [
+      formData: {
+        // 药材产地
+        drugcd: [],
+        // 药材仓库
+        drugck: [],
+        //药材品名
+        medicineId: "",
+        // 规格
+        specificationId: "",
+        // 供应量
+        supplyAmount: "",
+        // 供应量单位
+        supplyUnit: "",
+        // 起售量
+        startSaleAmount: "",
+        // 起售量单位
+        startSaleUnit: "",
+        // 售价方式
+        disclosePriceName: "specific_price",
+        // 售价
+        price: "",
+        // 售价单位
+        priceUnitName: "",
+        // 可供票据
+        invoiceName: "",
+        //质量标准
+        qualityStandard: "",
+        //资质标准
+        qualificationStandard: "",
+        //有无样品
+        isSample: "",
+        // 付款方式
+        paymentMethod: "",
+        // 图片地址
+        medicincePic: "",
+        //联系人
+        contactPerson: "",
+        // 联系电话
+        contactNumber: ""
+      },
+      // formItem: [
+      //   {
+      //     type: "Select",
+      //     label: "药材品名:",
+      //     placeholder: "请输入药材品名",
+      //     prop: "medicineId",
+      //     width: "380px",
+      //     options: this.$store.state.config.drugList,
+      //     required: true
+      //   },
+      //   {
+      //     type: "Select",
+      //     label: "规格:",
+      //     placeholder: "请输入药材规格",
+      //     prop: "specificationId",
+      //     width: "380px",
+      //     options: [
+      //       {
+      //         value: 1,
+      //         label: "统货1"
+      //       },
+      //       {
+      //         value: 2,
+      //         label: "统货2"
+      //       }
+      //     ],
+      //     required: true
+      //   },
+      //   {
+      //     type: "Input",
+      //     label: "供应量:",
+      //     placeholder: "请输入供应量",
+      //     selPlaceHolder: "单位",
+      //     prop: "supplyAmount",
+      //     width: "380px",
+      //     selslot: true,
+      //     selProp: "supplyUnit",
+      //     selslotOptions: this.$store.state.config.weight_json,
+      //     required: true
+      //   },
+      //   {
+      //     type: "Input",
+      //     label: "起售量:",
+      //     placeholder: "请输入起售量",
+      //     selPlaceHolder: "单位",
+      //     prop: "startSaleAmount",
+      //     width: "380px",
+      //     selslot: true,
+      //     selProp: "startSaleUnit",
+      //     selslotOptions: this.$store.state.config.weight_json,
+      //     required: true
+      //   },
+      //   {
+      //     type: "Select",
+      //     label: "售价方式:",
+      //     placeholder: "请选择售价方式",
+      //     prop: "disclosePriceName",
+      //     width: "180px",
+      //     options: [
+      //       {
+      //         value: 1,
+      //         label: "面议"
+      //       },
+      //       {
+      //         value: 2,
+      //         label: "电议"
+      //       }
+      //     ],
+      //     required: true
+      //   },
+      //   {
+      //     type: "Input",
+      //     label: "无票售价:",
+      //     placeholder: "不含发票和运费的售价",
+      //     selPlaceHolder: "单位",
+      //     prop: "price",
+      //     width: "380px",
+      //     selslot: true,
+      //     selProp: "priceUnitName",
+      //     selslotOptions: this.$store.state.config.weight_json,
+      //     required: true
+      //   },
+      //   {
+      //     type: "Select",
+      //     label: "可供票据:",
+      //     placeholder: "可供票据",
+      //     prop: "invoiceName",
+      //     width: "380px",
+      //     options: [
+      //       {
+      //         value: 1,
+      //         label: "统货1"
+      //       },
+      //       {
+      //         value: 2,
+      //         label: "统货2"
+      //       }
+      //     ],
+      //     required: true
+      //   },
+      //   {
+      //     type: "Slot",
+      //     slotName: "drugcd",
+      //     prop: "drugcd",
+      //     required: true,
+      //     label: "地理位置"
+      //   },
+      //   {
+      //     type: "Slot",
+      //     slotName: "drugck",
+      //     prop: "drugck",
+      //     required: true,
+      //     label: "地理位置"
+      //   },
+      //   {
+      //     type: "Select",
+      //     label: "质量标准:",
+      //     placeholder: "请选择质量标准",
+      //     prop: "qualityStandard",
+      //     width: "380px",
+      //     options: [
+      //       {
+      //         value: 1,
+      //         label: "统货1"
+      //       },
+      //       {
+      //         value: 2,
+      //         label: "统货2"
+      //       }
+      //     ],
+      //     required: true
+      //   },
+      //   {
+      //     type: "Select",
+      //     label: "资质标准:",
+      //     placeholder: "请选择资质标准",
+      //     prop: "qualificationStandard",
+      //     width: "380px",
+      //     options: [
+      //       {
+      //         value: 1,
+      //         label: "统货1"
+      //       },
+      //       {
+      //         value: 2,
+      //         label: "统货2"
+      //       }
+      //     ],
+      //     required: true
+      //   },
+      //   {
+      //     type: "Select",
+      //     label: "有无样品:",
+      //     placeholder: "请选择资质标准",
+      //     prop: "isSample",
+      //     width: "380px",
+      //     options: [
+      //       {
+      //         value: 1,
+      //         label: "统货1"
+      //       },
+      //       {
+      //         value: 2,
+      //         label: "统货2"
+      //       }
+      //     ],
+      //     required: true
+      //   },
+      //   {
+      //     type: "Select",
+      //     label: "付款方式:",
+      //     placeholder: "请选择资质标准",
+      //     prop: "paymentMethod",
+      //     width: "380px",
+      //     options: [
+      //       {
+      //         value: 1,
+      //         label: "统货1"
+      //       },
+      //       {
+      //         value: 2,
+      //         label: "统货2"
+      //       }
+      //     ],
+      //     required: true
+      //   },
+      //   {
+      //     type: "Slot",
+      //     slotName: "upload",
+      //     prop: "upload",
+      //     required: true,
+      //     label: "图片上传"
+      //   },
+      //   {
+      //     type: "Input",
+      //     label: "联系人:",
+      //     placeholder: "请输入联系人",
+      //     prop: "contactPerson",
+      //     width: "380px",
+      //     required: true
+      //   },
+      //   {
+      //     type: "Input",
+      //     label: "联系电话:",
+      //     placeholder: "请输入联系电话",
+      //     prop: "contactNumber",
+      //     width: "380px",
+      //     required: true
+      //   }
+      // ],
+      formHandle: [
         {
-          type: "Select",
-          label: "药材品名",
-          placeholder: "请输入药材品名",
-          prop: "medinceName",
-          width: "380px",
-          options: [
-            {
-              value: 1,
-              label: "黄芪"
-            },
-            {
-              value: 2,
-              label: "板蓝根"
-            }
-          ],
-          required: true
+          label: "保存",
+          type: "success",
+          width: "170px",
+          handler: () => this.addSupply()
         },
         {
-          type: "Select",
-          label: "规格",
-          placeholder: "请输入药材规格",
-          prop: "medinceName",
-          width: "380px",
-          options: [
-            {
-              value: 1,
-              label: "统货1"
-            },
-            {
-              value: 2,
-              label: "统货2"
-            }
-          ],
-          required: true
+          label: "取消",
+          type: "success",
+          width: "170px",
+          handler: () => this.changeAdd()
         }
       ]
     };
+  },
+  created() {
+    this.getDruglist();
+    this.getTypelist();
+    // this.formItem[0].options = this.$store.state.config.drugList;
+    if (getApplyForm()) {
+      this.formData = JSON.parse(getApplyForm());
+      console.log(this.formData);
+    }
+  },
+  methods: {
+    // 获取用户类型
+    ...mapActions(["getDruglist"]),
+    // 获取各种类型下拉
+    getTypelist() {
+      for (let key in this.formTypeList) {
+        let params = {};
+        params.categoryName = key;
+        reqsupplyTypeList(params).then(res => {
+          this.formTypeList[key] = res.data.data;
+          this.formTypeList[key].forEach(item => {
+            item.label = item.name;
+          });
+        });
+      }
+      // this.formTypeList.forEach(item => {
+      //   let params = {};
+      //   // params.categoryItemsName = "";
+      //   params.categoryName = item.name;
+      //   reqsupplyTypeList(params).then(res => {
+      //     console.log(res);
+      //   });
+      // });
+    },
+    // 提交保存
+    addSupply() {
+      this.$refs.addsupplyForm.$refs.form.validate(valid => {
+        if (valid) {
+          let supplyParams = JSON.parse(JSON.stringify(this.formData));
+          // 获取产地code
+          supplyParams.originProvinceId = this.formData.drugcd[0];
+          supplyParams.originCityId = this.formData.drugcd[1];
+          supplyParams.originCountyId = this.formData.drugcd[2];
+          // 获取仓库code
+          supplyParams.warehouseProvinceId = this.formData.drugck[0];
+          supplyParams.warehouseCityId = this.formData.drugck[1];
+          supplyParams.warehouseCountyId = this.formData.drugck[2];
+          reqAddsupply(supplyParams).then(res => {
+            console.log(res);
+            this.$router.push({
+              path: "/personal/supply/tableView"
+            });
+          });
+          // edituserInfo(userFormParams).then(res => {
+          //   console.log(res);
+          //   this.$message.success(res.data.msg);
+          //   this.getUserMsg();
+          // });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    // 取消添加
+    changeAdd() {
+      this.$router.push({
+        path: "/personal/supply/tableView"
+      });
+    },
+    callbackdrugcd(params) {
+      if (params.function) {
+        this[params.function](params.data.adress);
+      }
+    },
+    adressShow(data) {
+      this.formData.address = data;
+      console.log(this.formData.address);
+    },
+    callbackdrugck(params) {
+      if (params.function) {
+        this[params.function](params.data.adress);
+      }
+    },
+    // 图片上传
+    picMethod(res) {
+      if (res.code == 200) {
+        this.formData.medicincePic = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    beforeAvatarUpload(e) {
+      console.log(e);
+    }
   }
 };
 </script>

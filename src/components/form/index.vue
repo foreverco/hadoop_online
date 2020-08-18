@@ -23,6 +23,21 @@
           :style="{ width: item.width }"
         >
           <template v-if="item.slot" slot="append">{{ item.slot }}</template>
+          <el-select
+            v-if="item.selslot"
+            v-model="formData[item.selProp]"
+            slot="append"
+            :placeholder="item.selPlaceHolder"
+            style="width: 75px;"
+          >
+            <el-option
+              v-for="i in item.selslotOptions"
+              :key="i.value"
+              :label="i.label"
+              :value="i.value"
+            >
+            </el-option>
+          </el-select>
         </el-input>
         <!-- 省市区 -->
         <slot v-if="item.type == 'Slot'" :name="item.slotName"></slot>
@@ -132,7 +147,7 @@ export default {
       });
     },
     rules(item) {
-      console.log(item);
+      // console.log(item);
       // 是否存在必填规则
       const requiredRules = [
         {
@@ -152,8 +167,9 @@ export default {
   },
   watch: {
     formItem: {
-      handler(newVal) {
-        console.log(newVal);
+      handler() {
+        // alert(123);
+        // console.log(newVal);
         this.initFormData();
       },
       // 初始化监听

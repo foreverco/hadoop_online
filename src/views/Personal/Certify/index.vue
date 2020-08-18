@@ -466,7 +466,7 @@ export default {
     },
     cerifyForm: {
       handler(newVal) {
-        this.$store.commit("config/updateautonymType", newVal.autonymType);
+        this.$store.commit("updateautonymType", newVal.autonymType);
         // console.log(this.userTypes);
       },
       deep: true
@@ -476,8 +476,8 @@ export default {
         let isroleCode = this.userTypes.filter(item => {
           return item.roleCode == this.mainRoleCode;
         });
-        console.log(isroleCode);
-        console.log(this.mainRoleCode);
+        // console.log(isroleCode);
+        // console.log(this.mainRoleCode);
         if (isroleCode.length === 0) {
           this.cerifyForm.roleCode = "";
         } else {

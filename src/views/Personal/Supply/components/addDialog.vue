@@ -40,7 +40,8 @@ export default {
           width: "380px",
           required: true
         }
-      ]
+      ],
+      formHandle: []
     };
   },
   watch: {

@@ -24,6 +24,11 @@
   color: $maincolor;
 }
 
+/* 下拉框 */
+.el-select-dropdown__item {
+  padding-left: 10px;
+}
+
 /* 联级选择器 */
 .el-cascader {
   width: 300px;

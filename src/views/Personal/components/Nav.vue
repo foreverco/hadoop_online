@@ -50,6 +50,8 @@
   </div>
 </template>
 <script>
+import { removeApplyForm } from "@/util/storage";
+
 export default {
   name: "PerNav",
   computed: {
@@ -62,6 +64,20 @@ export default {
       } else {
         return this.$store.state.app.userInfo;
       }
+    }
+  },
+  watch: {
+    $route: {
+      handler(to, from) {
+        console.log(to);
+        console.log(from);
+        if (to.name != "Supply") {
+          removeApplyForm();
+        }
+      },
+      deep: true,
+      // 初始化监听
+      immediate: true
     }
   },
   data() {

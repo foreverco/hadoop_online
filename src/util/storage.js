@@ -12,7 +12,10 @@ export const setStore = (name, content) => {
 /**
  * 获取localStorage
  */
+// 用户信息
 const adminUserName = "username";
+// 供应信息
+const applyMsg = "applyMsg";
 
 export const getStore = name => {
   if (!name) return;
@@ -45,4 +48,22 @@ export function getUsermsg() {
 export function removeUsermsg() {
   // return Cookie.remove(adminUserName);
   window.localStorage.removeItem(adminUserName);
+}
+
+// 设置供应信息
+export function setApplyForm(applyForm) {
+  if (typeof applyForm !== "string") {
+    applyForm = JSON.stringify(applyForm);
+  }
+  window.localStorage.setItem(applyMsg, applyForm);
+}
+
+// 获取供应信息
+export function getApplyForm() {
+  return window.localStorage.getItem(applyMsg);
+}
+// 移除用户信息
+export function removeApplyForm() {
+  // return Cookie.remove(adminUserName);
+  window.localStorage.removeItem(applyMsg);
 }

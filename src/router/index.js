@@ -488,7 +488,7 @@ let baseRoutes = [
               },
               {
                 path: "/personal/supply/tableView",
-                name: "SupplyTable",
+                name: "Supply",
                 class_true: false,
                 component: () =>
                   import("@/views/Personal/Supply/components/tableTree"),
@@ -500,7 +500,7 @@ let baseRoutes = [
               },
               {
                 path: "/personal/supply/addsupply",
-                name: "SupplyAdd",
+                name: "Supply",
                 class_true: false,
                 component: () =>
                   import("@/views/Personal/Supply/components/addSupply"),

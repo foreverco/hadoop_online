@@ -54,3 +54,21 @@ export function editauthentic(data) {
     data
   });
 }
+
+/* 添加我的供应信息 */
+export function reqAddsupply(data) {
+  return service.request({
+    method: "POST",
+    url: "/view/supply/member/pulishSupply",
+    data
+  });
+}
+
+/* 供应下拉列表 */
+export function reqsupplyTypeList(params) {
+  return service.request({
+    method: "get",
+    url: "/view/medince/getDictionaryItems",
+    params
+  });
+}

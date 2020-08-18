@@ -11,12 +11,12 @@
       </li>
     </ul>
 
-    <ul class="rzList" v-if="$route.path == '/personal/supply'">
+    <ul class="rzList" v-if="$route.name == 'Supply'">
       <li
         v-for="(item, index) in supplyList"
-        @click="changeType(index)"
+        @click="changeAppyType(index)"
         :key="index"
-        :class="{ active: fatherType == index }"
+        :class="{ active: applystatus == index }"
       >
         {{ item.label }}
         {{ `(${item.count})` }}
@@ -68,6 +68,9 @@ export default {
   computed: {
     fatherType() {
       return this.$store.state.config.autonymType;
+    },
+    applystatus() {
+      return this.$store.state.config.status;
     }
   },
   created() {
@@ -97,8 +100,14 @@ export default {
       routerArr.push(targetRoute);
       this.routerList = routerArr;
     },
+    // 修改认证类型
     changeType(value) {
-      this.$store.commit("config/updateautonymType", value);
+      this.$store.commit("updateautonymType", value);
+    },
+    // 修改供应认证类型
+    changeAppyType(value) {
+      this.$store.commit("updateApplyType", value);
+      console.log(this.$route.path);
     }
   }
 };
