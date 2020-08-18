@@ -490,7 +490,7 @@ export default {
             align-items: center;
             span {
               font-size: 16px;
-              font-weight: 600;
+              font-weight: 400;
               color: #ffffff;
               transition: all 0.2s linear;
             }

@@ -6,25 +6,30 @@
         :key="index"
         :class="{ navActive: navActive == index }"
         @click="changenavActive(index)"
-      >
-        {{ item.name }}
-      </li>
+      >{{ item.name }}</li>
     </ul>
-    <ul class="videoList">
-      <li>456</li>
-      <li>456</li>
-      <li>456</li>
-      <li>456</li>
-      <li>456</li>
-    </ul>
-    <div>
-      <pageVue
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :total="total"
-        :size="size"
-        :current="current"
-      ></pageVue>
+    <div class="videoBox">
+      <ul class="videoList">
+        <li v-for="(item, index) in videoList" :key="index">
+          <div class="imgBox">
+            <span>专家</span>
+            <img :src="item.imgUrl" alt>
+          </div>
+          <div class="contentBox">
+            <p>{{item.title}}</p>
+            <p>{{item.content}}</p>
+          </div>
+        </li>
+      </ul>
+      <div class="pageBox">
+        <pageVue
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :total="total"
+          :size="size"
+          :current="current"
+        ></pageVue>
+      </div>
     </div>
   </div>
 </template>
@@ -61,6 +66,58 @@ export default {
           name: "防风",
           value: "all"
         }
+      ],
+      videoList: [
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(1).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(2).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(3).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(4).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(5).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(8).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(1).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(5).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(8).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        },
+        {
+          imgUrl: require("../../../assets/images/test/zjzd/图片(1).png"),
+          title: "黄芪种植",
+          content: "关于春季病虫害防治与诊断"
+        }
       ]
     };
   },
@@ -91,7 +148,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .plantingVideo {
-  border: 1px solid red;
   .videoNav {
     background: $boxbg;
     display: flex;
@@ -114,8 +170,74 @@ export default {
       }
     }
   }
-  .videoList {
+  .videoBox {
     background: $boxbg;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 33px 52px;
+    .videoList {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      li {
+        width: 218px;
+        // margin: 30px 50px;
+        margin-right: 50px;
+        margin-bottom: 30px;
+        &:nth-child(5n) {
+          margin-right: 0;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+        .imgBox {
+          position: relative;
+          &:hover {
+            cursor: pointer;
+          }
+          span {
+            background: $maincolor;
+            color: #fff;
+            position: absolute;
+            top: 10px;
+            padding: 2px 5px;
+            border-radius: 0 10px 10px 0;
+          }
+          img {
+            width: 100%;
+            // height: 300px;
+          }
+        }
+        .contentBox {
+          height: 60px;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          padding-left: 15px;
+          p {
+            width: 100%;
+            font-size: 14px;
+            font-family: Microsoft YaHei;
+            font-weight: 400;
+            color: rgba(146, 146, 146, 1);
+            &:first-child {
+              font-size: 18px;
+              font-family: Microsoft YaHei;
+              font-weight: 400;
+              color: rgba(51, 51, 51, 1);
+            }
+          }
+        }
+      }
+    }
+    .pageBox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
 </style>
