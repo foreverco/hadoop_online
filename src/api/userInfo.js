@@ -54,6 +54,13 @@ export function editauthentic(data) {
     data
   });
 }
+/* 获取供应类型 */
+export function reqgetsupplyType() {
+  return service.request({
+    method: "get",
+    url: "/view/supply/member/getSupplySummaryInfos"
+  });
+}
 
 /* 添加我的供应信息 */
 export function reqAddsupply(data) {
@@ -70,5 +77,24 @@ export function reqsupplyTypeList(params) {
     method: "get",
     url: "/view/medince/getDictionaryItems",
     params
+  });
+}
+
+/* 删除我的供应 */
+export function reqdelsupply(data) {
+  return service.request({
+    method: "post",
+    url: "/view/supply/member/delSupply",
+    data
+  });
+}
+
+/* 下架我的供应 */
+
+export function requndersupply(data) {
+  return service.request({
+    method: "post",
+    url: "/view/supply/member/batchOff",
+    data
   });
 }

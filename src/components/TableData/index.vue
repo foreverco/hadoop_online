@@ -8,6 +8,7 @@
       size="mini"
       style="width: 100%"
       header-row-class-name="tableHead"
+      @selection-change="tableSelectChange"
       :header-cell-style="{
         background: table_config.headColor,
         color: table_config.headTxtColor
@@ -55,6 +56,11 @@
         ></el-table-column>
       </template>
     </el-table>
+    <el-row v-if="table_config.slotBox">
+      <template slot-scope>
+        <slot :name="table_config.slotName"></slot>
+      </template>
+    </el-row>
     <el-row
       :style="{ justifyContent: table_config.pagePosition }"
       style="display:flex;align-items: center"
@@ -83,6 +89,10 @@ export default {
   data() {
     return {
       loadingTable: true,
+      tableRow: {
+        type: Object,
+        default: () => {}
+      },
       table_config: {
         tHead: [],
         checkBox: true,
@@ -94,6 +104,8 @@ export default {
         pagePosition: "flex-end",
         url: "",
         pagination: true,
+        slotBox: false,
+        slotName: "",
         data: {}
       },
       total: 0,
@@ -244,7 +256,24 @@ export default {
       console.log(val);
       this.table_config.data.page = val;
       this.loadingData();
+    },
+    // 勾选checkbox时触发
+    tableSelectChange(val) {
+      console.log(val);
+      let rowData = {
+        idItem: val.map(item => item.id)
+      };
+      console.log(rowData);
+      this.$emit("update:tableRow", rowData);
     }
+    // tableSelectChange(val) {
+    //   let rowData = {
+    //     idItem: val.map(item => item.id)
+    //   };
+    //   // console.log(val.map(item => item.id));
+    //   console.log(this.tableRow);
+    //   this.$emit("update:tableRow", rowData);
+    // }
   }
 };
 </script>

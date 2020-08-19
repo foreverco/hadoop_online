@@ -7,7 +7,7 @@
         :swiperConfig="swiperConfig"
       ></SwiperVue>
     </div>
-    <!-- 政策资讯 登陆 -->
+    <!-- 政策资讯 登录 -->
     <div class="InfoLogin lvcontainer">
       <div class="Information">
         <Title titleTxt="政策资讯"></Title>
@@ -104,14 +104,14 @@
                 >
               </p>
               <p v-if="!userMsg">
-                登陆/注册获取更多体验
+                登录/注册获取更多体验
               </p>
               <p v-else>
                 欢迎来到蒙中药材网
               </p>
             </li>
             <li>
-              <el-button v-if="!userMsg" type="success">登陆/注册</el-button>
+              <el-button v-if="!userMsg" type="success">登录/注册</el-button>
               <el-button v-else type="danger">退出</el-button>
             </li>
           </ul>
@@ -255,13 +255,21 @@
     <!-- 今日供求 -->
     <div class="needBox lvcontainer">
       <div class="needLeft">
-        <Title titleTxt="今日供求"></Title>
+        <Title titleTxt="今日供应"></Title>
         <div class="tableBox">
-          <TableVue :config="tableConfig">
-            <!-- <template v-slot:image="slotData">
-            <el-avatar :src="slotData.data.photo"></el-avatar>
-          </template>
-          <template v-slot:status="slotData">
+          <TableVue :config="applytableConfig">
+            <template v-slot:supplyAmount="slotData">
+              {{
+                `${slotData.data.supplyAmount}${slotData.data.supplyUnitName}`
+              }}
+            </template>
+            <template v-slot:area="slotData">
+              {{
+                `${slotData.data.orginProvinceName}${slotData.data.orginCityName}${slotData.data.orginCountyName}`
+              }}
+            </template>
+
+            <!-- <template v-slot:status="slotData">
             <el-switch
               v-model="slotData.data.status"
               :active-value="1"
@@ -274,7 +282,7 @@
           </TableVue>
         </div>
         <div class="btnBox">
-          <el-button>发布供应信息</el-button>
+          <el-button @click="gotoGy">发布供应信息</el-button>
         </div>
       </div>
       <div class="needRight">
@@ -403,6 +411,31 @@ export default {
   },
   data() {
     return {
+      // 我的供应table
+      applytableConfig: {
+        checkBox: false,
+        hadBorder: false,
+        pagination: false,
+        tableHeight: "370",
+        headColor: "#D8EFDA",
+        url: "homesupplyList",
+        data: {
+          page: 1,
+          pageSize: 8,
+          status: ""
+        },
+        tHead: [
+          { label: "品名", prop: "medinceName" },
+          { label: "规格", prop: "specificationName", width: "50" },
+          { label: "供应量", type: "slot", slotName: "supplyAmount" },
+          { label: "产地", type: "slot", slotName: "area", width: "150" },
+          {
+            label: "操作",
+            type: "slot",
+            slotName: "opration"
+          }
+        ]
+      },
       // 表格配置
       tableConfig: {
         checkBox: false,
@@ -731,6 +764,19 @@ export default {
     wow.init();
   },
   methods: {
+    gotoGy() {
+      console.log(this.tokenMsg);
+      console.log(this.userMsg);
+      if (this.tokenMsg && this.userMsg) {
+        this.$router.push({
+          path: "/personal/supply/addsupply"
+        });
+      } else {
+        this.$router.push({
+          path: "/login"
+        });
+      }
+    },
     callbackComponent(params) {
       if (params.function) {
         this[params.function](params.data);
@@ -763,7 +809,7 @@ export default {
     // height: 800px;
     // position: relative;
   }
-  /* 政策资讯 登陆 */
+  /* 政策资讯 登录 */
   .InfoLogin {
     height: 620px;
     margin-top: 15px;

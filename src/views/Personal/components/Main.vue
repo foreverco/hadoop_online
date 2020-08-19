@@ -14,11 +14,11 @@
     <ul class="rzList" v-if="$route.name == 'Supply'">
       <li
         v-for="(item, index) in supplyList"
-        @click="changeAppyType(index)"
+        @click="changeAppyType(item.status)"
         :key="index"
         :class="{ active: applystatus == index }"
       >
-        {{ item.label }}
+        {{ item.lable }}
         {{ `(${item.count})` }}
       </li>
     </ul>
@@ -36,21 +36,22 @@
   </div>
 </template>
 <script>
+import { reqgetsupplyType } from "@/api/userInfo";
 export default {
   name: "PerMain",
   data() {
     return {
       supplyList: [
         // 全部供应
-        { status: 0, label: "全部供应", count: 20 },
-        // 审核中
-        { status: 1, label: "审核中", count: 3 },
-        // 审核通过
-        { status: 2, label: "审核通过", count: 5 },
-        // 已下架
-        { status: 3, label: "已下架", count: 6 },
-        // 审核未通过
-        { status: 4, label: "审核未通过", count: 6 }
+        // { status: 0, label: "全部供应", count: 20 },
+        // // 审核中
+        // { status: 1, label: "审核中", count: 3 },
+        // // 审核通过
+        // { status: 2, label: "审核通过", count: 5 },
+        // // 已下架
+        // { status: 3, label: "已下架", count: 6 },
+        // // 审核未通过
+        // { status: 4, label: "审核未通过", count: 6 }
       ],
       routerList: [],
       typeList: [
@@ -75,6 +76,7 @@ export default {
   },
   created() {
     this.getRouter(this.$route);
+    this.getApplyType();
   },
 
   watch: {
@@ -104,7 +106,15 @@ export default {
     changeType(value) {
       this.$store.commit("updateautonymType", value);
     },
-    // 修改供应认证类型
+    // 获取供应类型
+    getApplyType() {
+      reqgetsupplyType().then(res => {
+        console.log(res);
+        this.supplyList = res.data.data;
+      });
+    },
+
+    // 修改供应类型
     changeAppyType(value) {
       this.$store.commit("updateApplyType", value);
       console.log(this.$route.path);

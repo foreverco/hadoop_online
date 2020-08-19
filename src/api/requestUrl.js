@@ -4,6 +4,8 @@ const requestUrl = {
   // 获取收获地址列表
   addressList: "/view/address/member/queryList",
   // 获取我的供应列表
-  supplyList: "/view/supply/member/queryList"
+  supplyList: "/view/supply/member/queryList",
+  // 首页获取我的供应
+  homesupplyList: "/view/supply/queryRecentList"
 };
 export default requestUrl;

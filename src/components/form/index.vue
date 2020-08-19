@@ -6,81 +6,84 @@
       label-position="right"
       :label-width="formConfig.labelWidth"
     >
-      <el-form-item
-        v-for="item in formItem"
-        :key="item.prop"
-        :label="item.label"
-        :prop="item.prop"
-        :rules="item.rules"
-        :style="{ marginTop: formConfig.itemMargin }"
-      >
-        <!-- Input -->
-        <el-input
-          v-if="item.type == 'Input'"
-          :placeholder="item.placeholder"
-          v-model.trim="formData[item.prop]"
-          :disabled="item.disable"
-          :style="{ width: item.width }"
+      <template v-for="item in formItem">
+        <el-form-item
+          :key="item.prop"
+          :label="item.label"
+          :prop="item.prop"
+          :rules="item.rules"
+          v-if="!item.ishide"
+          :style="{ marginTop: formConfig.itemMargin }"
         >
-          <template v-if="item.slot" slot="append">{{ item.slot }}</template>
+          <!-- Input -->
+          <el-input
+            v-if="item.type == 'Input'"
+            :placeholder="item.placeholder"
+            v-model.trim="formData[item.prop]"
+            :disabled="item.disable"
+            :style="{ width: item.width }"
+          >
+            <template v-if="item.slot" slot="append">{{ item.slot }}</template>
+            <el-select
+              v-if="item.selslot"
+              v-model="formData[item.selProp]"
+              slot="append"
+              :placeholder="item.selPlaceHolder"
+              style="width: 75px;"
+            >
+              <el-option
+                v-for="i in item.selslotOptions"
+                :key="i.value"
+                :label="i.label"
+                :value="i.value"
+              >
+              </el-option>
+            </el-select>
+          </el-input>
+          <!-- 省市区 -->
+          <slot v-if="item.type == 'Slot'" :name="item.slotName"></slot>
+          <!-- Radio -->
+          <el-radio-group
+            v-if="item.type == 'Radio'"
+            v-model="formData[item.prop]"
+          >
+            <el-radio
+              v-for="(i, index) in item.options"
+              :key="index"
+              :label="i.value"
+              :style="{ width: item.width }"
+              >{{ i.label }}</el-radio
+            >
+          </el-radio-group>
+          <!-- 下拉框 -->
           <el-select
-            v-if="item.selslot"
-            v-model="formData[item.selProp]"
-            slot="append"
-            :placeholder="item.selPlaceHolder"
-            style="width: 75px;"
+            v-if="item.type == 'Select'"
+            v-model="formData[item.prop]"
+            placeholder="请选择"
+            filterable
+            :style="{ width: item.width }"
           >
             <el-option
-              v-for="i in item.selslotOptions"
+              v-for="i in item.options"
               :key="i.value"
               :label="i.label"
               :value="i.value"
             >
             </el-option>
           </el-select>
-        </el-input>
-        <!-- 省市区 -->
-        <slot v-if="item.type == 'Slot'" :name="item.slotName"></slot>
-        <!-- Radio -->
-        <el-radio-group
-          v-if="item.type == 'Radio'"
-          v-model="formData[item.prop]"
-        >
-          <el-radio
-            v-for="(i, index) in item.options"
-            :key="index"
-            :label="i.value"
+          <!-- 时间控件 -->
+          <el-date-picker
+            v-if="item.type == 'DataPick'"
+            v-model="formData[item.prop]"
+            type="datetime"
+            placeholder="选择日期时间"
             :style="{ width: item.width }"
-            >{{ i.label }}</el-radio
           >
-        </el-radio-group>
-        <!-- 下拉框 -->
-        <el-select
-          v-if="item.type == 'Select'"
-          v-model="formData[item.prop]"
-          placeholder="请选择"
-          filterable
-          :style="{ width: item.width }"
-        >
-          <el-option
-            v-for="i in item.options"
-            :key="i.value"
-            :label="i.label"
-            :value="i.value"
-          >
-          </el-option>
-        </el-select>
-        <!-- 时间控件 -->
-        <el-date-picker
-          v-if="item.type == 'DataPick'"
-          v-model="formData[item.prop]"
-          type="datetime"
-          placeholder="选择日期时间"
-          :style="{ width: item.width }"
-        >
-        </el-date-picker>
-        <!-- 按钮 -->
-      </el-form-item>
+          </el-date-picker>
+          <!-- 按钮 -->
+        </el-form-item>
+      </template>
+
       <el-form-item style="margin-top:30px;">
         <el-button
           :type="item.type"
@@ -167,13 +170,14 @@ export default {
   },
   watch: {
     formItem: {
-      handler() {
+      handler(newVal) {
         // alert(123);
-        // console.log(newVal);
+        console.log(newVal);
         this.initFormData();
       },
       // 初始化监听
-      immediate: true
+      immediate: true,
+      deep: true
     }
   }
 };

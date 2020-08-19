@@ -9,9 +9,15 @@ const whiteRoutesObjs = routerList.filter(item => {
   return item.name === "Personal";
 })[0].children;
 const whiteRoutes = whiteRoutesObjs.map(item => item.path);
-// console.log(whiteRoutes);
+console.log(whiteRoutes);
 
 router.beforeEach((to, from, next) => {
+  // chrome
+  document.body.scrollTop = 0;
+  // firefox
+  document.documentElement.scrollTop = 0;
+  // safari
+  window.pageYOffset = 0;
   if (to.meta.title) {
     document.title = "大数据分析平台-" + to.meta.title;
   }

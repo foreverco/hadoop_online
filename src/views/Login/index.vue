@@ -11,7 +11,7 @@
           v-model="activeName"
           @tab-click="handleClick"
         >
-          <el-tab-pane label="密码登陆" name="PASSWORD">
+          <el-tab-pane label="密码登录" name="PASSWORD">
             <el-form
               :model="passForm"
               status-icon
@@ -76,7 +76,7 @@
               </div>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="短信登陆" name="SMS">
+          <el-tab-pane label="短信登录" name="SMS">
             <el-form
               :model="phoneForm"
               status-icon

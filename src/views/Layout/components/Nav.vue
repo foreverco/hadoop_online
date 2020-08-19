@@ -32,7 +32,7 @@
         <div class="leftBox">
           <p v-if="$route.path == '/login' || $route.path == '/register'">
             <span v-if="$route.path == '/register'"
-              >已有账号,<b @click="login">马上登陆</b></span
+              >已有账号,<b @click="login">马上登录</b></span
             >
             <span v-if="$route.path == '/login'"
               >没有账号,<b @click="register">立即注册</b></span
@@ -97,7 +97,7 @@
         </ul>
         <ul class="headerright">
           <li>|</li>
-          <li v-if="!userMsg || userMsg == 'undefined'" @click="login">登陆</li>
+          <li v-if="!userMsg || userMsg == 'undefined'" @click="login">登录</li>
           <li v-if="!userMsg || userMsg == 'undefined'" @click="register">
             注册
           </li>
@@ -243,7 +243,7 @@ export default {
     handlelogout() {
       this.confirm({
         tip: "退出",
-        content: "确认退出登陆？",
+        content: "确认退出登录？",
         status: "账号退出成功",
         fn: this.logout
       });

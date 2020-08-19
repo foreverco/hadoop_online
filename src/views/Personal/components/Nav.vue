@@ -15,7 +15,7 @@
         <span class="plangter">{{ userMsg.info.username }}</span>
       </li>
       <li>
-        <el-button>发布求购信息</el-button>
+        <el-button @click="gotoGy">发布供应信息</el-button>
       </li>
       <li>
         <el-button>发布求购信息</el-button>
@@ -134,6 +134,15 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    gotoGy() {
+      if (this.$route.path !== "/personal/supply/addsupply") {
+        this.$router.push({
+          path: "/personal/supply/addsupply"
+        });
+      } else {
+        this.$message.warning("当前已在供应信息发布页面");
+      }
     }
   }
 };
