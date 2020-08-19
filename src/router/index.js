@@ -192,21 +192,49 @@ let baseRoutes = [{
             path: "/OTC1",
             name: "OTC1",
             class_true: false,
-            component: () => import("@/views/OTC/components/OTC1.vue"),
+            component: () => import("@/views/OTC/components/OTC1/index.vue"),
             hidden: false,
             meta: {
-              title: "交易平台1",
+              title: "供应信息",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/OTC1",
+                redirect: "/OTC1/index",
+                hidden: true
+              },
+              {
+              path: "/OTC1/index",
+              name: "OTC1",
+              class_true: false,
+              component: () => import("@/views/OTC/components/OTC1/component/list.vue"),
+              hidden: false,
+              meta: {
+                // title: "供应信息",
+                icon: "navmenu"
+              }
+            }]
           },
           {
             path: "/OTC2",
             name: "OTC2",
             class_true: false,
-            component: () => import("@/views/OTC/components/OTC2.vue"),
+            component: () => import("@/views/OTC/components/OTC2/index.vue"),
             hidden: false,
             meta: {
-              title: "交易平台2",
+              title: "求购信息",
+              icon: "navmenu"
+            }
+          },
+          {
+            path: "/company",
+            name: "Company",
+            class_true: false,
+            component: () => import("@/views/OTC/components/Company/index.vue"),
+            hidden: false,
+            meta: {
+              title: "企业信息",
               icon: "navmenu"
             }
           }
