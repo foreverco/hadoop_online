@@ -43,18 +43,59 @@
           </ul>
         </div>
       </div>
+      <div class="tableBox">
+        <TableVue :config="tableConfig">
+          <template v-slot:opration="slotData">
+            <i class="el-icon-s-data iconName"></i>
+            <span v-if="false">{{ slotData }}</span>
+          </template>
+        </TableVue>
+      </div>
     </div>
     <div class="rightBox">
-      <div class="topBox"></div>
-      <div class="midBox"></div>
-      <div class="botBox"></div>
+      <div class="topBox">
+        <Title titleTxt="综合100月涨幅榜（蒙中道地药材榜）" :btnShow="false"></Title>
+        <div class="table">
+          <TableVue :config="tableConfig">
+            <template v-slot:opration="slotData">
+              <i class="el-icon-s-data iconName"></i>
+              <span v-if="false">{{ slotData }}</span>
+            </template>
+          </TableVue>
+        </div>
+      </div>
+      <div class="midBox">
+        <Title titleTxt="综合100月跌幅榜（蒙中道地药材榜）" :btnShow="false"></Title>
+        <div class="table">
+          <TableVue :config="tableConfig">
+            <template v-slot:opration="slotData">
+              <i class="el-icon-s-data iconName"></i>
+              <span v-if="false">{{ slotData }}</span>
+            </template>
+          </TableVue>
+        </div>
+      </div>
+      <div class="botBox">
+        <Title titleTxt="市场咨询" :btnShow="false"></Title>
+        <ul>
+          <li>毫州市场黄芪行情有所反弹</li>
+          <li>内蒙古地道药材价格平稳，持续销量中</li>
+          <li>安国市场熟地黄货源批量走动 行情平稳</li>
+          <li>安国市场蛇床子货源按需走销中</li>
+          <li>安国市场野菊花货源正常购销 行情保持平稳</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import TableVue from "@/components/TableData";
 export default {
   name: "Market1",
+  components: {
+    TableVue
+  },
   computed: {
     areaCheck() {
       return this.areaList[this.areaactive].area;
@@ -118,7 +159,28 @@ export default {
         { area: "广西省" },
         { area: "山东省" }
       ],
-      drugName: ""
+      drugName: "",
+      // 表格配置
+      tableConfig: {
+        checkBox: false,
+        hadBorder: false,
+        pagination: true,
+        pagePosition: "center",
+        pageLayout: "prev,pager,next",
+        tableHeight: "370",
+        headColor: "#D8EFDA",
+        tHead: [
+          { label: "品名", prop: "name" },
+          { label: "规格", prop: "type", width: "50" },
+          { label: "供应量", prop: "num" },
+          { label: "产地", prop: "adress", width: "150" },
+          {
+            label: "操作",
+            type: "slot",
+            slotName: "opration"
+          }
+        ]
+      }
     };
   },
   methods: {
@@ -138,6 +200,20 @@ export default {
         border: 1px solid rgba(241, 241, 241, 1);
         border-radius: 5px 0 0 5px;
         outline: 0;
+      }
+    }
+  }
+  .rightBox {
+    .table {
+      .el-table__header tr,
+      .el-table__header th {
+        padding: 0;
+        height: 45px !important;
+      }
+      .el-table__body tr,
+      .el-table__body td {
+        padding: 0;
+        height: 45px !important;
       }
     }
   }
@@ -286,6 +362,9 @@ export default {
         }
       }
     }
+    .tableBox {
+      margin-top: 30px;
+    }
   }
   .rightBox {
     .topBox {
@@ -293,6 +372,21 @@ export default {
       padding: $boxpadding;
       width: 450px;
       height: 340px;
+      .table {
+        margin-top: 20px;
+        height: 260px;
+        overflow: hidden;
+        .el-table__header tr,
+        .el-table__header th {
+          padding: 0;
+          height: 20px !important;
+        }
+        .el-table__body tr,
+        .el-table__body td {
+          padding: 0;
+          height: 20px !important;
+        }
+      }
     }
     .midBox {
       background: $boxbg;
@@ -300,12 +394,23 @@ export default {
       width: 450px;
       height: 340px;
       margin: 30px 0;
+      .table {
+        margin-top: 20px;
+        height: 260px;
+        overflow: hidden;
+      }
     }
     .botBox {
       background: $boxbg;
       padding: $boxpadding;
       width: 450px;
       // height: 340px;
+      ul {
+        margin-top: 20px;
+        li {
+          height: 40px;
+        }
+      }
     }
   }
 }

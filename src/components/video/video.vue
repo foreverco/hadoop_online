@@ -33,8 +33,8 @@ export default {
       defalt: {}
     },
     videoclose: {
-      type :Boolean,
-      default:false
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -52,7 +52,7 @@ export default {
         preload: "auto",
         language: "zh-CN",
         // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
-        aspectRatio: "13:9",
+        // aspectRatio: "13:9",
         // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         fluid: true,
         sources: [
@@ -60,6 +60,7 @@ export default {
             //类型
             type: "video/ogg",
             // type:"video/mp4",
+            // src: "https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8"
             src: "http://vjs.zencdn.net/v/oceans.mp4"
             // src: ""
             // src: 'http://192.168.1.163:15580/34020000001320000005'
@@ -91,16 +92,14 @@ export default {
       return this.$refs.videoPlayer.player;
     }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     onPlayerPlay() {
       // console.log("player player", player);
       // console.log(this.playerOptions.sources[0].src);
       // console.log(this.videoCode.videoCode);
     },
-    onPlayerEnded() {
-    },
+    onPlayerEnded() {},
     resetVideo() {
       this.playerOptions.sources[0].src = "";
     }
@@ -124,15 +123,15 @@ export default {
   bottom: 5%;
   z-index: 1001;
 }
-::v-deep .vjs-control-bar {
-  // border: 1px solid red;
-  // height: 10%;
-  display: flex;
-  justify-content: space-between;
-}
+// ::v-deep .vjs-control-bar {
+//   // border: 1px solid red;
+//   // height: 10%;
+//   display: flex;
+//   justify-content: flex-start;
+// }
 ::v-deep .vjs-control-bar > div,
 ::v-deep .vjs-control-bar > button {
-  flex: 1;
+  // flex: 1;
   // border: 1px solid green;
   font-size: 12px;
 }

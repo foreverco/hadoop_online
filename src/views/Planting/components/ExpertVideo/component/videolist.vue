@@ -10,7 +10,7 @@
     </ul>
     <div class="videoBox">
       <ul class="videoList">
-        <li v-for="(item, index) in videoList" :key="index">
+        <li v-for="(item, index) in videoList" :key="index" @click="gotoVideo(item.id)">
           <div class="imgBox">
             <span>专家</span>
             <img :src="item.imgUrl" alt>
@@ -69,53 +69,63 @@ export default {
       ],
       videoList: [
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(1).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(1).png"),
           title: "黄芪种植",
+          id: "001",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(2).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(2).png"),
           title: "黄芪种植",
+          id: "002",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(3).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(3).png"),
           title: "黄芪种植",
+          id: "003",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(4).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(4).png"),
           title: "黄芪种植",
+          id: "004",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(5).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(5).png"),
           title: "黄芪种植",
+          id: "005",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(8).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(8).png"),
           title: "黄芪种植",
+          id: "006",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(1).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(1).png"),
           title: "黄芪种植",
+          id: "007",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(5).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(5).png"),
           title: "黄芪种植",
+          id: "008",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(8).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(8).png"),
           title: "黄芪种植",
+          id: "009",
           content: "关于春季病虫害防治与诊断"
         },
         {
-          imgUrl: require("../../../assets/images/test/zjzd/图片(1).png"),
+          imgUrl: require("@/assets/images/test/zjzd/图片(1).png"),
           title: "黄芪种植",
+          id: "010",
           content: "关于春季病虫害防治与诊断"
         }
       ]
@@ -127,6 +137,16 @@ export default {
   methods: {
     changenavActive(index) {
       this.navActive = index;
+    },
+    /* 跳转视频详情 */
+    gotoVideo(e) {
+      console.log(e);
+      this.$router.push({
+        path: "/planting2/video",
+        query: {
+          id: e
+        }
+      });
     },
     getpolicyNews() {
       let policyNewsParams = {

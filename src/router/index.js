@@ -10,8 +10,7 @@ import Layout from "../views/Layout";
 
 Vue.use(VueRouter);
 
-let baseRoutes = [
-  {
+let baseRoutes = [{
     path: "/",
     redirect: "/home",
     hiddem: true
@@ -19,8 +18,7 @@ let baseRoutes = [
   {
     path: "/",
     component: Layout,
-    children: [
-      {
+    children: [{
         path: "/login",
         name: "Login",
         hidden: true,
@@ -61,8 +59,7 @@ let baseRoutes = [
           title: "区域规划",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/areaPlan1",
             name: "AreaPlan1",
             class_true: false,
@@ -89,37 +86,65 @@ let baseRoutes = [
         ]
       },
       {
-        path: "/planting",
+        path: "/planting2",
         name: "Planting",
         class_true: false,
-        component: () => import("@/views/Planting"),
+        component: () => import("@/views/Planting/index.vue"),
         hidden: false,
         meta: {
           title: "种植指导",
           icon: "navmenu"
         },
-        children: [
-          // {
-          //   path: "/planting1",
-          //   name: "Planting1",
-          //   class_true: false,
-          //   component: () =>
-          //     import("../views/Planting/components/Planting1.vue"),
-          //   hidden: false,
-          //   meta: {
-          //     title: "种植指导1",
-          //     icon: "navmenu"
-          //   }
-          // },
-          {
+        children: [{
             path: "/planting2",
-            name: "Planting2",
+            name: "ExpertVideo",
             class_true: false,
             component: () =>
-              import("@/views/Planting/components/Planting2.vue"),
+              import("@/views/Planting/components/ExpertVideo/index.vue"),
             hidden: false,
             meta: {
               title: "专家教学视频",
+              icon: "navmenu"
+            },
+            children: [{
+                path: '/planting2',
+                redirect: "/planting2/expertVideo"
+              },
+              {
+                path: "/planting2/expertVideo",
+                name: "Planting2",
+                class_true: false,
+                component: () =>
+                  import("@/views/Planting/components/ExpertVideo/component/videolist.vue"),
+                hidden: true,
+                meta: {
+                  title: "专家教学视频",
+                  icon: "navmenu"
+                },
+              },
+              {
+                path: "/planting2/video",
+                name: "Planting2",
+                class_true: false,
+                component: () =>
+                  import("@/views/Planting/components/ExpertVideo/component/videoMsg.vue"),
+                hidden: true,
+                meta: {
+                  title: "视频详情",
+                  icon: "navmenu"
+                },
+              }
+            ]
+          },
+          {
+            path: "/planting2",
+            name: "ExpertVideo",
+            class_true: false,
+            component: () =>
+              import("@/views/Planting/components/norm.vue"),
+            hidden: false,
+            meta: {
+              title: "标准化种植规范",
               icon: "navmenu"
             }
           }
@@ -157,8 +182,7 @@ let baseRoutes = [
           title: "市场分析",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/Market1",
             name: "Market1",
             class_true: false,
@@ -192,8 +216,7 @@ let baseRoutes = [
           title: "交易平台",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/OTC1/index",
             name: "OTC1",
             class_true: false,
@@ -270,8 +293,7 @@ let baseRoutes = [
           title: "道地药材",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/drug",
             redirect: "/drug/index",
             hidden: true
@@ -321,8 +343,7 @@ let baseRoutes = [
           title: "政策资讯",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/marketInfo",
             name: "MarketInfoIndex",
             class_true: false,
@@ -333,8 +354,7 @@ let baseRoutes = [
               icon: "navmenu"
             },
 
-            children: [
-              {
+            children: [{
                 path: "/marketInfo",
                 // redirect: "/marketInfo/marketMsg",
                 redirect: "/marketInfo/marketList",
@@ -411,8 +431,7 @@ let baseRoutes = [
           title: "个人中心",
           icon: "navmenu"
         },
-        children: [
-          {
+        children: [{
             path: "/personal/center",
             name: "PerCenter",
             class_true: false,
@@ -433,8 +452,7 @@ let baseRoutes = [
               title: "个人记录",
               icon: "navmenu"
             },
-            children: [
-              {
+            children: [{
                 path: "/personal/notes",
                 redirect: "/personal/notes/browse",
                 hidden: true
@@ -486,20 +504,18 @@ let baseRoutes = [
               title: "用户调查",
               icon: "navmenu"
             },
-            children: [
-              {
-                path: "/personal/survey/add",
-                name: "Survey",
-                class_true: false,
-                component: () =>
-                  import("@/views/Personal/Survey/components/add.vue"),
-                hidden: false,
-                meta: {
-                  title: "新建",
-                  icon: "navmenu"
-                }
+            children: [{
+              path: "/personal/survey/add",
+              name: "Survey",
+              class_true: false,
+              component: () =>
+                import("@/views/Personal/Survey/components/add.vue"),
+              hidden: false,
+              meta: {
+                title: "新建",
+                icon: "navmenu"
               }
-            ]
+            }]
           },
           {
             path: "/personal/saveCenter",
@@ -522,8 +538,7 @@ let baseRoutes = [
               title: "我的地址",
               icon: "navmenu"
             },
-            children: [
-              {
+            children: [{
                 path: "/personal/adress",
                 redirect: "/personal/adress/list",
                 hidden: true
@@ -564,8 +579,7 @@ let baseRoutes = [
               title: "我的供应",
               icon: "navmenu"
             },
-            children: [
-              {
+            children: [{
                 path: "/personal/supply",
                 redirect: "/personal/supply/tableView",
                 hidden: true

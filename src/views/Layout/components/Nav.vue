@@ -23,11 +23,11 @@
     <div class="headerImgBox">
       <div class="lvcontainer headerImgBoxCon">
         <div class="imgBox">
-          <img src="@/assets/images/nav/navlogo.png" alt="" />
-          <div class="headerImgBoxtxt">
+          <img src="@/assets/images/test/home/logo.png" alt="" />
+          <!-- <div class="headerImgBoxtxt">
             <p>蒙中药材网</p>
             <p>专注内蒙古中药材种种销售</p>
-          </div>
+          </div> -->
         </div>
         <div class="leftBox">
           <p v-if="$route.path == '/login' || $route.path == '/register'">
@@ -361,7 +361,7 @@ export default {
         justify-content: center;
         align-items: center;
         img {
-          // width: 100%;
+          width: 80%;
         }
         .headerImgBoxtxt {
           margin-left: 18px;

@@ -2,10 +2,7 @@
   <div class="home lvallcontainer">
     <div class="swiperBox lvallcontainer">
       <!-- 轮播图 -->
-      <SwiperVue
-        :imgList="swiperList1"
-        :swiperConfig="swiperConfig"
-      ></SwiperVue>
+      <SwiperVue :imgList="swiperList1" :swiperConfig="swiperConfig"></SwiperVue>
     </div>
     <!-- 政策资讯 登录 -->
     <div class="InfoLogin lvcontainer">
@@ -14,10 +11,7 @@
         <div class="InformationContent">
           <div class="InfoswiperBox">
             <!-- 轮播图 -->
-            <SwiperVue
-              :imgList="swiperList2"
-              :swiperConfig="swiperConfig"
-            ></SwiperVue>
+            <SwiperVue :imgList="swiperList2" :swiperConfig="swiperConfig"></SwiperVue>
           </div>
           <div class="InfoTab">
             <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -93,22 +87,18 @@
               <el-avatar :size="30" :src="userMsg.info.headUrl"></el-avatar>
             </li>
             <li v-if="!userMsg">
-              <img src="../../assets/logo.png" alt="" />
+              <img src="@/assets/images/test/home/默认头像.png" alt>
             </li>
             <li>
               <p>
-                <span>hi </span>
-                <span v-if="!userMsg"> 游客 45586</span>
-                <span v-if="userMsg && userMsg != 'undefined'">
-                  {{ (userMsg.info && userMsg.info.nickname) || "admin" }}</span
-                >
+                <span>hi</span>
+                <span v-if="!userMsg">游客 45586</span>
+                <span
+                  v-if="userMsg && userMsg != 'undefined'"
+                >{{ (userMsg.info && userMsg.info.nickname) || "admin" }}</span>
               </p>
-              <p v-if="!userMsg">
-                登录/注册获取更多体验
-              </p>
-              <p v-else>
-                欢迎来到蒙中药材网
-              </p>
+              <p v-if="!userMsg">登录/注册获取更多体验</p>
+              <p v-else>欢迎来到蒙中药材网</p>
             </li>
             <li>
               <el-button v-if="!userMsg" type="success">登录/注册</el-button>
@@ -123,11 +113,7 @@
         <div class="placeBox">
           <Title titleTxt="区域规划"></Title>
           <div class="placeMap">
-            <AmapVue
-              ref="amap"
-              :options="options_map"
-              @callback="callbackComponent"
-            ></AmapVue>
+            <AmapVue ref="amap" :options="options_map" @callback="callbackComponent"></AmapVue>
           </div>
         </div>
       </div>
@@ -142,9 +128,7 @@
               :key="index"
               :class="{ priceTypeActive: priceTypeActive == index }"
               @click="changepriceType(index)"
-            >
-              {{ item.name }}
-            </li>
+            >{{ item.name }}</li>
           </ul>
           <p>更多 > ></p>
         </div>
@@ -159,7 +143,7 @@
               :active-value="1"
               :inactive-value="0"
             ></el-switch>
-          </template> -->
+            </template>-->
             <template v-slot:opration="slotData">
               <i class="el-icon-s-data iconName"></i>
               <span v-if="false">{{ slotData }}</span>
@@ -171,84 +155,19 @@
       <div class="priceRight">
         <Title titleTxt="人气品种"></Title>
         <ul class="typeList">
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
-          </li>
-          <li>
-            <i class="el-icon-star-off"></i>
-            <span>123</span>
+          <li v-for="(item, index) in drugTypeList" :key="index">
+            <i :class="item.iconName"></i>
+            <span>{{item.name}}</span>
           </li>
         </ul>
       </div>
     </div>
     <!-- 热点专题 -->
     <div class="lvcontainer hotMsg">
-      <div class="hotTitle">
-        热点专题
-      </div>
+      <div class="hotTitle">热点专题</div>
       <div class="hotSwiper">
         <!-- 轮播图 -->
-        <SwiperVue
-          :imgList="hotswiperList"
-          :swiperConfig="hotswiperConfig"
-        ></SwiperVue>
+        <SwiperVue :imgList="hotswiperList" :swiperConfig="hotswiperConfig"></SwiperVue>
       </div>
     </div>
 
@@ -260,12 +179,12 @@
           <TableVue :config="applytableConfig">
             <template v-slot:supplyAmount="slotData">
               {{
-                `${slotData.data.supplyAmount}${slotData.data.supplyUnitName}`
+              `${slotData.data.supplyAmount}${slotData.data.supplyUnitName}`
               }}
             </template>
             <template v-slot:area="slotData">
               {{
-                `${slotData.data.orginProvinceName}${slotData.data.orginCityName}${slotData.data.orginCountyName}`
+              `${slotData.data.orginProvinceName}${slotData.data.orginCityName}${slotData.data.orginCountyName}`
               }}
             </template>
 
@@ -275,7 +194,7 @@
               :active-value="1"
               :inactive-value="0"
             ></el-switch>
-          </template> -->
+            </template>-->
             <template v-slot:opration="slotData">
               <el-button @click="findApply(slotData.data)">查看</el-button>
             </template>
@@ -298,11 +217,9 @@
               :active-value="1"
               :inactive-value="0"
             ></el-switch>
-          </template> -->
+            </template>-->
             <template v-slot:opration="slotData">
-              <el-button size="mini" @click="find(slotData.data)"
-                >查看</el-button
-              >
+              <el-button size="mini" @click="find(slotData.data)">查看</el-button>
             </template>
           </TableVue>
         </div>
@@ -323,7 +240,7 @@
         </ul>
         <ul class="imgList">
           <li v-for="(item, index) in drugList" :key="index">
-            <img :src="item.imgUrl" alt="" />
+            <img :src="item.imgUrl" alt>
           </li>
         </ul>
       </div>
@@ -331,9 +248,7 @@
     <!-- 视频专区 -->
     <div class="videoBox lvcontainer">
       <div class="videoList">
-        <div class="videoListTop">
-          视频专区
-        </div>
+        <div class="videoListTop">视频专区</div>
         <div class="videoListBot">
           <div class="videoListBotTitle">
             <span>全部</span>
@@ -363,8 +278,8 @@
       </div>
       <div class="videoContent">
         <ul>
-          <li v-for="(item, index) in videoList" :key="index">
-            <img :src="item.imgUrl" alt="" />
+          <li v-for="(item, index) in videoList" :key="index" @click="gotoVideo(item)">
+            <img :src="item.imgUrl" alt>
           </li>
         </ul>
       </div>
@@ -656,6 +571,73 @@ export default {
         }
       ],
       activeName: "first",
+      /* 药材品种列表 */
+      drugTypeList: [
+        {
+          name: "黄芪",
+          iconName: "el-icon-camera-solid"
+        },
+        {
+          name: "甘草",
+          iconName: "el-icon-video-camera-solid"
+        },
+        {
+          name: "防风",
+          iconName: "el-icon-s-shop"
+        },
+        {
+          name: "麻黄",
+          iconName: "el-icon-s-marketing"
+        },
+        {
+          name: "黄芪",
+          iconName: "el-icon-camera-solid"
+        },
+        {
+          name: "甘草",
+          iconName: "el-icon-video-camera-solid"
+        },
+        {
+          name: "防风",
+          iconName: "el-icon-s-shop"
+        },
+        {
+          name: "麻黄",
+          iconName: "el-icon-s-marketing"
+        },
+        {
+          name: "黄芪",
+          iconName: "el-icon-camera-solid"
+        },
+        {
+          name: "甘草",
+          iconName: "el-icon-video-camera-solid"
+        },
+        {
+          name: "防风",
+          iconName: "el-icon-s-shop"
+        },
+        {
+          name: "麻黄",
+          iconName: "el-icon-s-marketing"
+        },
+        {
+          name: "黄芪",
+          iconName: "el-icon-camera-solid"
+        },
+        {
+          name: "甘草",
+          iconName: "el-icon-video-camera-solid"
+        },
+        {
+          name: "防风",
+          iconName: "el-icon-s-shop"
+        },
+        {
+          name: "麻黄",
+          iconName: "el-icon-s-marketing"
+        }
+      ],
       /* 价格趋势 */
       priceTypeList: [
         { name: "今日价格", value: 0 },
@@ -726,27 +708,35 @@ export default {
       /* 视频专区 */
       videoList: [
         {
+          id: "001",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         },
         {
+          id: "002",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         },
         {
+          id: "003",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         },
         {
+          id: "004",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         },
         {
+          id: "005",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         },
         {
+          id: "006",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         },
         {
+          id: "007",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         },
         {
+          id: "008",
           imgUrl: require("@/assets/images/videoImg/videoImg1.png")
         }
       ]
@@ -796,6 +786,16 @@ export default {
       if (params.function) {
         this[params.function](params.data);
       }
+    },
+    /* 跳转视频详情 */
+    gotoVideo(e) {
+      console.log(e);
+      this.$router.push({
+        path: "/planting2/video",
+        query: {
+          id: e.id
+        }
+      });
     },
     mapLoad() {
       // console.log(123);
@@ -897,7 +897,7 @@ export default {
           align-items: center;
           li {
             &:first-child {
-              width: 10%;
+              width: 15%;
               img {
                 width: 100%;
               }
@@ -1020,6 +1020,7 @@ export default {
             width: 50px;
             height: 50px;
             border-radius: 50px;
+            font-size: 22px;
             display: flex;
             justify-content: center;
             align-items: center;

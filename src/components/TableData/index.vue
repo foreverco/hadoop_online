@@ -29,9 +29,7 @@
           :width="item.width"
         >
           <template slot-scope="scope">
-            <span
-              v-html="item.callback && item.callback(scope.row, item.prop)"
-            ></span>
+            <span v-html="item.callback && item.callback(scope.row, item.prop)"></span>
           </template>
         </el-table-column>
         <el-table-column
@@ -74,7 +72,7 @@
         :current-page="currentPage"
         :page-sizes="[1, 2, 3, 10]"
         :page-size="table_config.data.pageSize"
-        layout="total,sizes,prev,pager,next,jumper"
+        :layout="table_config.pageLayout"
         :total="total"
       ></el-pagination>
     </el-row>
@@ -102,6 +100,7 @@ export default {
         headTxtColor: "#000000",
         tooltip: false,
         pagePosition: "flex-end",
+        pageLayout: "total,sizes,prev,pager,next,jumper",
         url: "",
         pagination: true,
         slotBox: false,
