@@ -16,7 +16,7 @@
           <span>{{ item.title }}</span>
           <span>{{ item.con }}</span>
         </li>
-        <li>
+        <li v-if="initfirmRegisterData.autonymType == 0">
           <span>身份证照片</span>
           <p>
             <img
@@ -159,6 +159,61 @@ export default {
             this.imgList.push(this.initfirmRegisterData[key]);
           } else if (key == "privateIdcardBack") {
             this.imgList.push(this.initfirmRegisterData[key]);
+          }
+        }
+      } else {
+        for (let key in this.initfirmRegisterData) {
+          // console.log(key, this.initfirmRegisterData[key]);
+          let obj = {};
+          if (key == "firmName") {
+            obj.title = "企业名称";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmLegalPeople") {
+            obj.title = "企业法人";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmPhone") {
+            obj.title = "企业联系电话";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmFund") {
+            obj.title = "企业注册资金";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmSites") {
+            obj.title = "企业官网";
+            obj.con = `http://www.${this.initfirmRegisterData[key]}.com`;
+            arr.push(obj);
+          } else if (key == "firmBusinessLicense") {
+            obj.title = "营业执照注册号";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmLicenseDueDate") {
+            obj.title = "营业执照到期日";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmTaxpayerNumber") {
+            obj.title = "纳税人识别号";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmOrganizingCode") {
+            obj.title = "组织机构代码";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmRegisterLocation") {
+            obj.title = "企业注册地址";
+            obj.con = this.initfirmRegisterData["address"];
+            // obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmBusinessScope") {
+            obj.title = "企业经营范围";
+            obj.con = this.initfirmRegisterData[key];
+            arr.push(obj);
+          } else if (key == "firmBusinessLicenseImage") {
+            obj.title = "企业资质上传";
+            obj.con = "已做隐私处理，不显示具体内容";
+            arr.push(obj);
           }
         }
       }

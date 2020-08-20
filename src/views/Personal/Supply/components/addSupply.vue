@@ -36,10 +36,7 @@
           :show-file-list="false"
           cropper
           :cropperOption="{
-            autoCropWidth: 200,
-            autoCropHeight: 120,
-            fixedBox: true,
-            fixedNumber: [2, 1]
+            fixedBox: true
           }"
           :on-success="picMethod"
           :before-upload="beforeAvatarUpload"
@@ -330,9 +327,7 @@ export default {
     // this.formItem[0].options = this.$store.state.config.drugList;
     if (getApplyForm()) {
       this.formData = JSON.parse(getApplyForm());
-      console.log(this.formData);
     }
-    console.log(this.$route.query);
     if (this.$route.query && this.$route.query.id) {
       this.formData = this.$route.query;
       // for (let key in this.formData) {
@@ -354,7 +349,6 @@ export default {
         this.$route.query.warehouseCountyId
       );
     }
-    console.log(this.formData);
   },
   mounted() {
     if (this.$route.query && this.$route.query.id) {

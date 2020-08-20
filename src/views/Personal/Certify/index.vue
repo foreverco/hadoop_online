@@ -151,7 +151,7 @@
         </el-form-item>
         <el-form-item label="企业官网">
           <el-input v-model="cerifyForm.firmSites" style="width:50%">
-            <template slot="prepend">Http://</template>
+            <template slot="prepend">Http://www</template>
             <template slot="append">.com</template>
           </el-input>
         </el-form-item>
@@ -285,13 +285,155 @@
               <p style="text-align:center;width:200px;">税务登记证</p>
             </el-col>
           </el-row>
+
+          <el-row>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :cropperOption="{
+                  autoCropWidth: 200,
+                  autoCropHeight: 120,
+                  fixedBox: true,
+                  fixedNumber: [2, 1]
+                }"
+                :on-success="firmOrganizingCodeImageMethod"
+                :before-upload="beforeAvatarUpload"
+                style="{border:1px solid blue}"
+              >
+                <img
+                  v-if="cerifyForm.firmOrganizingCodeImage"
+                  :src="cerifyForm.firmOrganizingCodeImage"
+                  class="avatar"
+                  width="200"
+                  height=""
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/身份证正面照.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+              <p style="text-align:center;width:200px;">组织机构代码证</p>
+            </el-col>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :cropperOption="{
+                  autoCropWidth: 200,
+                  autoCropHeight: 120,
+                  fixedBox: true,
+                  fixedNumber: [2, 1]
+                }"
+                :on-success="firmAccountImageMethod"
+                :before-upload="beforeAvatarUpload"
+                style="{border:1px solid blue}"
+              >
+                <img
+                  v-if="cerifyForm.firmAccountImage"
+                  :src="cerifyForm.firmAccountImage"
+                  class="avatar"
+                  width="200"
+                  height=""
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/身份证正面照.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+              <p style="text-align:center;width:200px;">银行开户许可证</p>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :cropperOption="{
+                  autoCropWidth: 200,
+                  autoCropHeight: 120,
+                  fixedBox: true,
+                  fixedNumber: [2, 1]
+                }"
+                :on-success="firmOtherResource1Method"
+                :before-upload="beforeAvatarUpload"
+                style="{border:1px solid blue}"
+              >
+                <img
+                  v-if="cerifyForm.firmOtherResource1"
+                  :src="cerifyForm.firmOtherResource1"
+                  class="avatar"
+                  width="200"
+                  height=""
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/身份证正面照.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+              <p style="text-align:center;width:200px;">其他资质1</p>
+            </el-col>
+            <el-col :span="10">
+              <per-upload
+                class="avatar-uploader"
+                :limit="1"
+                action="/media/file/upload"
+                :show-file-list="false"
+                cropper
+                :cropperOption="{
+                  autoCropWidth: 200,
+                  autoCropHeight: 120,
+                  fixedBox: true,
+                  fixedNumber: [2, 1]
+                }"
+                :on-success="firmOtherResource2Method"
+                :before-upload="beforeAvatarUpload"
+                style="{border:1px solid blue}"
+              >
+                <img
+                  v-if="cerifyForm.firmOtherResource2"
+                  :src="cerifyForm.firmOtherResource2"
+                  class="avatar"
+                  width="200"
+                  height=""
+                />
+                <img
+                  v-else
+                  src="@/assets/images/common/身份证正面照.png"
+                  class="avatar"
+                  width="200"
+                />
+                <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+              </per-upload>
+              <p style="text-align:center;width:200px;">其他资质2</p>
+            </el-col>
+          </el-row>
         </el-form-item>
       </template>
       <el-form-item class="btnBox">
         <el-button type="success" @click="certifySubmit('cerifyForm')"
           >提交审核</el-button
         >
-        <el-button type="success" @click="certifySubmit('cerifyForm')"
+        <el-button type="success" @click="resetcertify('cerifyForm')"
           >重置表单</el-button
         >
       </el-form-item>
@@ -404,7 +546,15 @@ export default {
         // 营业执照url
         firmBusinessLicenseImage: "",
         // 企业税务登记证图片url
-        firmTaxRegistrationImage: ""
+        firmTaxRegistrationImage: "",
+        // 组织机构代码证图片url
+        firmOrganizingCodeImage: "",
+        // 银行开户许可证url
+        firmAccountImage: "",
+        // 其他资源url1
+        firmOtherResource1: "",
+        // 其他资源url2
+        firmOtherResource2: ""
       },
       cerifyRules: {
         autonymType: [
@@ -538,9 +688,9 @@ export default {
             formParams.nativeCity = this.cerifyForm.city[1];
             formParams.nativeArea = this.cerifyForm.city[2];
           } else if (this.cerifyForm.autonymType == 1) {
-            formParams.nativeProvince = this.cerifyForm.city1[0];
-            formParams.nativeCity = this.cerifyForm.city1[1];
-            formParams.nativeArea = this.cerifyForm.city1[2];
+            formParams.nativeProvince = this.cerifyForm.qycity[0];
+            formParams.nativeCity = this.cerifyForm.qycity[1];
+            formParams.nativeArea = this.cerifyForm.qycity[2];
           }
           console.log(formParams);
           editauthentic(formParams).then(res => {
@@ -551,6 +701,7 @@ export default {
         }
       });
     },
+    resetcertify() {},
     closeMess() {
       this.messOption ? this.messOption.close() : null;
       this.$router.push({ name: "Survey" });
@@ -607,10 +758,43 @@ export default {
     },
     // 税务登记url
     rationMethod(res) {
-      console.log(res);
       if (res.code == 200) {
         console.log(res);
         this.cerifyForm.firmTaxRegistrationImage = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    // 组织机构代码证
+    firmOrganizingCodeImageMethod(res) {
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.firmOrganizingCodeImage = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    // 银行开户许可证
+    firmAccountImageMethod(res) {
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.firmAccountImage = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    firmOtherResource1Method(res) {
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.firmOtherResource1 = res.data;
+      } else {
+        console.log("图片上传失败");
+      }
+    },
+    firmOtherResource2Method(res) {
+      if (res.code == 200) {
+        console.log(res);
+        this.cerifyForm.firmOtherResource2 = res.data;
       } else {
         console.log("图片上传失败");
       }

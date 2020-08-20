@@ -22,6 +22,17 @@
         {{ `(${item.count})` }}
       </li>
     </ul>
+
+    <ul class="rzList" v-if="$route.name == 'Notes'">
+      <li
+        v-for="(item, index) in NotesList"
+        :key="index"
+        :class="{ active: $route.path == `/personal/notes/${item.value}` }"
+        @click="changeNotesType(item.value)"
+      >
+        {{ item.name }}
+      </li>
+    </ul>
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item
         v-for="(item, index) in routerList"
@@ -30,7 +41,10 @@
         >{{ item.meta.title }}</el-breadcrumb-item
       >
     </el-breadcrumb>
-    <div class="viewBox">
+    <div
+      class="viewBox"
+      :class="{ istransform: $route.path == '/personal/notes/favorite' }"
+    >
       <router-view></router-view>
     </div>
   </div>
@@ -41,18 +55,7 @@ export default {
   name: "PerMain",
   data() {
     return {
-      supplyList: [
-        // 全部供应
-        // { status: 0, label: "全部供应", count: 20 },
-        // // 审核中
-        // { status: 1, label: "审核中", count: 3 },
-        // // 审核通过
-        // { status: 2, label: "审核通过", count: 5 },
-        // // 已下架
-        // { status: 3, label: "已下架", count: 6 },
-        // // 审核未通过
-        // { status: 4, label: "审核未通过", count: 6 }
-      ],
+      supplyList: [],
       routerList: [],
       typeList: [
         {
@@ -62,6 +65,20 @@ export default {
         {
           name: "企业认证",
           value: 1
+        }
+      ],
+      NotesList: [
+        {
+          name: "浏览记录",
+          value: "browse"
+        },
+        {
+          name: "收藏夹",
+          value: "favorite"
+        },
+        {
+          name: "交易记录",
+          value: "2"
         }
       ]
     };
@@ -73,6 +90,9 @@ export default {
     applystatus() {
       return this.$store.state.config.status;
     }
+    // notesStatus() {
+    //   return this.$store.state.config.notesStatus;
+    // }
   },
   created() {
     this.getRouter(this.$route);
@@ -80,15 +100,12 @@ export default {
   },
 
   watch: {
-    $route() {
-      this.getRouter(this.$route);
-      // let targetRoute = this.$route.matched.filter(item => {
-      //   return item.path == newVal.path;
-      // })[0];
-      // let routerArr = [];
-      // routerArr.push(targetRoute.parent);
-      // routerArr.push(targetRoute);
-      // this.routerList = routerArr;
+    $route: {
+      handler(newVal) {
+        this.getRouter(this.$route);
+        console.log(newVal);
+      },
+      immediate: true
     }
   },
   methods: {
@@ -118,13 +135,20 @@ export default {
     changeAppyType(value) {
       this.$store.commit("updateApplyType", value);
       console.log(this.$route.path);
+    },
+    // 修改个人记录类型
+    changeNotesType(value) {
+      // this.$store.commit("updatenotesStatus", value);
+      this.$router.push({
+        path: `/personal/notes/${value}`
+      });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .perMain {
-  width: calc(1440px - 400px);
+  width: calc(1440px - 360px);
   // width: calc(100vw - $perNav);
   .rzList {
     background: #ffffff;
@@ -148,6 +172,9 @@ export default {
         color: #333333;
       }
     }
+  }
+  .istransform {
+    background: transparent !important;
   }
   .viewBox {
     background: #ffffff;

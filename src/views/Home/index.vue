@@ -255,7 +255,7 @@
     <!-- 今日供求 -->
     <div class="needBox lvcontainer">
       <div class="needLeft">
-        <Title titleTxt="今日供应"></Title>
+        <Title titleTxt="今日供应" @titleClick="gotoSupplyList"></Title>
         <div class="tableBox">
           <TableVue :config="applytableConfig">
             <template v-slot:supplyAmount="slotData">
@@ -277,7 +277,7 @@
             ></el-switch>
           </template> -->
             <template v-slot:opration="slotData">
-              <el-button @click="find(slotData.data)">查看</el-button>
+              <el-button @click="findApply(slotData.data)">查看</el-button>
             </template>
           </TableVue>
         </div>
@@ -764,6 +764,7 @@ export default {
     wow.init();
   },
   methods: {
+    // 跳转发布供应页面
     gotoGy() {
       console.log(this.tokenMsg);
       console.log(this.userMsg);
@@ -777,6 +778,20 @@ export default {
         });
       }
     },
+    // 跳转供应列表
+    gotoSupplyList() {
+      this.$router.push({
+        path: "/OTC1/index"
+      });
+    },
+    // 跳转供应详情
+    findApply(e) {
+      console.log(e);
+      this.$router.push({
+        path: "/OTC1/applyMsg",
+        query: { id: e.id, str: e.title }
+      });
+    },
     callbackComponent(params) {
       if (params.function) {
         this[params.function](params.data);
@@ -788,6 +803,7 @@ export default {
     find(e) {
       console.log(e);
     },
+    //
     handleClick(tab, event) {
       console.log(tab, event);
     },

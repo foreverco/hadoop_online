@@ -96,6 +96,11 @@ export default {
               subIndex: "/personal/center"
             },
             {
+              label: "个人记录",
+              name: "Notes",
+              subIndex: "/personal/notes"
+            },
+            {
               label: "实名认证",
               name: "Certify",
               subIndex: "/personal/certify"

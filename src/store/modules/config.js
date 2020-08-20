@@ -15,7 +15,8 @@ const state = {
   autonymType: 0,
   // 药材库
   drugList: [],
-  status: 0
+  status: 0,
+  notesStatus: 0
 };
 const getters = {
   drugList: state => state.drugList
@@ -28,6 +29,10 @@ const mutations = {
   // 我的供应类型
   updateApplyType(state, type) {
     state.status = type;
+  },
+  // 个人纪录类型
+  updatenotesStatus(state, type) {
+    state.notesStatus = type;
   },
   RECORD_DRUGLIST(state, drug) {
     state.drugList = drug;

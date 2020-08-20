@@ -194,7 +194,7 @@ let baseRoutes = [
         },
         children: [
           {
-            path: "/OTC1/index",
+            path: "/OTC1",
             name: "OTC1",
             class_true: false,
             component: () => import("@/views/OTC/components/OTC1/index.vue"),
@@ -204,11 +204,11 @@ let baseRoutes = [
               icon: "navmenu"
             },
             children: [
-              // {
-              //   path: "/OTC1",
-              //   redirect: "/OTC1/index",
-              //   hidden: true
-              // },
+              {
+                path: "/OTC1",
+                redirect: "/OTC1/index",
+                hidden: true
+              },
               {
                 path: "/OTC1/index",
                 name: "OTC1",
@@ -222,8 +222,8 @@ let baseRoutes = [
                 }
               },
               {
-                path: "/OTC1/applyMsg",
-                name: "OTC1",
+                path: "/applyMsg/:id/:str",
+                name: "applyMsg",
                 class_true: false,
                 component: () =>
                   import("@/views/OTC/components/OTC1/component/applyMsg.vue"),
@@ -422,48 +422,6 @@ let baseRoutes = [
               title: "个人信息",
               icon: "navmenu"
             }
-          },
-          {
-            path: "/personal/notes",
-            name: "Notes",
-            class_true: false,
-            component: () => import("@/views/Personal/Notes"),
-            hidden: false,
-            meta: {
-              title: "个人记录",
-              icon: "navmenu"
-            },
-            children: [
-              {
-                path: "/personal/notes",
-                redirect: "/personal/notes/browse",
-                hidden: true
-              },
-              {
-                path: "/personal/notes/browse",
-                name: "Notes",
-                class_true: false,
-                component: () =>
-                  import("@/views/Personal/Notes/components/Browse.vue"),
-                hidden: false,
-                meta: {
-                  title: "浏览记录",
-                  icon: "navmenu"
-                }
-              },
-              {
-                path: "/personal/notes/favorite",
-                name: "Notes",
-                class_true: false,
-                component: () =>
-                  import("@/views/Personal/Notes/components/Favorite.vue"),
-                hidden: false,
-                meta: {
-                  title: "收藏夹",
-                  icon: "navmenu"
-                }
-              }
-            ]
           },
           {
             path: "/personal/certify",
