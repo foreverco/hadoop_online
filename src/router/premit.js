@@ -36,7 +36,8 @@ router.beforeEach((to, from, next) => {
     }
     /* 路由动态添加 每个角色分配不同菜单 */
   } else {
-    if (whiteRoutes.indexOf(to.path) === -1) {
+    // if (whiteRoutes.indexOf(to.path) === -1) {
+    if (to.path.slice(0, 9) !== "/personal") {
       next();
     } else {
       Message.error("没有权限,登陆后访问该页面！");

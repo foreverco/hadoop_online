@@ -98,3 +98,32 @@ export function requndersupply(data) {
     data
   });
 }
+
+/* 修改手机号 */
+
+export function reqchangePhone(params) {
+  return service.request({
+    method: "put",
+    url: "/auth/member/member/changeMobile",
+    params
+  });
+}
+
+/* 修改密码 */
+
+export function reqchangePass(params) {
+  return service.request({
+    method: "put",
+    url: "/auth/member/member/chpassword",
+    params
+  });
+}
+
+/* 添加用户调查 */
+export function reqAddsurvery(data) {
+  return service.request({
+    method: "POST",
+    url: "/view/survey/member/addSurvey",
+    data
+  });
+}

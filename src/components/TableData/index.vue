@@ -16,7 +16,7 @@
     >
       <el-table-column
         type="selection"
-        width="55"
+        width="45"
         v-if="table_config.checkBox"
         header-align="center"
       ></el-table-column>

@@ -10,7 +10,7 @@
         {{ item.name }}
       </li>
     </ul>
-
+    <!-- 供应求购 -->
     <ul class="rzList" v-if="$route.name == 'Supply'">
       <li
         v-for="(item, index) in supplyList"
@@ -22,7 +22,7 @@
         {{ `(${item.count})` }}
       </li>
     </ul>
-
+    <!-- 用户记录 -->
     <ul class="rzList" v-if="$route.name == 'Notes'">
       <li
         v-for="(item, index) in NotesList"
@@ -33,6 +33,18 @@
         {{ item.name }}
       </li>
     </ul>
+    <!-- 安全中心 -->
+    <ul class="rzList" v-if="$route.name == 'SaveCenter'">
+      <li
+        v-for="(item, index) in saveList"
+        :key="index"
+        :class="{ active: $route.path == `/personal/saveCenter/${item.value}` }"
+        @click="changeSaveType(item.value)"
+      >
+        {{ item.name }}
+      </li>
+    </ul>
+
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item
         v-for="(item, index) in routerList"
@@ -45,7 +57,9 @@
       class="viewBox"
       :class="{ istransform: $route.path == '/personal/notes/favorite' }"
     >
-      <router-view></router-view>
+      <transition name="fade-transform" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </div>
   </div>
 </template>
@@ -80,6 +94,16 @@ export default {
           name: "交易记录",
           value: "2"
         }
+      ],
+      saveList: [
+        {
+          name: "修改手机号",
+          value: "changePhone"
+        },
+        {
+          name: "修改密码",
+          value: "changePass"
+        }
       ]
     };
   },
@@ -101,9 +125,9 @@ export default {
 
   watch: {
     $route: {
-      handler(newVal) {
+      handler() {
         this.getRouter(this.$route);
-        console.log(newVal);
+        // console.log(newVal);
       },
       immediate: true
     }
@@ -126,7 +150,7 @@ export default {
     // 获取供应类型
     getApplyType() {
       reqgetsupplyType().then(res => {
-        console.log(res);
+        // console.log(res);
         this.supplyList = res.data.data;
       });
     },
@@ -134,13 +158,19 @@ export default {
     // 修改供应类型
     changeAppyType(value) {
       this.$store.commit("updateApplyType", value);
-      console.log(this.$route.path);
+      // console.log(this.$route.path);
     },
     // 修改个人记录类型
     changeNotesType(value) {
       // this.$store.commit("updatenotesStatus", value);
       this.$router.push({
         path: `/personal/notes/${value}`
+      });
+    },
+    // 修改安全中心类型
+    changeSaveType(value) {
+      this.$router.push({
+        path: `/personal/saveCenter/${value}`
       });
     }
   }

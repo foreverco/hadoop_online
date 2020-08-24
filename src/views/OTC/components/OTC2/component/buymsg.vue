@@ -20,14 +20,14 @@
           </p>
         </div>
         <ul>
-          <li>
+          <!-- <li>
             <span>产品售价:</span>
             <span>{{
               applyMsg.disclosePriceName === "具体价格"
                 ? applyMsg.price
                 : applyMsg.disclosePriceName
             }}</span>
-          </li>
+          </li> -->
           <li>
             <span>有无样品:</span>
             <span>{{ applyMsg.isSampleName }}</span>
@@ -41,10 +41,8 @@
             <span>{{ applyMsg.paymentMethodName }}</span>
           </li>
           <li>
-            <span>产品数量:</span>
-            <span>{{
-              `${applyMsg.supplyAmount}${applyMsg.supplyUnitName}`
-            }}</span>
+            <span>求购量:</span>
+            <span>{{ `${applyMsg.buyingAmount}${applyMsg.buyUnitName}` }}</span>
           </li>
           <li>
             <span>票据:</span>
@@ -61,9 +59,9 @@
             <span>{{ applyMsg.contactPerson }}</span>
           </li>
           <li>
-            <span>产品仓储:</span>
+            <span>产品发货地:</span>
             <span>{{
-              `${applyMsg.warehouseProvinceName}${applyMsg.warehouseCityName}${applyMsg.warehouseCountyName}`
+              `${applyMsg.deliveryProvinceName}${applyMsg.deliveryCityName}${applyMsg.deliveryCountyName}`
             }}</span>
           </li>
           <li>
@@ -88,9 +86,9 @@
       </div>
     </div>
     <div class="userBox">
-      <Title titleTxt="该用户其他供应信息"></Title>
+      <Title titleTxt="该用户其他求购信息"></Title>
       <div class="noneBox" v-if="!userApplyList || userApplyList.length === 0">
-        该用户暂无其他供应信息
+        该用户暂无其他求购信息
       </div>
       <ul class="applylistAll" v-else>
         <li
@@ -104,11 +102,11 @@
           <div class="contentBox">
             <p>
               <span>{{ item.medinceName }}</span>
-              <span v-if="item.disclosePriceName == '具体价格'">{{
+              <!-- <span v-if="item.disclosePriceName == '具体价格'">{{
                 `${item.price}元/${item.priceUnitName}`
-              }}</span>
-              <span v-else>
-                {{ item.disclosePriceName }}
+              }}</span> -->
+              <span>
+                求购
               </span>
             </p>
             <ul>
@@ -117,8 +115,8 @@
                 <span>{{ item.specificationName }}</span>
               </li>
               <li>
-                <span>数量</span>
-                <span>{{ `${item.supplyAmount}${item.supplyUnitName}` }}</span>
+                <span>求购量</span>
+                <span>{{ `${item.buyingAmount}${item.buyUnitName}` }}</span>
               </li>
               <li>
                 <span>产地</span>
@@ -127,9 +125,9 @@
                 }}</span>
               </li>
               <li>
-                <span>仓储</span>
+                <span>发货地</span>
                 <span>{{
-                  `${item.warehouseProvinceName}/${item.warehouseCityName}/${item.warehouseCountyName}`
+                  `${item.deliveryProvinceName}/${item.deliveryCityName}/${item.deliveryCountyName}`
                 }}</span>
               </li>
               <li>
@@ -181,8 +179,8 @@
                 <span>{{ item.specificationName }}</span>
               </li>
               <li>
-                <span>数量</span>
-                <span>{{ `${item.supplyAmount}${item.supplyUnitName}` }}</span>
+                <span>求购量</span>
+                <span>{{ `${item.buyingAmount}${item.buyUnitName}` }}</span>
               </li>
               <li>
                 <span>产地</span>
@@ -191,9 +189,9 @@
                 }}</span>
               </li>
               <li>
-                <span>仓储</span>
+                <span>发货地</span>
                 <span>{{
-                  `${item.warehouseProvinceName}/${item.warehouseCityName}/${item.warehouseCountyName}`
+                  `${item.deliveryProvinceName}/${item.deliveryCityName}/${item.deliveryCountyName}`
                 }}</span>
               </li>
               <li>
@@ -218,12 +216,8 @@
   </div>
 </template>
 <script>
-import {
-  reqapplymsg,
-  reqfavotite,
-  reqaddBrowse,
-  reqapplyLisst
-} from "@/api/apply";
+import { reqfavotite, reqaddBrowse } from "@/api/apply";
+import { reqbuymsg, reqbuyList } from "@/api/buy";
 export default {
   name: "applyMsg",
   computed: {
@@ -416,11 +410,11 @@ export default {
     // 初始化数据
     initSupplymsg(id) {
       // 获取点击药材详细信息
-      reqapplymsg({ id: id }).then(res => {
-        // console.log(res);
+      reqbuymsg({ id: id }).then(res => {
+        console.log(res);
         this.applyMsg = res.data.data;
-        this.titleTxt = this.applyMsg.medinceName + "供应信息";
-        // 获取该用户其他供应信息
+        this.titleTxt = this.applyMsg.medinceName + "求购信息";
+        // 获取该用户其他求购信息
         let userParams = {
           page: 1,
           pageSize: 10,
@@ -428,21 +422,21 @@ export default {
           id: this.$route.query.id
         };
         console.log(userParams);
-        reqapplyLisst(userParams).then(userRes => {
+        reqbuyList(userParams).then(userRes => {
           console.log(userRes);
           this.userApplyList = userRes.data.data.records;
           if (this.userApplyList && this.userApplyList.length > 4) {
             this.userApplyList = this.userApplyList.slice(0, 4);
           }
         });
-        // 获取此类药供应信息
+        // 获取此类药求购信息
         let typeParams = {
           page: 1,
           pageSize: 10,
           medicineId: res.data.data.medicineId,
           id: this.$route.query.id
         };
-        reqapplyLisst(typeParams).then(typeRes => {
+        reqbuyList(typeParams).then(typeRes => {
           console.log(typeRes);
           this.drugApplyList = typeRes.data.data.records;
           if (this.drugApplyList && this.drugApplyList.length > 8) {
@@ -456,7 +450,7 @@ export default {
       if (this.tokenMsg && this.userMsg) {
         let browseParams = {};
         browseParams.businessId = this.$route.query.id;
-        browseParams.module = 1;
+        browseParams.module = 2;
         reqaddBrowse(browseParams).then(res => {
           // alert();
           console.log(res);
@@ -468,7 +462,7 @@ export default {
       if (this.tokenMsg && this.userMsg) {
         let favotiteparams = {};
         favotiteparams.businessId = this.$route.query.id;
-        favotiteparams.module = 1;
+        favotiteparams.module = 2;
         e == 0 ? (favotiteparams.isDel = 0) : (favotiteparams.isDel = 1);
         console.log(favotiteparams);
         reqfavotite(favotiteparams).then(res => {
@@ -489,7 +483,7 @@ export default {
     gotoApplyMsg(e) {
       console.log(e.id);
       this.$router.push({
-        path: "/OTC1/applyMsg",
+        path: "/OTC2/buymsg",
         query: { id: e.id }
       });
     }

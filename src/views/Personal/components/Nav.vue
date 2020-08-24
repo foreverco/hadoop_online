@@ -69,7 +69,7 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
-        console.log(to);
+        // console.log(to);
         console.log(from);
         if (to.name != "Supply") {
           removeApplyForm();
@@ -127,7 +127,7 @@ export default {
           itemIndex: "1",
           submenuList: [
             { label: "我的供应", name: "Supply", subIndex: "/personal/supply" },
-            { label: "我的求购", subIndex: "2-2" }
+            { label: "我的求购", name: "Buy", subIndex: "/personal/buy" }
           ]
         }
       ]

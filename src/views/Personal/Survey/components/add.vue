@@ -10,7 +10,7 @@
       <template v-slot:city="slotData">
         <p v-if="false">{{ slotData }}</p>
         <CascaderVue
-          :areaValue.sync="area"
+          :areaValue.sync="formData.city"
           ref="cascader"
           :areaConfig="{ mapLocation: false }"
           style="width:50%"
@@ -83,6 +83,7 @@
 <script>
 import CascaderVue from "@/components/Cascader";
 import FormVue from "@/components/form";
+import { reqAddsurvery } from "@/api/userInfo";
 export default {
   name: "SurveyAdd",
   components: {
@@ -103,13 +104,19 @@ export default {
     return {
       // 表单数据配置
       formData: {
-        name: "",
-        mianji: "",
-        plantTime: "",
-        endTime: "",
-        want: "",
-        city: "",
-        adress: ""
+        // 药材名称
+        medicineName: "",
+        // 种植面积
+        plantArea: "",
+        // 种植时间
+        plantDate: "",
+        // 采收时间
+        harvestDate: "",
+        // 预估亩产
+        yieldMu: "",
+        city: [],
+        // 详细地址
+        address: ""
       },
       // 表单配置
       formConfig: {
@@ -118,62 +125,36 @@ export default {
       },
       formItem: [
         {
-          type: "Select",
+          type: "Input",
           label: "药材名称",
-          prop: "name",
-
-          value: [],
-          rules: [
-            { required: true, message: "请选择活动区域", trigger: "change" }
-          ],
-          options: [
-            {
-              value: "选项1",
-              label: "黄金糕"
-            },
-            {
-              value: "选项2",
-              label: "双皮奶"
-            },
-            {
-              value: "选项3",
-              label: "蚵仔煎"
-            },
-            {
-              value: "选项4",
-              label: "龙须面"
-            },
-            {
-              value: "选项5",
-              label: "北京烤鸭"
-            }
-          ],
+          prop: "medicineName",
+          required: true,
           width: "50%"
         },
         {
           type: "Input",
           label: "种植面积",
           placeholder: "请输入种植面积",
-          prop: "mianji",
+          prop: "plantArea",
           width: "50%",
 
           slot: "亩",
           validator: [{ validator: validateNumber, trigger: "change" }]
         },
         {
-          type: "DataPick",
+          type: "Date",
           label: "种植时间",
           placeholder: "请选择种植时间",
-          prop: "plantTime",
+          prop: "plantDate",
           required: true,
           width: "50%",
           margin: "28px"
         },
         {
-          type: "DataPick",
+          type: "Date",
           label: "采收时间",
           placeholder: "请选择采收时间",
-          prop: "endTime",
+          prop: "harvestDate",
           required: true,
           width: "50%",
           margin: "28px"
@@ -182,7 +163,7 @@ export default {
           type: "Input",
           label: "预估亩产",
           placeholder: "请输入预估亩产",
-          prop: "want",
+          prop: "yieldMu",
           validator: [{ validator: validateNumber, trigger: "change" }],
           // rules: [
           //   {
@@ -208,7 +189,7 @@ export default {
           label: "详细地址",
           required: true,
           placeholder: "请输入详细地址",
-          prop: "adress",
+          prop: "address",
           width: "50%",
           margin: "28px"
         }
@@ -229,34 +210,34 @@ export default {
           width: "170px",
           handler: () => this.formValidate()
         }
-      ],
+      ]
 
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
-        }
-      ],
-      value: "",
-      value1: "",
-      value2: "",
-      area: []
+      // options: [
+      //   {
+      //     value: "选项1",
+      //     label: "黄金糕"
+      //   },
+      //   {
+      //     value: "选项2",
+      //     label: "双皮奶"
+      //   },
+      //   {
+      //     value: "选项3",
+      //     label: "蚵仔煎"
+      //   },
+      //   {
+      //     value: "选项4",
+      //     label: "龙须面"
+      //   },
+      //   {
+      //     value: "选项5",
+      //     label: "北京烤鸭"
+      //   }
+      // ],
+      // value: "",
+      // value1: "",
+      // value2: "",
+      // area: []
     };
   },
   mounted() {
@@ -270,6 +251,14 @@ export default {
       this.$refs.vueForm.$refs.form.validate(valid => {
         if (valid) {
           alert("submit!");
+          console.log(this.formData);
+          let surveyParams = JSON.parse(JSON.stringify(this.formData));
+          surveyParams.provinceId = this.formData.city[0];
+          surveyParams.cityId = this.formData.city[1];
+          surveyParams.countyId = this.formData.city[2];
+          reqAddsurvery(surveyParams).then(res => {
+            console.log(res);
+          });
         } else {
           console.log("error submit!!");
           return false;

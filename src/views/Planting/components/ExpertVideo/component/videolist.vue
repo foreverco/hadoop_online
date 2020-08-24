@@ -6,18 +6,24 @@
         :key="index"
         :class="{ navActive: navActive == index }"
         @click="changenavActive(index)"
-      >{{ item.name }}</li>
+      >
+        {{ item.name }}
+      </li>
     </ul>
     <div class="videoBox">
       <ul class="videoList">
-        <li v-for="(item, index) in videoList" :key="index" @click="gotoVideo(item.id)">
+        <li
+          v-for="(item, index) in videoList"
+          :key="index"
+          @click="gotoVideo(item.id)"
+        >
           <div class="imgBox">
             <span>专家</span>
-            <img :src="item.imgUrl" alt>
+            <img :src="item.imgUrl" alt />
           </div>
           <div class="contentBox">
-            <p>{{item.title}}</p>
-            <p>{{item.content}}</p>
+            <p>{{ item.title }}</p>
+            <p>{{ item.content }}</p>
           </div>
         </li>
       </ul>
@@ -142,7 +148,7 @@ export default {
     gotoVideo(e) {
       console.log(e);
       this.$router.push({
-        path: "/planting2/video",
+        path: "/plantingvideo/video",
         query: {
           id: e
         }

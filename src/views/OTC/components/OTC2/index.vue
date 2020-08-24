@@ -1,5 +1,5 @@
 <template>
-  <div>OTC2</div>
+  <router-view></router-view>
 </template>
 
 <script>
@@ -8,5 +8,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

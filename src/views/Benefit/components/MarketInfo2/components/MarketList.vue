@@ -2,7 +2,7 @@
   <div class="MarketList">
     <div class="titleBox">
       <div>
-        <Title titleTxt="产地资讯" :btnShow="false"></Title>
+        <Title titleTxt="行业资讯" :btnShow="false"></Title>
       </div>
       <ul>
         <li>产地资讯</li>

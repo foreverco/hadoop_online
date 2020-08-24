@@ -4,16 +4,10 @@
       <template v-slot:image="scope">
         <img :src="scope.data.medicincePic" alt="" width="100" />
       </template>
-      <template v-slot:supplyAmount="scope">
-        {{ `${scope.data.supplyAmount}${scope.data.supplyUnitName}` }}
+      <template v-slot:buyingAmount="scope">
+        {{ `${scope.data.buyingAmount}${scope.data.buyUnitName}` }}
       </template>
-      <template v-slot:price="scope">
-        {{
-          scope.data.price && scope.data.price
-            ? `${scope.data.price}元/${scope.data.priceUnitName}`
-            : scope.data.disclosePriceName
-        }}
-      </template>
+
       <template v-slot:opration="scope">
         <div class="btnBox">
           <el-button size="mini" @click="find(scope.data)">查看</el-button>
@@ -25,7 +19,7 @@
           >
           <el-button
             size="mini"
-            :disabled="scope.data.statusName !== '供应中'"
+            :disabled="scope.data.statusName !== '求购中'"
             @click="handerUnder(scope.data)"
             >下架</el-button
           >
@@ -43,7 +37,7 @@
             <el-button type="danger" @click="handleManydel">批量删除</el-button>
           </el-col>
           <el-col :push="5" :span="2">
-            <el-button type="success" @click="addsupply">发布供应</el-button>
+            <el-button type="success" @click="addbuy">发布求购</el-button>
           </el-col>
         </el-row>
       </template>
@@ -55,36 +49,22 @@
       :isFind.sync="isFind"
       @refresData="resetTable"
     ></AddDialogVue>
-    <!-- 实名认证弹框 -->
-    <msgDialogVue :msgDialog.sync="msgDialog"></msgDialogVue>
   </div>
 </template>
 <script>
 import TableVue from "@/components/TableData";
 import AddDialogVue from "./addDialog";
-import msgDialogVue from "./msgDialog.vue";
-import { reqdelsupply, requndersupply } from "@/api/userInfo";
+// import { reqdelbuy, requnderbuy } from "@/api/userInfo";
+import { reqdelbuy, requnderbuy } from "@/api/buy";
 export default {
-  name: "Supply",
+  name: "Buy",
   components: {
     TableVue,
-    AddDialogVue,
-    msgDialogVue
+    AddDialogVue
   },
   computed: {
     status() {
       return this.$store.state.config.status;
-    },
-    userMsg() {
-      // console.log(this.$store.state.app.userInfo);
-      if (
-        typeof this.$store.state.app.userInfo == "string" &&
-        this.$store.state.app.userInfo != "undefined"
-      ) {
-        return JSON.parse(this.$store.state.app.userInfo);
-      } else {
-        return this.$store.state.app.userInfo;
-      }
     }
   },
   watch: {
@@ -100,11 +80,8 @@ export default {
   },
   data() {
     return {
-      // 添加供应弹框
       dialogFlag: false,
       dialogData: {},
-      // 实名认证弹框
-      msgDialog: false,
       // 是否查看
       isFind: false,
       delId: "",
@@ -117,7 +94,7 @@ export default {
         tableHeight: "370",
         headColor: "#3AB54C10",
         headTxtColor: "#3AB54C",
-        url: "supplyList",
+        url: "buyList",
         pagination: true,
         pagePosition: "center",
         tooltip: true,
@@ -130,16 +107,10 @@ export default {
         },
         tHead: [
           { label: "图片", type: "slot", slotName: "image", width: "110" },
-          { label: "品名", prop: "medinceName", width: "70" },
-          { label: "规格", prop: "specificationName", width: "70" },
-          // { label: "供应量", prop: "supplyAmount" },
-          {
-            label: "供应量",
-            type: "slot",
-            slotName: "supplyAmount",
-            width: "70"
-          },
-          { label: "售价", type: "slot", slotName: "price" },
+          { label: "品名", prop: "medinceName" },
+          { label: "规格", prop: "specificationName" },
+          // { label: "求购量", prop: "supplyAmount" },
+          { label: "求购量", type: "slot", slotName: "buyingAmount" },
           { label: "状态", prop: "statusName" },
           { label: "有效期", prop: "yxq" },
           {
@@ -157,23 +128,19 @@ export default {
     resetTable() {
       this.$refs.applyTable.requestData();
     },
-    /* 跳转发布供应 */
-    addsupply() {
-      if (this.userMsg) {
-        this.$router.push({
-          path: "/personal/supply/addsupply"
-        });
-      } else {
-        this.msgDialog = true;
-      }
+    /* 跳转发布求购 */
+    addbuy() {
+      this.$router.push({
+        path: "/personal/buy/addbuy"
+      });
     },
-    /* 删除供应 */
+    /* 删除求购 */
     handlerDel(e) {
       this.delId = e.id;
       this.confirm({
         tip: "确认删除",
-        content: "确认删除此条供应信息？",
-        status: "供应信息删除成功",
+        content: "确认删除此条求购信息？",
+        status: "求购信息删除成功",
         fn: this.delApply
       });
     },
@@ -181,7 +148,7 @@ export default {
       let ids = [];
       console.log(this.delId);
       ids.push(this.delId);
-      reqdelsupply(ids).then(res => {
+      reqdelbuy(ids).then(res => {
         console.log(res);
         this.resetTable();
       });
@@ -192,34 +159,34 @@ export default {
       let id = this.tableRow.idItem;
       if (!id || id.length === 0) {
         this.$message({
-          message: "请选择需要删除的供应信息",
+          message: "请选择需要删除的求购信息",
           type: "warning"
         });
         return false;
       }
       this.confirm({
         tip: "确认删除",
-        content: "确认删除选中供应信息？",
-        status: "选中供应信息删除成功",
+        content: "确认删除选中求购信息？",
+        status: "选中求购信息删除成功",
         fn: this.manydelApply
       });
     },
 
     manydelApply() {
       let ids = this.tableRow.idItem;
-      reqdelsupply(ids).then(res => {
+      reqdelbuy(ids).then(res => {
         console.log(res);
         this.resetTable();
       });
     },
 
-    /* 下架供应 */
+    /* 下架求购 */
     handerUnder(e) {
       this.delId = e.id;
       this.confirm({
         tip: "确认下架",
-        content: "确认下架此条供应信息？",
-        status: "供应信息下架成功",
+        content: "确认下架此条求购信息？",
+        status: "求购信息下架成功",
         fn: this.underApply
       });
     },
@@ -227,7 +194,7 @@ export default {
       let ids = [];
       console.log(this.delId);
       ids.push(this.delId);
-      requndersupply(ids).then(res => {
+      requnderbuy(ids).then(res => {
         console.log(res);
         this.resetTable();
       });
@@ -237,34 +204,34 @@ export default {
       let id = this.tableRow.idItem;
       if (!id || id.length === 0) {
         this.$message({
-          message: "请选择需要下架的供应信息",
+          message: "请选择需要下架的求购信息",
           type: "warning"
         });
         return false;
       }
       this.confirm({
         tip: "确认下架",
-        content: "确认下架选中供应信息？",
-        status: "选中供应信息下架成功",
+        content: "确认下架选中求购信息？",
+        status: "选中求购信息下架成功",
         fn: this.manyunderApply
       });
     },
     manyunderApply() {
       let ids = this.tableRow.idItem;
-      reqdelsupply(ids).then(res => {
+      reqdelbuy(ids).then(res => {
         console.log(res);
         this.$refs.applyTable.requestData();
       });
     },
-    /* 编辑我的供应 */
+    /* 编辑我的求购 */
     handleEdit(e) {
       // console.log(e);
-      if (e.statusName === "供应中") {
+      if (e.statusName === "求购中") {
         this.dialogFlag = true;
         this.dialogData = e;
       } else if (e.statusName === "已下架" || e.statusName === "审核未通过") {
         this.$router.push({
-          path: "/personal/supply/addsupply",
+          path: "/personal/buy/addbuy",
           query: e
         });
       }

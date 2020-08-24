@@ -42,7 +42,7 @@
               >返回首页</span
             >
           </p>
-          <div class="headSearch" v-else>
+          <div class="headSearch" v-else v-show="$route.path == '/home'">
             <el-input placeholder="请输入关键字"></el-input>
             <el-button type="success">搜索</el-button>
           </div>

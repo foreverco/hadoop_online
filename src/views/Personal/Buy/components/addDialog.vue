@@ -25,17 +25,17 @@
                 :disabled="true"
               ></el-input> -->
             </el-form-item>
-            <el-form-item label="供应量:" style="width:100%;">
+            <el-form-item label="求购量:" style="width:100%;">
               <p v-if="dialogIsFind">
-                {{ `${dialogData.supplyAmount}${dialogData.supplyUnitName}` }}
+                {{ `${dialogData.buyingAmount}${dialogData.buyUnitName}` }}
               </p>
               <el-input
                 v-else
-                v-model="formData.supplyAmount"
+                v-model="formData.buyingAmount"
                 style="width:210px;"
               >
                 <el-select
-                  v-model="formData.supplyUnit"
+                  v-model="formData.buyingUnit"
                   slot="append"
                   placeholder="请选择"
                   style="width:58px"
@@ -50,57 +50,6 @@
               </el-input>
             </el-form-item>
 
-            <el-form-item label="起售量:" style="width:100%;">
-              <p v-if="dialogIsFind">
-                {{
-                  `${dialogData.startSaleAmount}${dialogData.startSaleUnitName}`
-                }}
-              </p>
-              <el-input
-                v-else
-                v-model="formData.startSaleAmount"
-                style="width:210px;"
-              >
-                <el-select
-                  v-model="formData.startSaleUnit"
-                  slot="append"
-                  placeholder="请选择"
-                  style="width:58px"
-                >
-                  <el-option
-                    v-for="(item, index) in formTypeList['重量单位']"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </el-input>
-            </el-form-item>
-
-            <el-form-item
-              label="售价:"
-              style="width:100%;"
-              v-if="dialogData.disclosePriceName === '具体价格'"
-            >
-              <p v-if="dialogIsFind">
-                {{ `${dialogData.price}${dialogData.priceUnitName}` }}
-              </p>
-              <el-input v-else v-model="formData.price" style="width:210px;">
-                <el-select
-                  v-model="formData.priceUnit"
-                  slot="append"
-                  placeholder="请选择"
-                  style="width:58px"
-                >
-                  <el-option
-                    v-for="(item, index) in formTypeList['重量单位']"
-                    :key="index"
-                    :label="item.label"
-                    :value="item.value"
-                  ></el-option>
-                </el-select>
-              </el-input>
-            </el-form-item>
             <el-form-item label="可供票据:" style="width:100%;">
               <p>{{ dialogData.invoiceName }}</p>
               <!-- <el-input
@@ -123,10 +72,10 @@
                 :disabled="true"
               ></el-input> -->
             </el-form-item>
-            <el-form-item label="药材仓储:" style="width:100%;">
+            <el-form-item label="药材交货地:" style="width:100%;">
               <p>
                 {{
-                  `${dialogData.warehouseProvinceName}${dialogData.warehouseCityName}${dialogData.warehouseCountyName}`
+                  `${dialogData.deliveryProvinceName}${dialogData.deliveryCityName}${dialogData.deliveryCountyName}`
                 }}
               </p>
               <!-- <el-input
@@ -264,8 +213,8 @@
 </template>
 <script>
 // import FormVue from "@/components/form";
-import { reqAddsupply, reqsupplyTypeList } from "@/api/userInfo";
-import { reqsupllyfailmsg } from "@/api/apply";
+import { reqsupplyTypeList } from "@/api/userInfo";
+import { reqAddbuy, reqfailmsg } from "@/api/buy";
 export default {
   components: {
     // FormVue
@@ -288,8 +237,8 @@ export default {
     return {
       dialog_flag: false,
       dialogIsFind: false,
-      /* 审核未通过原因 */
-      failMsg: false,
+      /* 审核未通过信息 */
+      failMsg: "",
       formConfig: {
         itemMargin: "28px",
         labelWidth: "70px"
@@ -373,7 +322,7 @@ export default {
     isfail(e) {
       let failParams = {};
       failParams.id = e.id;
-      reqsupllyfailmsg(failParams).then(res => {
+      reqfailmsg(failParams).then(res => {
         console.log(res);
         this.failMsg = res.data.data.auditOpinion;
       });
@@ -386,7 +335,9 @@ export default {
       let dialogData = this.dialogData;
       this.formData = this.dialogData;
       console.log(dialogData);
-      this.isfail(dialogData);
+      if (this.dialogData.statusName === "审核未通过") {
+        this.isfail(dialogData);
+      }
       this.getTypelist();
     },
     // 获取各种类型下拉
@@ -404,8 +355,9 @@ export default {
     },
     /* 保存修改 */
     saveEdit() {
+      console.log(this.formData);
       let saveEditParams = JSON.parse(JSON.stringify(this.formData));
-      reqAddsupply(saveEditParams).then(res => {
+      reqAddbuy(saveEditParams).then(res => {
         this.$message.success(res.data.msg);
         this.$emit("update:dialogFlag", false);
         this.$emit("refresData");
@@ -413,11 +365,11 @@ export default {
     },
     /* 查看跳转修改 */
     findGoto() {
-      console.log(123);
-      if (this.dialogData.statusName === "供应中") {
+      console.log(this.dialogData);
+      if (this.dialogData.statusName === "求购中") {
         this.$emit("update:isFind", false);
       } else if (
-        this.dialogData.statusName !== "供应中" &&
+        this.dialogData.statusName !== "求购中" &&
         this.dialogData.statusName !== "审核中"
       ) {
         this.$emit("update:dialogFlag", false);

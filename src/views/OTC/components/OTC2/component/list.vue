@@ -74,7 +74,7 @@
             v-for="(item, index) in cdareaList"
             :key="index"
             :class="{
-              isactive: item.provinceId == checkForm.warehouseProvinceId
+              isactive: item.provinceId == checkForm.deliveryProvinceId
             }"
             @click="changeckareaactive(item.provinceId)"
           >
@@ -147,7 +147,7 @@
         <li
           v-for="(item, index) in records"
           :key="index"
-          @click="gotoApplyMsg(item)"
+          @click="gotobuyMsg(item)"
         >
           <div class="imgBox">
             <img :src="item.medicincePic" alt />
@@ -166,8 +166,8 @@
                 <span>{{ item.specificationName }}</span>
               </li>
               <li>
-                <span>供应量</span>
-                <span>{{ `${item.supplyAmount}${item.supplyUnitName}` }}</span>
+                <span>求购量</span>
+                <span>{{ `${item.buyingAmount}${item.buyUnitName}` }}</span>
               </li>
               <li>
                 <span>产地</span>
@@ -176,9 +176,9 @@
                 }}</span>
               </li>
               <li>
-                <span>仓储</span>
+                <span>交货地</span>
                 <span>{{
-                  `${item.warehouseProvinceName}/${item.warehouseCityName}/${item.warehouseCountyName}`
+                  `${item.deliveryProvinceName}/${item.deliveryCityName}/${item.deliveryCountyName}`
                 }}</span>
               </li>
               <li>
@@ -218,7 +218,7 @@
 </template>
 <script>
 import pagination from "@/components/Pagination";
-import { reqapplyLisst } from "@/api/apply";
+import { reqbuyList } from "@/api/apply";
 import { reqAdress } from "@/api/map";
 import { reqsupplyTypeList } from "@/api/userInfo";
 import { reqDruglist } from "@/api/index";
@@ -240,7 +240,7 @@ export default {
     },
     ckareaCheck() {
       return this.cdareaList.filter(item => {
-        return item.provinceId == this.checkForm.warehouseProvinceId;
+        return item.provinceId == this.checkForm.deliveryProvinceId;
       });
     },
     radiocheck() {
@@ -290,8 +290,7 @@ export default {
         medicineId: "",
         //产地
         orginProvinceId: "",
-        // 仓库地
-        warehouseProvinceId: "",
+
         // 质量标准
         qualityStandard: "",
         // 状态
@@ -450,7 +449,7 @@ export default {
       }
       applyParams.page = this.current;
       applyParams.pageSize = this.size;
-      reqapplyLisst(applyParams).then(res => {
+      reqbuyList(applyParams).then(res => {
         console.log(res);
         this.records = res.data.data.records;
         // this.records.forEach(item => {
@@ -463,10 +462,10 @@ export default {
     },
     // 分页
     handleSizeChange(size) {
-      this.reqapplyLisst(1, size);
+      this.reqbuyList(1, size);
     },
     handleCurrentChange(page) {
-      this.reqapplyLisst(page);
+      this.reqbuyList(page);
     },
     // 根据字母查询药材
     getDrugList(e) {
@@ -519,19 +518,19 @@ export default {
     },
     /* 修改仓储地筛选 */
     changeckareaactive(value) {
-      this.checkForm.warehouseProvinceId = value;
+      this.checkForm.deliveryProvinceId = value;
       // this.getapplyList(this.page, this.size, this.checkForm);
     },
     /* 取消仓储地筛选 */
     delckareaactive() {
-      this.checkForm.warehouseProvinceId = "";
+      this.checkForm.deliveryProvinceId = "";
       // this.getapplyList(this.page, this.size, this.checkForm);
     },
     // 跳转详情
-    gotoApplyMsg(e) {
+    gotobuyMsg(e) {
       console.log(e.id);
       this.$router.push({
-        path: "/OTC1/applyMsg",
+        path: "/OTC2/buymsg",
         query: { id: e.id, str: e.title }
       });
     },

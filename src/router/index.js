@@ -10,15 +10,17 @@ import Layout from "../views/Layout";
 
 Vue.use(VueRouter);
 
-let baseRoutes = [{
+let baseRoutes = [
+  {
     path: "/",
     redirect: "/home",
-    hiddem: true
+    hidden: true
   },
   {
     path: "/",
     component: Layout,
-    children: [{
+    children: [
+      {
         path: "/login",
         name: "Login",
         hidden: true,
@@ -59,7 +61,8 @@ let baseRoutes = [{
           title: "区域规划",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/areaPlan1",
             name: "AreaPlan1",
             class_true: false,
@@ -86,8 +89,8 @@ let baseRoutes = [{
         ]
       },
       {
-        path: "/planting2",
-        name: "Planting",
+        path: "/plantingvideo",
+        name: "ExpertVideo",
         class_true: false,
         component: () => import("@/views/Planting/index.vue"),
         hidden: false,
@@ -95,9 +98,10 @@ let baseRoutes = [{
           title: "种植指导",
           icon: "navmenu"
         },
-        children: [{
-            path: "/planting2",
-            name: "ExpertVideo",
+        children: [
+          {
+            path: "/plantingvideo/index",
+            name: "ExpertVideo1",
             class_true: false,
             component: () =>
               import("@/views/Planting/components/ExpertVideo/index.vue"),
@@ -106,42 +110,46 @@ let baseRoutes = [{
               title: "专家教学视频",
               icon: "navmenu"
             },
-            children: [{
-                path: '/planting2',
-                redirect: "/planting2/expertVideo"
-              },
+            children: [
+              // {
+              //   path: "/plantingvideo",
+              //   redirect: "/plantingvideo/expertVideo"
+              // },
               {
-                path: "/planting2/expertVideo",
-                name: "Planting2",
+                path: "/plantingvideo/index",
+                name: "ExpertVideo",
                 class_true: false,
                 component: () =>
-                  import("@/views/Planting/components/ExpertVideo/component/videolist.vue"),
+                  import(
+                    "@/views/Planting/components/ExpertVideo/component/videolist.vue"
+                  ),
                 hidden: true,
                 meta: {
                   title: "专家教学视频",
                   icon: "navmenu"
-                },
+                }
               },
               {
-                path: "/planting2/video",
+                path: "/plantingvideo/video",
                 name: "Planting2",
                 class_true: false,
                 component: () =>
-                  import("@/views/Planting/components/ExpertVideo/component/videoMsg.vue"),
+                  import(
+                    "@/views/Planting/components/ExpertVideo/component/videoMsg.vue"
+                  ),
                 hidden: true,
                 meta: {
                   title: "视频详情",
                   icon: "navmenu"
-                },
+                }
               }
             ]
           },
           {
-            path: "/planting2",
-            name: "ExpertVideo",
+            path: "/plantingvideo/norm",
+            name: "NormVideo",
             class_true: false,
-            component: () =>
-              import("@/views/Planting/components/norm.vue"),
+            component: () => import("@/views/Planting/components/norm.vue"),
             hidden: false,
             meta: {
               title: "标准化种植规范",
@@ -182,7 +190,8 @@ let baseRoutes = [{
           title: "市场分析",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/Market1",
             name: "Market1",
             class_true: false,
@@ -216,7 +225,13 @@ let baseRoutes = [{
           title: "交易平台",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          // {
+          //   path: "/OTC1",
+          //   redirect: "/OTC1/index",
+          //   hidden: true
+          // },
+          {
             path: "/OTC1/index",
             name: "OTC1",
             class_true: false,
@@ -227,11 +242,6 @@ let baseRoutes = [{
               icon: "navmenu"
             },
             children: [
-              // {
-              //   path: "/OTC1",
-              //   redirect: "/OTC1/index",
-              //   hidden: true
-              // },
               {
                 path: "/OTC1/index",
                 name: "OTC1",
@@ -259,7 +269,7 @@ let baseRoutes = [{
             ]
           },
           {
-            path: "/OTC2",
+            path: "/OTC2/index",
             name: "OTC2",
             class_true: false,
             component: () => import("@/views/OTC/components/OTC2/index.vue"),
@@ -267,10 +277,36 @@ let baseRoutes = [{
             meta: {
               title: "求购信息",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/OTC2/index",
+                name: "OTC2",
+                class_true: false,
+                component: () =>
+                  import("@/views/OTC/components/OTC2/component/list.vue"),
+                hidden: false,
+                meta: {
+                  title: "求购信息",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/OTC2/buymsg",
+                name: "OTC1",
+                class_true: false,
+                component: () =>
+                  import("@/views/OTC/components/OTC2/component/buymsg.vue"),
+                hidden: false,
+                meta: {
+                  title: "求购详情",
+                  icon: "navmenu"
+                }
+              }
+            ]
           },
           {
-            path: "/company",
+            path: "/company/index",
             name: "Company",
             class_true: false,
             component: () => import("@/views/OTC/components/Company/index.vue"),
@@ -278,7 +314,35 @@ let baseRoutes = [{
             meta: {
               title: "企业信息",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/company/index",
+                name: "Company",
+                class_true: false,
+                component: () =>
+                  import("@/views/OTC/components/Company/component/list.vue"),
+                hidden: false,
+                meta: {
+                  title: "企业信息",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/company/companyMsg",
+                name: "CompanyMsg",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/OTC/components/Company/component/companyMsg.vue"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "企业详情",
+                  icon: "navmenu"
+                }
+              }
+            ]
           }
         ]
       },
@@ -293,7 +357,8 @@ let baseRoutes = [{
           title: "道地药材",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/drug",
             redirect: "/drug/index",
             hidden: true
@@ -343,18 +408,20 @@ let baseRoutes = [{
           title: "政策资讯",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/marketInfo",
             name: "MarketInfoIndex",
             class_true: false,
             component: () => import("@/views/Benefit/components/MarketInfo"),
             hidden: false,
             meta: {
-              title: "市场资讯",
+              title: "产地资讯",
               icon: "navmenu"
             },
 
-            children: [{
+            children: [
+              {
                 path: "/marketInfo",
                 // redirect: "/marketInfo/marketMsg",
                 redirect: "/marketInfo/marketList",
@@ -370,7 +437,7 @@ let baseRoutes = [{
                   ),
                 hidden: false,
                 meta: {
-                  title: "市场资讯",
+                  title: "产地资讯",
                   icon: "navmenu"
                 }
               },
@@ -391,26 +458,96 @@ let baseRoutes = [{
             ]
           },
           {
-            path: "/benefit1",
-            name: "Benefit1",
+            path: "/marketInfo1",
+            name: "MarketInfoIndex",
             class_true: false,
-            component: () => import("@/views/Benefit/components/Benefit1.vue"),
+            component: () => import("@/views/Benefit/components/MarketInfo1"),
             hidden: false,
             meta: {
-              title: "政策资讯1",
+              title: "政策资讯",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/marketInfo1",
+                redirect: "/marketInfo1/marketList",
+                hidden: true
+              },
+              {
+                path: "/marketInfo1/marketList",
+                name: "MarketInfo1",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Benefit/components/MarketInfo1/components/MarketList"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "政策资讯",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/marketInfo1/marketMsg",
+                name: "marketMsg",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Benefit/components/MarketInfo1/components/marketMsg"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "政策资讯详情",
+                  icon: "navmenu"
+                }
+              }
+            ]
           },
           {
-            path: "/benefit2",
-            name: "Benefit2",
+            path: "/marketInfo2",
+            name: "MarketInfoIndex",
             class_true: false,
-            component: () => import("@/views/Benefit/components/Benefit2.vue"),
+            component: () => import("@/views/Benefit/components/MarketInfo2"),
             hidden: false,
             meta: {
-              title: "政策资讯2",
+              title: "行业资讯",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/marketInfo2",
+                redirect: "/marketInfo2/marketList",
+                hidden: true
+              },
+              {
+                path: "/marketInfo2/marketList",
+                name: "MarketInfo1",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Benefit/components/MarketInfo2/components/MarketList"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "行业资讯",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/marketInfo2/marketMsg",
+                name: "marketMsg",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Benefit/components/MarketInfo2/components/marketMsg"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "行业资讯详情",
+                  icon: "navmenu"
+                }
+              }
+            ]
           }
         ]
       },
@@ -431,7 +568,8 @@ let baseRoutes = [{
           title: "个人中心",
           icon: "navmenu"
         },
-        children: [{
+        children: [
+          {
             path: "/personal/center",
             name: "PerCenter",
             class_true: false,
@@ -452,7 +590,8 @@ let baseRoutes = [{
               title: "个人记录",
               icon: "navmenu"
             },
-            children: [{
+            children: [
+              {
                 path: "/personal/notes",
                 redirect: "/personal/notes/browse",
                 hidden: true
@@ -504,18 +643,36 @@ let baseRoutes = [{
               title: "用户调查",
               icon: "navmenu"
             },
-            children: [{
-              path: "/personal/survey/add",
-              name: "Survey",
-              class_true: false,
-              component: () =>
-                import("@/views/Personal/Survey/components/add.vue"),
-              hidden: false,
-              meta: {
-                title: "新建",
-                icon: "navmenu"
+            children: [
+              {
+                path: "/personal/survey",
+                redirect: "/personal/survey/list"
+              },
+              {
+                path: "/personal/survey/list",
+                name: "Survey",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Survey/components/list.vue"),
+                hidden: false,
+                meta: {
+                  title: "调查列表",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/personal/survey/add",
+                name: "Survey",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Survey/components/add.vue"),
+                hidden: false,
+                meta: {
+                  title: "新建",
+                  icon: "navmenu"
+                }
               }
-            }]
+            ]
           },
           {
             path: "/personal/saveCenter",
@@ -526,7 +683,37 @@ let baseRoutes = [{
             meta: {
               title: "安全中心",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/personal/saveCenter",
+                redirect: "/personal/saveCenter/changePhone"
+              },
+              {
+                path: "/personal/saveCenter/changePhone",
+                name: "SaveCenter",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/SaveCenter/components/ChangePhone"),
+                hidden: false,
+                meta: {
+                  title: "修改手机号",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/personal/saveCenter/changePass",
+                name: "SaveCenter",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/SaveCenter/components/ChangePass"),
+                hidden: false,
+                meta: {
+                  title: "修改密码",
+                  icon: "navmenu"
+                }
+              }
+            ]
           },
           {
             path: "/personal/adress",
@@ -538,7 +725,8 @@ let baseRoutes = [{
               title: "我的地址",
               icon: "navmenu"
             },
-            children: [{
+            children: [
+              {
                 path: "/personal/adress",
                 redirect: "/personal/adress/list",
                 hidden: true
@@ -579,7 +767,8 @@ let baseRoutes = [{
               title: "我的供应",
               icon: "navmenu"
             },
-            children: [{
+            children: [
+              {
                 path: "/personal/supply",
                 redirect: "/personal/supply/tableView",
                 hidden: true
@@ -602,6 +791,49 @@ let baseRoutes = [{
                 class_true: false,
                 component: () =>
                   import("@/views/Personal/Supply/components/addSupply"),
+                hidden: false,
+                meta: {
+                  title: "发布供应",
+                  icon: "navmenu"
+                }
+              }
+            ]
+          },
+
+          {
+            path: "/personal/buy",
+            name: "Buy",
+            class_true: false,
+            component: () => import("@/views/Personal/Buy"),
+            hidden: false,
+            meta: {
+              title: "我的求购",
+              icon: "navmenu"
+            },
+            children: [
+              {
+                path: "/personal/buy",
+                redirect: "/personal/buy/tableView",
+                hidden: true
+              },
+              {
+                path: "/personal/buy/tableView",
+                name: "Buy",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Buy/components/tableTree"),
+                hidden: false,
+                meta: {
+                  // title: "我的供应",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/personal/buy/addbuy",
+                name: "Buy",
+                class_true: false,
+                component: () =>
+                  import("@/views/Personal/Buy/components/addBuy"),
                 hidden: false,
                 meta: {
                   title: "发布供应",
