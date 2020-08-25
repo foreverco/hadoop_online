@@ -57,7 +57,7 @@ export default {
       reqpolicyNewsMsg({ Id: e }).then(res => {
         console.log(res);
         this.msg = res.data.data;
-        this.$route.meta.title = res.data.data.title;
+        // this.$route.meta.title = res.data.data.title;
       });
     }
   }

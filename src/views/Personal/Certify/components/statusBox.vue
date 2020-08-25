@@ -231,6 +231,8 @@ export default {
   margin-top: 30px;
   .statusMsg {
     margin-top: 30px;
+    // border: 1px solid red;
+    margin-left: 40px;
     p {
       font-size: 16px;
       font-family: Microsoft YaHei;

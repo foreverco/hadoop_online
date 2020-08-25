@@ -415,8 +415,18 @@ export default {
     this.getProvince();
     /* 获取质量标准 */
     this.getzlType();
-    /* 初始化列表 */
-    this.getapplyList();
+    if (this.$route.query.medicineId && this.$route.query.letter) {
+      let letter = this.$route.query.letter;
+      // console.log(letter);
+      // console.log(letter.slice(0, 1));
+      // console.log(letter.slice(1, 2));
+      this.getOneZm(letter.slice(0, 1));
+      this.getTwoZm(letter.slice(1, 2));
+      this.getmedicineId(this.$route.query.medicineId);
+    } else {
+      /* 初始化列表 */
+      this.getapplyList();
+    }
   },
   methods: {
     //获取地址(省)

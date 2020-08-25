@@ -29,7 +29,9 @@
           :width="item.width"
         >
           <template slot-scope="scope">
-            <span v-html="item.callback && item.callback(scope.row, item.prop)"></span>
+            <span
+              v-html="item.callback && item.callback(scope.row, item.prop)"
+            ></span>
           </template>
         </el-table-column>
         <el-table-column
@@ -61,7 +63,7 @@
     </el-row>
     <el-row
       :style="{ justifyContent: table_config.pagePosition }"
-      style="display:flex;align-items: center"
+      style="display:flex;align-items: center;margin-top:20px;"
     >
       <el-pagination
         v-if="table_config.pagination"

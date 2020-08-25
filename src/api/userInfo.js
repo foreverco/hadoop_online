@@ -127,3 +127,12 @@ export function reqAddsurvery(data) {
     data
   });
 }
+/* 删除用户调查 */
+
+export function reqdelsurvery(data) {
+  return service.request({
+    method: "DELETE",
+    url: "/view/survey/member/delSurvey",
+    data
+  });
+}

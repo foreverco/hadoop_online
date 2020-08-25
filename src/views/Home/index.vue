@@ -2,80 +2,64 @@
   <div class="home lvallcontainer">
     <div class="swiperBox lvallcontainer">
       <!-- 轮播图 -->
-      <SwiperVue :imgList="swiperList1" :swiperConfig="swiperConfig"></SwiperVue>
+      <SwiperVue
+        :imgList="swiperList1"
+        :swiperConfig="swiperConfig"
+      ></SwiperVue>
     </div>
     <!-- 政策资讯 登录 -->
     <div class="InfoLogin lvcontainer">
       <div class="Information">
-        <Title titleTxt="政策资讯"></Title>
+        <Title titleTxt="政策资讯" @titleClick="gotonewsList"></Title>
         <div class="InformationContent">
           <div class="InfoswiperBox">
             <!-- 轮播图 -->
-            <SwiperVue :imgList="swiperList2" :swiperConfig="swiperConfig"></SwiperVue>
+            <SwiperVue
+              :imgList="swiperList2"
+              :swiperConfig="swiperConfig"
+            ></SwiperVue>
           </div>
           <div class="InfoTab">
             <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="市场资讯" name="first">
+              <el-tab-pane label="市场资讯" name="A1">
                 <ul>
-                  <li>
+                  <li
+                    v-for="(item, index) in newsrecords"
+                    :key="index"
+                    @click="gotoMsg('/marketInfo/marketMsg', item.id)"
+                  >
                     <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
-                  </li>
-                  <li>
-                    <span>●</span>
-                    <span>[市场]</span>
-                    <span>京蒙扶贫路上盛开的“金莲花”：特色产业扶贫见成效</span>
+                    <span>[产地]</span>
+                    <span>{{ item.title }}</span>
                   </li>
                 </ul>
               </el-tab-pane>
-              <el-tab-pane label="产地资讯" name="second">配置管理</el-tab-pane>
-              <el-tab-pane label="政策法规" name="third">角色管理</el-tab-pane>
+              <el-tab-pane label="产地资讯" name="A2">
+                <ul>
+                  <li
+                    v-for="(item, index) in newsrecords"
+                    :key="index"
+                    @click="gotoMsg('/marketInfo1/marketMsg', item.id)"
+                  >
+                    <span>●</span>
+                    <span>[政策]</span>
+                    <span>{{ item.title }}</span>
+                  </li>
+                </ul>
+              </el-tab-pane>
+              <el-tab-pane label="政策法规" name="A3">
+                <ul>
+                  <li
+                    v-for="(item, index) in newsrecords"
+                    :key="index"
+                    @click="gotoMsg('/marketInfo2/marketMsg', item.id)"
+                  >
+                    <span>●</span>
+                    <span>[行业]</span>
+                    <span>{{ item.title }}</span>
+                  </li>
+                </ul>
+              </el-tab-pane>
             </el-tabs>
           </div>
         </div>
@@ -87,22 +71,24 @@
               <el-avatar :size="30" :src="userMsg.info.headUrl"></el-avatar>
             </li>
             <li v-if="!userMsg">
-              <img src="@/assets/images/test/home/默认头像.png" alt>
+              <img src="@/assets/images/test/home/默认头像.png" alt />
             </li>
             <li>
               <p>
-                <span>hi</span>
+                <span>hi! </span>
                 <span v-if="!userMsg">游客 45586</span>
-                <span
-                  v-if="userMsg && userMsg != 'undefined'"
-                >{{ (userMsg.info && userMsg.info.nickname) || "admin" }}</span>
+                <span v-if="userMsg && userMsg != 'undefined'">{{
+                  (userMsg.info && userMsg.info.nickname) || "admin"
+                }}</span>
               </p>
               <p v-if="!userMsg">登录/注册获取更多体验</p>
               <p v-else>欢迎来到蒙中药材网</p>
             </li>
             <li>
               <el-button v-if="!userMsg" type="success">登录/注册</el-button>
-              <el-button v-else type="danger">退出</el-button>
+              <el-button v-else type="danger" @click="handerLogout"
+                >退出</el-button
+              >
             </li>
           </ul>
           <div class="loginBtn">
@@ -113,7 +99,11 @@
         <div class="placeBox">
           <Title titleTxt="区域规划"></Title>
           <div class="placeMap">
-            <AmapVue ref="amap" :options="options_map" @callback="callbackComponent"></AmapVue>
+            <AmapVue
+              ref="amap"
+              :options="options_map"
+              @callback="callbackComponent"
+            ></AmapVue>
           </div>
         </div>
       </div>
@@ -128,7 +118,9 @@
               :key="index"
               :class="{ priceTypeActive: priceTypeActive == index }"
               @click="changepriceType(index)"
-            >{{ item.name }}</li>
+            >
+              {{ item.name }}
+            </li>
           </ul>
           <p>更多 > ></p>
         </div>
@@ -157,7 +149,7 @@
         <ul class="typeList">
           <li v-for="(item, index) in drugTypeList" :key="index">
             <i :class="item.iconName"></i>
-            <span>{{item.name}}</span>
+            <span>{{ item.name }}</span>
           </li>
         </ul>
       </div>
@@ -167,7 +159,10 @@
       <div class="hotTitle">热点专题</div>
       <div class="hotSwiper">
         <!-- 轮播图 -->
-        <SwiperVue :imgList="hotswiperList" :swiperConfig="hotswiperConfig"></SwiperVue>
+        <SwiperVue
+          :imgList="hotswiperList"
+          :swiperConfig="hotswiperConfig"
+        ></SwiperVue>
       </div>
     </div>
 
@@ -179,12 +174,12 @@
           <TableVue :config="applytableConfig">
             <template v-slot:supplyAmount="slotData">
               {{
-              `${slotData.data.supplyAmount}${slotData.data.supplyUnitName}`
+                `${slotData.data.supplyAmount}${slotData.data.supplyUnitName}`
               }}
             </template>
             <template v-slot:area="slotData">
               {{
-              `${slotData.data.orginProvinceName}${slotData.data.orginCityName}${slotData.data.orginCountyName}`
+                `${slotData.data.orginProvinceName}${slotData.data.orginCityName}${slotData.data.orginCountyName}`
               }}
             </template>
 
@@ -205,13 +200,19 @@
         </div>
       </div>
       <div class="needRight">
-        <Title titleTxt="今日求购"></Title>
+        <Title titleTxt="今日求购" @titleClick="gotobuyList"></Title>
         <div class="tableBox">
-          <TableVue :config="tableConfig1">
-            <!-- <template v-slot:image="slotData">
-            <el-avatar :src="slotData.data.photo"></el-avatar>
-          </template>
-          <template v-slot:status="slotData">
+          <TableVue :config="buytableConfig">
+            <template v-slot:buyAmount="slotData">
+              {{ `${slotData.data.buyingAmount}${slotData.data.buyUnitName}` }}
+            </template>
+            <!-- <template v-slot:area="slotData">
+              {{
+                `${slotData.data.orginProvinceName}${slotData.data.orginCityName}${slotData.data.orginCountyName}`
+              }}
+            </template> -->
+
+            <!-- <template v-slot:status="slotData">
             <el-switch
               v-model="slotData.data.status"
               :active-value="1"
@@ -219,12 +220,12 @@
             ></el-switch>
             </template>-->
             <template v-slot:opration="slotData">
-              <el-button size="mini" @click="find(slotData.data)">查看</el-button>
+              <el-button @click="findBuy(slotData.data)">查看</el-button>
             </template>
           </TableVue>
         </div>
         <div class="btnBox">
-          <el-button>发布供应信息</el-button>
+          <el-button @click="gotobuy">发布供应信息</el-button>
         </div>
       </div>
     </div>
@@ -240,7 +241,7 @@
         </ul>
         <ul class="imgList">
           <li v-for="(item, index) in drugList" :key="index">
-            <img :src="item.imgUrl" alt>
+            <img :src="item.imgUrl" alt />
           </li>
         </ul>
       </div>
@@ -278,8 +279,12 @@
       </div>
       <div class="videoContent">
         <ul>
-          <li v-for="(item, index) in videoList" :key="index" @click="gotoVideo(item)">
-            <img :src="item.imgUrl" alt>
+          <li
+            v-for="(item, index) in videoList"
+            :key="index"
+            @click="gotoVideo(item)"
+          >
+            <img :src="item.imgUrl" alt />
           </li>
         </ul>
       </div>
@@ -290,6 +295,7 @@
 import AmapVue from "@/components/Amap";
 import SwiperVue from "@/components/SwiperVue";
 import TableVue from "@/components/TableData";
+import { reqpolicyNews } from "@/api/news";
 // import VideoVue from "../../components/video/video";
 import { WOW } from "wowjs";
 export default {
@@ -326,6 +332,8 @@ export default {
   },
   data() {
     return {
+      // 新闻信息
+      newsrecords: [],
       // 我的供应table
       applytableConfig: {
         checkBox: false,
@@ -344,6 +352,32 @@ export default {
           { label: "规格", prop: "specificationName", width: "50" },
           { label: "供应量", type: "slot", slotName: "supplyAmount" },
           { label: "产地", type: "slot", slotName: "area", width: "150" },
+          {
+            label: "操作",
+            type: "slot",
+            slotName: "opration"
+          }
+        ]
+      },
+
+      // 我的求购table
+      buytableConfig: {
+        checkBox: false,
+        hadBorder: false,
+        pagination: false,
+        tableHeight: "370",
+        headColor: "#FFEDD7",
+        url: "homebuyList",
+        data: {
+          page: 1,
+          pageSize: 8,
+          status: ""
+        },
+        tHead: [
+          { label: "品名", prop: "medinceName" },
+          { label: "规格", prop: "specificationName", width: "50" },
+          { label: "求购量", type: "slot", slotName: "buyAmount" },
+          { label: "联系人", prop: "contactPerson" },
           {
             label: "操作",
             type: "slot",
@@ -570,7 +604,7 @@ export default {
           zc: 140
         }
       ],
-      activeName: "first",
+      activeName: "A1",
       /* 药材品种列表 */
       drugTypeList: [
         {
@@ -753,7 +787,76 @@ export default {
     });
     wow.init();
   },
+  created() {
+    this.getNewsList();
+  },
   methods: {
+    // 退出登录
+    handerLogout() {
+      this.confirm({
+        tip: "退出",
+        content: "确认退出登录？",
+        status: "账号退出成功",
+        fn: this.logout
+      });
+    },
+    logout() {
+      let logoutParams = { token: this.tokenMsg };
+      this.$store
+        .dispatch("app/clearUserInfo", logoutParams)
+        .then(res => {
+          console.log(res);
+          // this.$message.success(res.data.msg);
+          // this.logOutMsg = res.data.msg;
+          // console.log(this.logOutMsg);
+          this.$router.push({ name: "Login" });
+        })
+        .catch(error => {
+          this.$message.success(error.data.msg);
+        });
+    },
+    // 获取新闻详情信息
+    getNewsList(p) {
+      let newParams = {};
+      // if (page) {
+      //   this.current = page;
+      // }
+      // if (size) {
+      //   this.size = size;
+      // }
+      // if (p) {
+      //   newParams = p;
+      // }
+      newParams.page = 1;
+      newParams.pageSize = 10;
+      newParams.policyType = p || "A1";
+      reqpolicyNews(newParams).then(res => {
+        console.log(res);
+        this.newsrecords = res.data.data.records;
+        console.log(this.newsrecords);
+      });
+    },
+    // 新闻类型切换
+    handleClick() {
+      console.log(this.activeName);
+      this.getNewsList(this.activeName);
+    },
+    // 跳转新闻列表
+    gotonewsList() {
+      this.$router.push({
+        path: "/marketInfo/marketList"
+      });
+    },
+    // 跳转新闻详情
+    gotoMsg(path, id) {
+      console.log(id);
+      this.$router.push({
+        path: path,
+        query: {
+          id: id
+        }
+      });
+    },
     // 跳转发布供应页面
     gotoGy() {
       console.log(this.tokenMsg);
@@ -782,6 +885,31 @@ export default {
         query: { id: e.id, str: e.title }
       });
     },
+    //跳转发布求购
+    gotobuy() {
+      if (this.tokenMsg && this.userMsg) {
+        this.$router.push({
+          path: "/personal/buy/addbuy"
+        });
+      } else {
+        this.$router.push({
+          path: "/login"
+        });
+      }
+    },
+    // 跳转求购列表
+    gotobuyList() {
+      this.$router.push({
+        path: "/OTC2/index"
+      });
+    },
+    // 跳转求购详情
+    findBuy(e) {
+      this.$router.push({
+        path: "/OTC2/buyMsg",
+        query: { id: e.id, str: e.title }
+      });
+    },
     callbackComponent(params) {
       if (params.function) {
         this[params.function](params.data);
@@ -791,7 +919,7 @@ export default {
     gotoVideo(e) {
       console.log(e);
       this.$router.push({
-        path: "/planting2/video",
+        path: "/plantingvideo/video",
         query: {
           id: e.id
         }
@@ -803,10 +931,7 @@ export default {
     find(e) {
       console.log(e);
     },
-    //
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
+
     /* 修改价格类型 */
     changepriceType(e) {
       this.priceTypeActive = e;

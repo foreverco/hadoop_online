@@ -17,67 +17,6 @@
         ></CascaderVue>
       </template>
     </FormVue>
-    <!-- <el-form
-      :rules="cerifyRules"
-      :model="cerifyForm"
-      ref="cerifyForm"
-      label-position="right"
-      label-width="100px"
-    >
-      <el-form-item label="药材名称">
-        <el-select v-model="value" placeholder="请选择" style="width:50%">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="种植面积">
-        <el-input style="width:50%">
-          <template slot="append">亩</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="种植时间">
-        <el-date-picker
-          v-model="value1"
-          type="datetime"
-          placeholder="选择日期时间"
-          style="width:50%"
-        >
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="采收时间">
-        <el-date-picker
-          v-model="value2"
-          type="datetime"
-          placeholder="选择日期时间"
-          style="width:50%"
-        >
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="种植面积">
-        <el-input style="width:50%">
-          <template slot="append">公斤/亩</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="地理位置">
-        <CascaderVue
-          :areaValue.sync="area"
-          ref="cascader"
-          :areaConfig="{ mapLocation: false }"
-          style="width:50%"
-        ></CascaderVue>
-      </el-form-item>
-      <el-form-item>
-        <el-input placeholder="请输入详细地址" style="width:50%"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="success">保存</el-button>
-      </el-form-item>
-    </el-form> -->
   </div>
 </template>
 <script>
@@ -205,9 +144,9 @@ export default {
       ],
       formHandle: [
         {
-          label: "确定",
+          label: "保存",
           type: "success",
-          width: "170px",
+          width: "130px",
           handler: () => this.formValidate()
         }
       ]
@@ -240,17 +179,37 @@ export default {
       // area: []
     };
   },
+  created() {
+    this.initData();
+  },
   mounted() {
-    this.getUserMsg();
+    let addreePlaceholder = "";
+    if (this.formData.id) {
+      addreePlaceholder = `${this.formData.proviceName}/${this.formData.cityName}/${this.formData.countyName}`;
+    } else {
+      addreePlaceholder = "省/市/区";
+    }
+    this.getUserMsg(addreePlaceholder);
   },
   methods: {
-    getUserMsg() {
-      this.$refs.cascader.initPlaceHodler("省/市/区");
+    initData() {
+      if (this.$route.query) {
+        this.formData = this.$route.query;
+        console.log(this.formData);
+        this.formData.city = [];
+        this.formData.city.push(
+          this.formData.provinceId,
+          this.formData.cityId,
+          this.formData.countyId
+        );
+      }
+    },
+    getUserMsg(e) {
+      this.$refs.cascader.initPlaceHodler(e);
     },
     formValidate() {
       this.$refs.vueForm.$refs.form.validate(valid => {
         if (valid) {
-          alert("submit!");
           console.log(this.formData);
           let surveyParams = JSON.parse(JSON.stringify(this.formData));
           surveyParams.provinceId = this.formData.city[0];
@@ -258,6 +217,9 @@ export default {
           surveyParams.countyId = this.formData.city[2];
           reqAddsurvery(surveyParams).then(res => {
             console.log(res);
+            this.$router.push({
+              path: "/personal/survey/list"
+            });
           });
         } else {
           console.log("error submit!!");

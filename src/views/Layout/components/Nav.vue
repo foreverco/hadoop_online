@@ -43,8 +43,11 @@
             >
           </p>
           <div class="headSearch" v-else v-show="$route.path == '/home'">
-            <el-input placeholder="请输入关键字"></el-input>
-            <el-button type="success">搜索</el-button>
+            <el-input
+              placeholder="请输入关键字"
+              v-model="headerNewsKyes"
+            ></el-input>
+            <el-button type="success" @click="searchNews">搜索</el-button>
           </div>
         </div>
       </div>
@@ -134,6 +137,7 @@ export default {
   data() {
     return {
       timer: new Date(),
+      headerNewsKyes: "",
       navList: [],
       navIndex: 1,
       logOutMsg: "",
@@ -230,6 +234,13 @@ export default {
         } else {
           item.class_true = false;
         }
+      });
+    },
+    // 新闻搜索
+    searchNews() {
+      this.headerNewsKyes;
+      this.$router.push({
+        path: "/marketInfo/marketList"
       });
     },
     login() {

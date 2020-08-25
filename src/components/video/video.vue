@@ -61,8 +61,8 @@ export default {
             type: "video/ogg",
             // type:"video/mp4",
             // src: "https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8"
-            src: "http://192.168.1.187/group1/M00/00/06/wKgBu18_kmGAQmAYAIJNOMg9mJM375.mp4"
-            // src: "http://vjs.zencdn.net/v/oceans.mp4"
+            // src: "http://192.168.1.187/group1/M00/00/06/wKgBu18_kmGAQmAYAIJNOMg9mJM375.mp4"
+            src: "http://vjs.zencdn.net/v/oceans.mp4"
             // src: ""
             // src: 'http://192.168.1.163:15580/34020000001320000005'
           }

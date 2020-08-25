@@ -167,14 +167,14 @@ export default {
           prop: "drugcd",
           required: true,
           // validator: [{ validator: validateCity, trigger: "change" }],
-          label: "地理位置"
+          label: "产地位置"
         },
         {
           type: "Slot",
           slotName: "drugck",
           prop: "drugck",
           required: true,
-          label: "地理位置"
+          label: "仓储位置"
         },
         {
           type: "Select",

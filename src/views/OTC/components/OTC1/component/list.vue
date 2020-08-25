@@ -34,7 +34,7 @@
             v-for="(item, index) in drugList"
             :key="index"
             :class="{ isactive: item.id == checkForm.medicineId }"
-            @click="getmedicineId(item)"
+            @click="getmedicineId(item.id)"
           >
             {{ item.medinceName }}
           </li>
@@ -305,8 +305,8 @@ export default {
       OneZm: "",
       TwoZm: "",
       drugList: [
-        { medinceName: "黄芪", id: "001" },
-        { medinceName: "板蓝根", id: "002" }
+        // { medinceName: "黄芪", id: "001" }
+        // { medinceName: "板蓝根", id: "002" }
       ],
       zmList: [
         { name: "A" },
@@ -416,9 +416,20 @@ export default {
     this.getProvince();
     /* 获取质量标准 */
     this.getzlType();
-    /* 初始化列表 */
-    this.getapplyList();
+    if (this.$route.query.medicineId && this.$route.query.letter) {
+      let letter = this.$route.query.letter;
+      // console.log(letter);
+      // console.log(letter.slice(0, 1));
+      // console.log(letter.slice(1, 2));
+      this.getOneZm(letter.slice(0, 1));
+      this.getTwoZm(letter.slice(1, 2));
+      this.getmedicineId(this.$route.query.medicineId);
+    } else {
+      /* 初始化列表 */
+      this.getapplyList();
+    }
   },
+
   methods: {
     //获取地址(省)
     getProvince() {
@@ -490,7 +501,8 @@ export default {
       console.log(e);
       this.inputdrugName = "";
       this.checkForm.medicineName = "";
-      this.checkForm.medicineId = e.id;
+      this.checkForm.medicineId = e;
+      console.log(this.checkForm);
     },
     /* 删除药材品种 */
     deldrugType() {

@@ -25,8 +25,10 @@
         </template>
         <template v-slot:opration="scope">
           <div class="btnBox">
-            <span class="mainBtn" @click="edit(scope.data)">编辑</span>
-            <span class="mainBtn" @click="handelAdress(scope.data)">删除</span>
+            <span class="mainBtn" @click="editSurvey(scope.data)">编辑</span>
+            <span class="mainBtn" @click="handelDelSurvey(scope.data)"
+              >删除</span
+            >
           </div>
         </template>
       </TableVue>
@@ -35,6 +37,7 @@
 </template>
 <script>
 import TableVue from "@/components/TableData";
+import { reqdelsurvery } from "@/api/userInfo";
 export default {
   name: "LIST",
   components: {
@@ -42,6 +45,7 @@ export default {
   },
   data() {
     return {
+      delId: "",
       // 表格配置
       tableConfig: {
         checkBox: false,
@@ -50,7 +54,8 @@ export default {
         headColor: "#3AB54C10",
         headTxtColor: "#3AB54C",
         url: "surveyList",
-        pagination: false,
+        pagination: true,
+        pagePosition: "center",
         tooltip: true,
         data: {
           page: 1,
@@ -81,6 +86,30 @@ export default {
   methods: {
     addSurvey() {
       this.$router.push({ path: "/personal/survey/add" });
+    },
+    handelDelSurvey(e) {
+      this.delId = e.id;
+      this.confirm({
+        tip: "确认删除",
+        content: "确认删除此条调查信息？",
+        status: "调查信息删除成功",
+        fn: this.delSurvey
+      });
+    },
+    delSurvey() {
+      let ids = [];
+      ids.push(this.delId);
+      reqdelsurvery(ids).then(res => {
+        console.log(res);
+      });
+    },
+    /* 编辑用户调查 */
+    editSurvey(e) {
+      console.log(e);
+      this.$router.push({
+        path: "/personal/survey/add",
+        query: e
+      });
     }
   }
 };

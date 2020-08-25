@@ -9,6 +9,8 @@ const requestUrl = {
   homesupplyList: "/view/supply/queryRecentList",
   // 获取我的求购列表
   buyList: "/view/buying/member/queryList",
+  // 首页获取我的求购
+  homebuyList: "/view/buying/queryRecentList",
   // 获取用户调查列表
   surveyList: "/view/survey/member/queryList"
 };

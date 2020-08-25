@@ -252,7 +252,10 @@ export default {
         price: "20"
       },
       titleTxt: "",
+      letter: "",
+      userId: "",
       userApplyList: [],
+      medicineId: "",
       drugApplyList: [],
       applyList: [
         {
@@ -388,6 +391,19 @@ export default {
       ]
     };
   },
+  watch: {
+    "$route.query.id"(newVal) {
+      if (this.applyList && this.applyList.length > 8) {
+        this.drugApplyList = this.applyList.slice(0, 8);
+      } else {
+        this.drugApplyList = this.applyList;
+      }
+      // 初始化数据
+      this.initSupplymsg(newVal);
+      // 添加浏览
+      this.addBrowse();
+    }
+  },
   created() {
     let id = this.$route.query.id;
     // alert(id);
@@ -414,6 +430,10 @@ export default {
         console.log(res);
         this.applyMsg = res.data.data;
         this.titleTxt = this.applyMsg.medinceName + "求购信息";
+        //获取该药拼音
+        this.letter = res.data.data.letter;
+        // 获取该用户其他供应信息
+        this.userId = res.data.data.userId;
         // 获取该用户其他求购信息
         let userParams = {
           page: 1,
@@ -429,6 +449,8 @@ export default {
             this.userApplyList = this.userApplyList.slice(0, 4);
           }
         });
+        // 获取此类药供应信息
+        this.medicineId = res.data.data.medicineId;
         // 获取此类药求购信息
         let typeParams = {
           page: 1,
@@ -485,6 +507,12 @@ export default {
       this.$router.push({
         path: "/OTC2/buymsg",
         query: { id: e.id }
+      });
+    },
+    gotodrugIdList() {
+      this.$router.push({
+        path: "/OTC2/index",
+        query: { medicineId: this.medicineId, letter: this.letter }
       });
     }
   }

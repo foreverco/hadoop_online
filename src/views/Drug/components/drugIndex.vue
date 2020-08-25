@@ -18,14 +18,33 @@
             <el-button type="success">搜索</el-button>
           </div>
         </li>
-        <li>
+        <li :class="{ h40: areaActive }">
           <span>区域:</span>
+          <ul class="areaList">
+            <li
+              v-for="(item, index) in areaList"
+              :key="index"
+              :class="{ zmActive: zmActive.value == item.provinceId }"
+              @click="changeareaactive(item)"
+            >
+              {{ item.province }}
+            </li>
+          </ul>
+          <i
+            :class="areaActive ? 'el-icon-caret-bottom' : 'el-icon-caret-top'"
+            @click="areaActive = !areaActive"
+          ></i>
         </li>
         <li>
-          <span>产地:</span>
+          <span>产新:</span>
           <ul class="moonList">
-            <li v-for="(item, index) in moonList" :key="index">
-              {{ item.moon }}
+            <li
+              v-for="(item, index) in moonList"
+              :key="index"
+              :class="{ zmActive: zmActive.value == item.value }"
+              @click="changemoonactive(item)"
+            >
+              {{ item.label }}
             </li>
           </ul>
         </li>
@@ -35,16 +54,16 @@
             <li
               v-for="(item, index) in zmList"
               :key="index"
-              :class="{ zmActive: zmActive == item.name }"
-              @click="getZm(item.name)"
+              :class="{ zmActive: zmActive.value == item.value }"
+              @click="getZm(item)"
             >
-              {{ item.name }}
+              {{ item.label }}
             </li>
           </ul>
         </li>
       </ul>
       <div class="titleBox">
-        <Title :titleTxt="`${zmActive}类`" :btnShow="false"></Title>
+        <Title :titleTxt="`${zmActive.label}类`" :btnShow="false"></Title>
       </div>
       <div class="drugMsgBoxList">
         <ul>
@@ -58,20 +77,24 @@
             </div>
             <div class="conBox">
               <div class="nameBox">
-                <span>{{ item.title }}</span>
-                <span>{{ item.enName }}</span>
+                <span>{{ item.medinceName }}</span>
+                <span>{{ item.anotherName }}</span>
               </div>
               <p>
                 <span>别名:</span>
-                <span>{{ item.allName }}</span>
+                <span>{{ item.chineseName }}</span>
               </p>
               <p>
                 <span>产新时间:</span>
-                <span>{{ item.date }}</span>
+                <span v-for="(i, index) in item.months" :key="index">
+                  {{ i }}</span
+                >
               </p>
               <p>
                 <span>主要产区:</span>
-                <span>{{ item.adress }}</span>
+                <span v-for="(i, index) in item.places" :key="index">
+                  {{ i }}
+                </span>
               </p>
               <el-button type="success">查看更多</el-button>
             </div>
@@ -95,20 +118,31 @@
 <script>
 import SwiperVue from "@/components/SwiperVue";
 import pagination from "@/components/Pagination";
+import { reqAdress } from "@/api/map";
+import { reqAllDrug } from "@/api/drug";
 export default {
   name: "drugIndex",
   components: {
     SwiperVue,
     pagination
   },
+  watch: {
+    zmActive: {
+      handler(newVal) {
+        console.log(newVal.value);
+        let p = newVal.value;
+        this.getDrugs(1, 6, p);
+      },
+      deep: true
+    }
+  },
   data() {
     return {
-      records: [],
-      current: 1,
-      size: 4,
-      total: 10,
-      pages: 10,
-      pageLayout: "prev, pager, next",
+      // records: [],
+      // current: 1,
+      // size: 4,
+      // total: 10,
+      // pages: 10,
       drugswiperConfig: {
         slidesPerView: 4,
         spaceBetween: 78,
@@ -137,49 +171,61 @@ export default {
           con: "补气升阳，益卫固表，利水消肿，托疮生肌"
         }
       ],
+      checkForm: {},
+      areaList: [],
+      areaActive: true,
       moonList: [
-        { moon: "一月" },
-        { moon: "二月" },
-        { moon: "三月" },
-        { moon: "四月" },
-        { moon: "五月" },
-        { moon: "六月" },
-        { moon: "七月" },
-        { moon: "八月" },
-        { moon: "九月" },
-        { moon: "十月" },
-        { moon: "十一月" },
-        { moon: "十二月" }
+        { label: "一月", value: "1月" },
+        { label: "二月", value: "2月" },
+        { label: "三月", value: "3月" },
+        { label: "四月", value: "4月" },
+        { label: "五月", value: "5月" },
+        { label: "六月", value: "6月" },
+        { label: "七月", value: "7月" },
+        { label: "八月", value: "8月" },
+        { label: "九月", value: "9月" },
+        { label: "十月", value: "10月" },
+        { label: "十一月", value: "11月" },
+        { label: "十二月", value: "12月" }
       ],
-      zmActive: "A",
+      zmActive: {
+        label: "",
+        value: ""
+      },
       zmList: [
-        { name: "A" },
-        { name: "B" },
-        { name: "C" },
-        { name: "D" },
-        { name: "E" },
-        { name: "F" },
-        { name: "G" },
-        { name: "H" },
-        { name: "I" },
-        { name: "J" },
-        { name: "K" },
-        { name: "L" },
-        { name: "M" },
-        { name: "N" },
-        { name: "O" },
-        { name: "P" },
-        { name: "Q" },
-        { name: "R" },
-        { name: "S" },
-        { name: "T" },
-        { name: "U" },
-        { name: "V" },
-        { name: "W" },
-        { name: "X" },
-        { name: "Y" },
-        { name: "Z" }
+        { label: "A", value: "A" },
+        { label: "B", value: "B" },
+        { label: "C", value: "C" },
+        { label: "D", value: "D" },
+        { label: "E", value: "E" },
+        { label: "F", value: "F" },
+        { label: "G", value: "G" },
+        { label: "H", value: "H" },
+        { label: "I", value: "I" },
+        { label: "J", value: "J" },
+        { label: "K", value: "K" },
+        { label: "L", value: "L" },
+        { label: "M", value: "M" },
+        { label: "N", value: "N" },
+        { label: "O", value: "O" },
+        { label: "P", value: "P" },
+        { label: "Q", value: "Q" },
+        { label: "R", value: "R" },
+        { label: "S", value: "S" },
+        { label: "T", value: "T" },
+        { label: "U", value: "U" },
+        { label: "V", value: "V" },
+        { label: "W", value: "W" },
+        { label: "X", value: "X" },
+        { label: "Y", value: "Y" },
+        { label: "Z", value: "Z" }
       ],
+      records: [],
+      current: 1,
+      size: 6,
+      total: 0,
+      pages: 0,
+      pageLayout: "prev, pager, next",
       drugList: [
         {
           imgUrl: require("@/assets/images/test/ddyc/黑灵芝.png"),
@@ -256,9 +302,71 @@ export default {
       ]
     };
   },
+  created() {
+    this.getProvince();
+    this.getDrugs();
+  },
   methods: {
+    //获取地址(省)
+    getProvince() {
+      let proParams = {
+        type: "province",
+        id: "001"
+      };
+      reqAdress(proParams).then(res => {
+        this.areaList = res.data.data;
+      });
+    },
+    // 获取所有药材
+    getDrugs(page, size, p) {
+      let drugParams = {};
+      if (page) {
+        this.current = page;
+      }
+      if (size) {
+        this.size = size;
+      }
+      if (p) {
+        drugParams = p;
+      }
+      drugParams.page = this.current;
+      drugParams.pageSize = this.size;
+      console.log(drugParams);
+      reqAllDrug(drugParams).then(res => {
+        console.log(res);
+        this.drugList = res.data.data.records;
+        this.drugList.forEach(item => {
+          item.imgUrl = require("@/assets/images/test/ddyc/黑灵芝.png");
+        });
+        this.total = res.data.data.total;
+        this.size = res.data.data.size;
+      });
+    },
+    handleSizeChange(size) {
+      this.getDrugs(1, size);
+    },
+    handleCurrentChange(page) {
+      this.getDrugs(page);
+    },
+    changeareaactive(e) {
+      e.label = e.province;
+      e.value = e.provinceId;
+      console.log(e);
+      for (let key in this.zmActive) {
+        this.zmActive[key] = e[key];
+      }
+      // this.zmActive = e.province;
+    },
+    changemoonactive(e) {
+      for (let key in this.zmActive) {
+        this.zmActive[key] = e[key];
+      }
+    },
     getZm(e) {
-      this.zmActive = e;
+      // this.zmActive = e;
+      for (let key in this.zmActive) {
+        this.zmActive[key] = e[key];
+      }
     },
     // 跳转详情页
     gotoDrugMsg(id) {
@@ -268,16 +376,10 @@ export default {
           id: id
         }
       });
-    },
-    getDrugList(page, size, p) {
-      console.log(page, size, p);
-    },
-    handleSizeChange(size) {
-      this.getDrugList(1, size);
-    },
-    handleCurrentChange(page) {
-      this.getDrugList(page);
     }
+    // getDrugList(page, size, p) {
+    //   console.log(page, size, p);
+    // },
   }
 };
 </script>
@@ -312,12 +414,23 @@ export default {
     .searchBox {
       background: $boxbg;
       border-top: 3px solid $maincolor;
+      .h40 {
+        height: 55px;
+        transition: ease-in-out 1.5s;
+        display: flex;
+        align-items: center;
+      }
+      .zmActive {
+        color: $maincolor;
+      }
       > li {
         padding: $boxpadding;
         min-height: 55px;
         border-bottom: 1px solid rgba(58, 181, 76, 0.1);
         display: flex;
-        align-items: center;
+        overflow: hidden;
+        position: relative;
+        // align-items: center;
         &:last-child {
           border-bottom: 0;
         }
@@ -346,6 +459,36 @@ export default {
             line-height: 10px;
           }
         }
+        .areaList {
+          display: flex;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          width: 90%;
+          li {
+            margin: 0 10px;
+            height: 40px;
+            line-height: 40px;
+            &:hover {
+              cursor: pointer;
+              color: $maincolor;
+            }
+          }
+        }
+        i {
+          height: 25px;
+          line-height: 25px;
+          width: 25px;
+          position: absolute;
+          top: 15px;
+          // transform: translateY(-50%);
+          right: 10px;
+          border: 1px solid rgba(186, 186, 186, 1);
+          color: rgba(186, 186, 186, 1);
+          text-align: center;
+          &:hover {
+            cursor: pointer;
+          }
+        }
         .moonList {
           display: flex;
           > li {
@@ -358,9 +501,7 @@ export default {
         }
         .zmList {
           display: flex;
-          .zmActive {
-            color: $maincolor;
-          }
+
           > li {
             margin-right: 33px;
             &:hover {

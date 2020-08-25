@@ -5,9 +5,15 @@
         <Title titleTxt="产地资讯" :btnShow="false"></Title>
       </div>
       <ul>
-        <li>产地资讯</li>
-        <li>政策法规</li>
-        <li>行业资讯</li>
+        <li
+          v-for="(item, index) in routerList"
+          :key="index"
+          :class="{ routerActive: $route.path === item.path }"
+        >
+          <router-link :to="{ path: item.path }">
+            {{ item.name }}
+          </router-link>
+        </li>
       </ul>
     </div>
     <ul class="listBox">
@@ -20,7 +26,7 @@
           <img :src="item.imgUrl" alt="" />
         </div>
         <div class="msgBox">
-          <div class="msgTop">
+          <div class="msgTop" :title="item.title">
             {{ item.title }}
           </div>
           <div class="msgMid">
@@ -65,10 +71,24 @@ export default {
     return {
       records: [],
       current: 1,
-      size: 4,
+      size: 10,
       total: 0,
       pages: 0,
       pageLayout: "prev, pager, next",
+      routerList: [
+        {
+          name: "产地资讯",
+          path: "/marketInfo/marketList"
+        },
+        {
+          name: "政策资讯",
+          path: "/marketInfo1/marketList"
+        },
+        {
+          name: "行业资讯",
+          path: "/marketInfo2/marketList"
+        }
+      ],
       MarketList: [
         {
           imgUrl: require("@/assets/images/test/sczx/图层 1(1).png"),
@@ -98,6 +118,7 @@ export default {
       }
       newParams.page = this.current;
       newParams.pageSize = this.size;
+      newParams.policyType = "A1";
       reqpolicyNews(newParams).then(res => {
         console.log(res);
         this.records = res.data.data.records;
@@ -141,10 +162,20 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      .routerActive {
+        a {
+          color: $maincolor !important;
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
       li {
         color: $graycolor;
         border-right: 1px solid $graycolor;
         padding: 0 12px;
+        a {
+          color: #666;
+        }
         &:last-child {
           border-right: 0;
         }
@@ -182,6 +213,9 @@ export default {
           font-family: Microsoft YaHei;
           font-weight: bold;
           line-height: 35px;
+          white-space: nowrap; /* 规定文本是否折行 */
+          overflow: hidden; /* 规定超出内容宽度的元素隐藏 */
+          text-overflow: ellipsis;
         }
         .msgMid {
           font-size: 14px;

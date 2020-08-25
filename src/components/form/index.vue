@@ -86,7 +86,6 @@
             v-if="item.type == 'DataPick'"
             v-model="formData[item.prop]"
             type="datetime"
-            value-format="yyyy-MM-dd HH:mm:ss"
             placeholder="选择日期时间"
             :style="{ width: item.width }"
           >

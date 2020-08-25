@@ -88,7 +88,7 @@
       </div>
     </div>
     <div class="userBox">
-      <Title titleTxt="该用户其他供应信息"></Title>
+      <Title titleTxt="该用户其他供应信息" @titleClick="gotouserIdList"></Title>
       <div class="noneBox" v-if="!userApplyList || userApplyList.length === 0">
         该用户暂无其他供应信息
       </div>
@@ -152,7 +152,7 @@
       </ul>
     </div>
     <div class="drugBox">
-      <Title :titleTxt="titleTxt"></Title>
+      <Title :titleTxt="titleTxt" @titleClick="gotodrugIdList"></Title>
       <div class="noneBox" v-if="!drugApplyList || drugApplyList.length === 0">
         暂无关于{{ titleTxt }}数据
       </div>
@@ -258,7 +258,10 @@ export default {
         price: "20"
       },
       titleTxt: "",
+      letter: "",
+      userId: "",
       userApplyList: [],
+      medicineId: "",
       drugApplyList: [],
       applyList: [
         {
@@ -394,6 +397,14 @@ export default {
       ]
     };
   },
+  watch: {
+    "$route.query.id"(newVal) {
+      // 初始化数据
+      this.initSupplymsg(newVal);
+      // 添加浏览
+      this.addBrowse();
+    }
+  },
   created() {
     let id = this.$route.query.id;
     // alert(id);
@@ -417,10 +428,13 @@ export default {
     initSupplymsg(id) {
       // 获取点击药材详细信息
       reqapplymsg({ id: id }).then(res => {
-        // console.log(res);
+        console.log(res);
         this.applyMsg = res.data.data;
         this.titleTxt = this.applyMsg.medinceName + "供应信息";
+        //获取该药拼音
+        this.letter = res.data.data.letter;
         // 获取该用户其他供应信息
+        this.userId = res.data.data.userId;
         let userParams = {
           page: 1,
           pageSize: 10,
@@ -436,6 +450,7 @@ export default {
           }
         });
         // 获取此类药供应信息
+        this.medicineId = res.data.data.medicineId;
         let typeParams = {
           page: 1,
           pageSize: 10,
@@ -491,6 +506,19 @@ export default {
       this.$router.push({
         path: "/OTC1/applyMsg",
         query: { id: e.id }
+      });
+    },
+    // 跳转列表页
+    gotouserIdList() {
+      this.$router.push({
+        path: "/OTC1/index",
+        query: { userId: this.userId }
+      });
+    },
+    gotodrugIdList() {
+      this.$router.push({
+        path: "/OTC1/index",
+        query: { medicineId: this.medicineId, letter: this.letter }
       });
     }
   }

@@ -2,7 +2,7 @@
   <div class="marketInfo lvcontainer">
     <div class="leftBox">
       <div>
-        <router-view></router-view>
+        <router-view ref="newChild"></router-view>
         <!-- <MarketList></MarketList> -->
       </div>
     </div>
@@ -12,8 +12,8 @@
           <Title titleTxt="搜索" :btnShow="false"></Title>
         </div>
         <div class="headSearch">
-          <el-input placeholder="请输入关键字"></el-input>
-          <el-button type="success">搜索</el-button>
+          <el-input placeholder="请输入关键字" v-model="newKeys"></el-input>
+          <el-button type="success" @click="searchNews">搜索</el-button>
         </div>
         <div class="hotBox">
           <p>今日热词</p>
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       newsId: "",
+      newKeys: "",
       toptenList: [
         {
           content: "玉林市场丁香淡季走动量有限近日行情有下滑"
@@ -132,6 +133,12 @@ export default {
         console.log(res);
         this.toptenList = res.data.data;
       });
+    },
+    // 关键字搜索
+    searchNews() {
+      let params = {};
+      params.policyName = this.newKeys;
+      this.$refs.newChild.getpolicyNews(1, 10, params);
     }
   }
 };
