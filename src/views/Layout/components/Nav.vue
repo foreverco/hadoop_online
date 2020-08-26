@@ -115,11 +115,22 @@
               <dt @click="$router.push({ name: 'Personal' })">
                 个人中心
               </dt>
-              <dt>
+
+              <dt @click="$router.push({ path: '/personal/supply/tableView' })">
                 我的供应
               </dt>
-              <dt>
-                我的收藏
+              <dt @click="$router.push({ path: '/personal/buy/tableView' })">
+                我的求购
+              </dt>
+              <dt @click="$router.push({ path: '/personal/supply/tableView' })">
+                个人记录
+              </dt>
+              <dt
+                @click="
+                  $router.push({ path: '/personal/saveCenter/changePhone' })
+                "
+              >
+                安全中心
               </dt>
               <dt>
                 <el-button type="success" @click="handlelogout">退出</el-button>
@@ -604,13 +615,14 @@ export default {
           }
           &:hover {
             dl {
-              height: 280px;
+              height: 310px;
             }
           }
           dl {
-            width: 150%;
+            width: 120%;
             position: absolute;
-            top: $NavHeight;
+            // top: $NavHeight;
+            top: 50px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 110;
@@ -621,7 +633,7 @@ export default {
             dt {
               text-align: center;
               background: #fff;
-              height: 70px;
+              height: 50px;
               color: $maincolor;
               // border: 1px solid red;
               display: flex;

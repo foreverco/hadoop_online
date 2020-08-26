@@ -14,19 +14,23 @@
           <ul>
             <li>
               <span>品名:</span>
-              <span>黄芪</span>
+              <span>{{ drugMsg.medinceName }}</span>
             </li>
             <li>
               <span>别名:</span>
-              <span>棉芪，黄耆，独椹，蜀脂，百本，百药棉，黄参，血参</span>
+              <span>{{ drugMsg.chineseName }}</span>
             </li>
             <li>
               <span>产新时间:</span>
-              <span>六月、七月</span>
+              <span v-for="(item, index) in drugMsg.months" :key="index">{{
+                item
+              }}</span>
             </li>
             <li>
               <span>产区分布:</span>
-              <span>华北、东北、内蒙古和西北，主产于山西、黑龙江</span>
+              <span v-for="(item, index) in drugMsg.places" :key="index">{{
+                item
+              }}</span>
             </li>
             <li>
               <span>种植基地:</span>
@@ -38,7 +42,7 @@
           <DrugPriceVue></DrugPriceVue>
         </div>
         <div class="drugNewsBox">
-          <DrugNewsVue></DrugNewsVue>
+          <DrugNewsVue :newsKeys="drugMsg.medinceName"></DrugNewsVue>
         </div>
       </div>
     </div>
@@ -70,6 +74,7 @@
 import DrugPriceVue from "./drugMsgCom/DrugPrice";
 import DrugNewsVue from "./drugMsgCom/DrugNews";
 import TableVue from "@/components/TableData";
+import { reqDrugMsg } from "@/api/drug";
 export default {
   name: "drugMsg",
   components: {
@@ -80,6 +85,7 @@ export default {
   data() {
     return {
       msg: "",
+      drugMsg: {},
       // 表格配置
       tableConfig: {
         checkBox: false,
@@ -109,6 +115,12 @@ export default {
     // 获取id
     getdrugMsg(e) {
       this.msg = e;
+      let drugParamsid = {};
+      drugParamsid.id = e;
+      reqDrugMsg(drugParamsid).then(res => {
+        console.log(res);
+        this.drugMsg = res.data.data;
+      });
     },
     // 跳转至知识图谱
     gotodrugPic() {

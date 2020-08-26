@@ -5,12 +5,13 @@
         <li
           v-for="(item, index) in newsTitle"
           :key="index"
-          :class="{ newsActive: newsActive == index }"
+          :class="{ newsActive: newsParams.policyType == item.value }"
+          @click="changeNewsType(item.value)"
         >
           {{ item.name }}
         </li>
       </ul>
-      <span>查看更多 > ></span>
+      <span class="btnClass" @click="gotoNews">查看更多 > ></span>
     </div>
     <ul class="drugNewsList">
       <li
@@ -45,14 +46,40 @@
   </div>
 </template>
 <script>
+import { reqpolicyNews } from "@/api/news";
 export default {
   name: "DrugNews",
-
+  props: {
+    newsKeys: {
+      type: String,
+      default: ""
+    }
+  },
+  // created() {
+  //   // alert(this.newsKeys);
+  //   if (this.newsKeys) {
+  //     this.initNewsList();
+  //   }
+  // },
+  watch: {
+    newsKeys() {
+      this.initNewsList();
+    }
+  },
   data() {
     return {
       newsActive: 0,
+      newsParams: {
+        page: 1,
+        size: 3,
+        policyType: "A1",
+        policyName: ""
+      },
       // 资讯Tab
-      newsTitle: [{ name: "市场资讯" }, { name: "产地资讯" }],
+      newsTitle: [
+        { name: "产地资讯", value: "A1" },
+        { name: "政策资讯", value: "A2" }
+      ],
       records: [
         {
           imgUrl: require("@/assets/images/test/ddyc/黄芪.png"),
@@ -92,6 +119,31 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    // 初始化新闻列表
+    initNewsList() {
+      this.newsParams.policyName = this.newsKeys;
+      reqpolicyNews(this.newsParams).then(res => {
+        console.log(res);
+        this.records = res.data.data.records;
+        this.records.forEach(item => {
+          item.imgUrl = require("@/assets/images/test/ddyc/黄芪.png");
+        });
+      });
+    },
+    // 修改新闻类型
+    changeNewsType(e) {
+      this.newsParams.policyType = e;
+      console.log(this.newsParams);
+      this.initNewsList();
+    },
+    // 跳转新闻页面
+    gotoNews() {
+      this.$router.push({
+        path: "/marketInfo/marketList"
+      });
+    }
   }
 };
 </script>
@@ -125,6 +177,9 @@ export default {
     }
     > span {
       color: $maincolor;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .drugNewsList {

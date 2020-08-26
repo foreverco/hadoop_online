@@ -70,7 +70,7 @@
           <li
             v-for="(item, index) in drugList"
             :key="index"
-            @click="gotoDrugMsg('aaabbb')"
+            @click="gotoDrugMsg(item.id)"
           >
             <div class="imgBox">
               <img :src="item.imgUrl" alt="" />
@@ -129,9 +129,24 @@ export default {
   watch: {
     zmActive: {
       handler(newVal) {
-        console.log(newVal.value);
-        let p = newVal.value;
-        this.getDrugs(1, 6, p);
+        // console.log(newVal.value);
+        this.moonList.some(item => {
+          if (item.value == newVal.value) {
+            this.getDrugs(1, 6, { month: newVal.value });
+          }
+        });
+        this.zmList.some(item => {
+          if (item.value == newVal.value) {
+            this.getDrugs(1, 6, { letter: newVal.value });
+          }
+        });
+
+        this.areaList.some(item => {
+          if (item.provinceId == newVal.value) {
+            alert(newVal.label);
+            this.getDrugs(1, 6, { place: newVal.label });
+          }
+        });
       },
       deep: true
     }
@@ -189,7 +204,7 @@ export default {
         { label: "十二月", value: "12月" }
       ],
       zmActive: {
-        label: "",
+        label: "所有",
         value: ""
       },
       zmList: [
@@ -331,9 +346,7 @@ export default {
       }
       drugParams.page = this.current;
       drugParams.pageSize = this.size;
-      console.log(drugParams);
       reqAllDrug(drugParams).then(res => {
-        console.log(res);
         this.drugList = res.data.data.records;
         this.drugList.forEach(item => {
           item.imgUrl = require("@/assets/images/test/ddyc/黑灵芝.png");
@@ -351,7 +364,6 @@ export default {
     changeareaactive(e) {
       e.label = e.province;
       e.value = e.provinceId;
-      console.log(e);
       for (let key in this.zmActive) {
         this.zmActive[key] = e[key];
       }
@@ -370,6 +382,7 @@ export default {
     },
     // 跳转详情页
     gotoDrugMsg(id) {
+      alert(id);
       this.$router.push({
         path: "/drug/drugMsg",
         query: {

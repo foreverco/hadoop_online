@@ -8,3 +8,12 @@ export function reqAllDrug(params) {
     params
   });
 }
+
+/* 获取药材详情 */
+export function reqDrugMsg(params) {
+  return service.request({
+    url: "/view/t-medince/selectPureById",
+    method: "get",
+    params
+  });
+}
