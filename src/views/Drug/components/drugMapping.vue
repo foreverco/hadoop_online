@@ -3,83 +3,96 @@
     <Title titleTxt="知识图谱" :btnShow="false"></Title>
     <div class="nameBox">
       <ul class="contentBox">
-        <li>{{drugMsg.name}}</li>
-        <li>{{drugMsg.content}}</li>
+        <li>{{ drugMsg.medinceName }}</li>
+        <li>{{ drugMsg.medicineIntro }}</li>
         <li>
           <p>
             <span>别名:</span>
-            <span>{{drugMsg.otherName}}</span>
+            <span>{{ drugMsg.anotherName }}</span>
           </p>
           <p>
-            <span>别名:</span>
-            <span>{{drugMsg.otherName}}</span>
+            <span>中文名:</span>
+            <span>{{ drugMsg.chineseName }}</span>
           </p>
         </li>
         <li>
           <p>
             <span>药性:</span>
-            <span>{{drugMsg.otherName}}</span>
+            <span>
+              {{ drugMsg.medicineNature }}
+            </span>
           </p>
           <p>
             <span>产地:</span>
-            <span>{{drugMsg.otherName}}</span>
+            <span v-for="(item, index) in drugMsg.places" :key="index">
+              {{ item }}
+            </span>
           </p>
         </li>
         <li class="titleBox">性味归经</li>
         <li>
           <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>{{ drugMsg.midicineFlavour }}</span>
         </li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>归经:</span>
+          <span>{{ drugMsg.midicineEntry }}</span>
         </li>
         <li class="titleBox">功效主治</li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>功效:</span>
+          <span>{{ drugMsg.midicineEffect }}</span>
         </li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>主治:</span>
+          <span>{{ drugMsg.midicineIndications }}</span>
         </li>
         <li class="titleBox">用法用量</li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>用法:</span>
+          <span>{{ drugMsg.midicineUsage }}</span>
         </li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>用量:</span>
+          <span>{{ drugMsg.midicineDosage }}</span>
         </li>
         <li class="titleBox">炮制方法</li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>炮制方法:</span>
+          <span>{{ drugMsg.midicinePrepare }}</span>
         </li>
         <li class="titleBox">储藏方法</li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <span>储藏方法:</span>
+          <span>{{ drugMsg.midicineStorage }}</span>
         </li>
         <li class="titleBox">关联经典方剂</li>
         <li>
-          <span>性味:</span>
-          <span>{{drugMsg.wx}}</span>
+          <div
+            class="aboutWays"
+            v-for="(item, index) in drugMsg.plist"
+            :key="index"
+          >
+            <i class="el-icon-s-order"></i>
+            <span>{{ item.name }}</span>
+            <span>功效:{{ item.indication }}</span>
+          </div>
         </li>
+
         <li class="titleBox">药典标准</li>
         <li>
           <p>《中国药典》2015年版第一部</p>
-          <p>{{drugMsg.content}}</p>
+          <p>{{ drugMsg.standard }}</p>
         </li>
       </ul>
       <div class="imgBox">
-        <img :src="drugMsg.imgUrl" alt>
+        <img :src="drugMsg.imgUrl" alt />
       </div>
     </div>
   </div>
 </template>
 <script>
+import { reqDrugMsg } from "@/api/drug";
 export default {
   name: "drugMapping",
   data() {
@@ -95,6 +108,22 @@ export default {
         imgUrl: require("@/assets/images/test/ddyc/黄芩.png")
       }
     };
+  },
+  created() {
+    this.getdrugMsg(this.$route.query.id);
+  },
+  methods: {
+    // 获取id
+    getdrugMsg(e) {
+      this.msg = e;
+      let drugParamsid = {};
+      drugParamsid.id = e;
+      reqDrugMsg(drugParamsid).then(res => {
+        console.log(res);
+        this.drugMsg = res.data.data;
+        this.drugMsg.imgUrl = require("@/assets/images/test/ddyc/黄芩.png");
+      });
+    }
   }
 };
 </script>
@@ -115,7 +144,14 @@ export default {
       width: 1028px;
       > li {
         // margin-bottom: 12px;
-        // border: 1px solid blue;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        &:first-child {
+          font-size: 18px;
+          margin-bottom: 15px;
+          font-weight: 600;
+        }
         &.titleBox {
           margin-top: 10px;
           font-size: 16px;
@@ -125,15 +161,33 @@ export default {
           color: $maincolor;
           border-bottom: 1px solid rgba(0, 0, 0, 0.11);
         }
+        .aboutWays {
+          width: 100%;
+          margin-top: 15px;
+          i {
+            color: $sencondcolor;
+            margin-right: 10px;
+          }
+          span {
+            &:first-child {
+              width: 180px;
+            }
+          }
+        }
         span {
           padding: 10px 0;
+          // display: inline-block;
           &:first-child {
-            width: 68px;
+            width: 90px;
             display: inline-block;
             color: #333333;
             text-align: justify;
             text-align-last: justify;
             margin-right: 10px;
+          }
+          &:nth-child(2) {
+            width: 910px;
+            line-height: 25px;
           }
         }
         &:first-child {

@@ -143,7 +143,6 @@ export default {
 
         this.areaList.some(item => {
           if (item.provinceId == newVal.value) {
-            alert(newVal.label);
             this.getDrugs(1, 6, { place: newVal.label });
           }
         });
@@ -382,7 +381,6 @@ export default {
     },
     // 跳转详情页
     gotoDrugMsg(id) {
-      alert(id);
       this.$router.push({
         path: "/drug/drugMsg",
         query: {

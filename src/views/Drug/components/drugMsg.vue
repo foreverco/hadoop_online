@@ -4,7 +4,7 @@
       <Title
         titleTxt="详情页"
         btnMsg="查看知识图谱"
-        @titleClick="gotodrugPic"
+        @titleClick="gotodrugPic()"
       ></Title>
       <div class="msgBox">
         <div class="drugNameBox">
