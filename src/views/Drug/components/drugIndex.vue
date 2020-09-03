@@ -14,8 +14,8 @@
         <li>
           <span>搜索:</span>
           <div class="headSearch">
-            <el-input placeholder="请输入关键字"></el-input>
-            <el-button type="success">搜索</el-button>
+            <el-input v-model="drugKey" placeholder="请输入关键字"></el-input>
+            <el-button @click="getDrugKeys" type="success">搜索</el-button>
           </div>
         </li>
         <li :class="{ h40: areaActive }">
@@ -60,6 +60,23 @@
               {{ item.label }}
             </li>
           </ul>
+        </li>
+        <li v-if="twoZmShow">
+          <span></span>
+          <ul class="zmList">
+            <li
+              v-for="(item, index) in zmList"
+              :key="index"
+              :class="{ zmActive: zmActive.value == oneZm + item.label }"
+              @click="gettwoZm(item)"
+            >
+              {{ `${oneZm}${item.label}` }}
+            </li>
+          </ul>
+        </li>
+        <li>
+          <!-- {{ zmActive }} -->
+          <el-button @click="delActive">取消筛选</el-button>
         </li>
       </ul>
       <div class="titleBox">
@@ -129,21 +146,29 @@ export default {
   watch: {
     zmActive: {
       handler(newVal) {
-        // console.log(newVal.value);
+        console.log(newVal.value);
         this.moonList.some(item => {
           if (item.value == newVal.value) {
-            this.getDrugs(1, 6, { month: newVal.value });
+            alert(111);
+            this.twoZmShow = false;
+            this.drugKey = "";
+            this.getDrugs(1, 9, { month: newVal.value });
           }
         });
-        this.zmList.some(item => {
-          if (item.value == newVal.value) {
-            this.getDrugs(1, 6, { letter: newVal.value });
-          }
-        });
+        // this.zmList.some(item => {
+        //   if (item.value == newVal.value || this.twoZmShow) {
+        //     alert(222);
+        //     this.twoZmShow = true;
+        //     this.getDrugs(1, 9, { letter: newVal.value });
+        //   }
+        // });
 
         this.areaList.some(item => {
           if (item.provinceId == newVal.value) {
-            this.getDrugs(1, 6, { place: newVal.label });
+            alert(333);
+            this.twoZmShow = false;
+            this.drugKey = "";
+            this.getDrugs(1, 9, { place: newVal.label });
           }
         });
       },
@@ -157,6 +182,10 @@ export default {
       // size: 4,
       // total: 10,
       // pages: 10,
+      drugKey: "",
+      oneZm: "",
+      twoZm: "",
+      twoZmShow: false,
       drugswiperConfig: {
         slidesPerView: 4,
         spaceBetween: 78,
@@ -331,6 +360,15 @@ export default {
         this.areaList = res.data.data;
       });
     },
+    delActive() {
+      this.twoZmShow = false;
+      this.zmActive = { label: "所有", value: "" };
+      this.getDrugs(1, 9);
+    },
+    getDrugKeys() {
+      alert(111);
+      this.getDrugs(1, 9, { name: this.drugKey });
+    },
     // 获取所有药材
     getDrugs(page, size, p) {
       let drugParams = {};
@@ -374,10 +412,26 @@ export default {
       }
     },
     getZm(e) {
+      console.log(e);
+      this.oneZm = e.value;
       // this.zmActive = e;
       for (let key in this.zmActive) {
         this.zmActive[key] = e[key];
       }
+      this.twoZmShow = true;
+      this.drugKey = "";
+      this.getDrugs(1, 9, { letter: e.value });
+    },
+    gettwoZm(e) {
+      console.log(e);
+      console.log(this.oneZm);
+      // this.twoZm = this.oneZm + e.value;
+      this.twoZm = this.oneZm + e.value;
+      this.zmActive.label = this.oneZm + e.value;
+      this.zmActive.value = this.oneZm + e.value;
+      this.twoZmShow = true;
+      this.drugKey = "";
+      this.getDrugs(1, 9, { letter: this.twoZm });
     },
     // 跳转详情页
     gotoDrugMsg(id) {

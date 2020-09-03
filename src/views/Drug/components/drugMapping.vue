@@ -81,8 +81,8 @@
 
         <li class="titleBox">药典标准</li>
         <li>
-          <p>《中国药典》2015年版第一部</p>
-          <p>{{ drugMsg.standard }}</p>
+          <!-- <p>《中国药典》2015年版第一部</p> -->
+          <p v-html="drugMsg.standard"></p>
         </li>
       </ul>
       <div class="imgBox">
