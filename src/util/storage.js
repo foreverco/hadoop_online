@@ -17,6 +17,9 @@ const adminUserName = "username";
 // 供应信息
 const applyMsg = "applyMsg";
 
+// 市场价格参数
+const marketMsg = "marketParams";
+
 export const getStore = name => {
   if (!name) return;
   return window.localStorage.getItem(name);
@@ -66,4 +69,21 @@ export function getApplyForm() {
 export function removeApplyForm() {
   // return Cookie.remove(adminUserName);
   window.localStorage.removeItem(applyMsg);
+}
+
+// 设置市场价格参数
+export function setMarketParams(marketParams) {
+  if (typeof marketParams !== "string") {
+    marketParams = JSON.stringify(marketParams);
+  }
+  window.localStorage.setItem(marketMsg, marketParams);
+}
+// 获取市场价格参数
+export function getMarketParams() {
+  return window.localStorage.getItem(marketMsg);
+}
+// 移除市场价格参数
+export function removeMarketParams() {
+  // return Cookie.remove(adminUserName);
+  window.localStorage.removeItem(marketMsg);
 }

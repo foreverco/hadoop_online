@@ -1,5 +1,7 @@
 import { RECORD_DRUGLIST } from "./mutations-type";
 import { reqDruglist } from "@/api/index";
+import { setMarketParams } from "@/util/storage";
+
 const state = {
   // 性别
   sex_json: {
@@ -16,12 +18,19 @@ const state = {
   // 药材库
   drugList: [],
   status: 0,
-  notesStatus: 0
+  notesStatus: 0,
+  marketParams: {}
 };
 const getters = {
   drugList: state => state.drugList
 };
 const mutations = {
+  // 市场价格参数
+  loadmarketParams(state, marketParams) {
+    console.log(marketParams);
+    setMarketParams(marketParams);
+    state.marketParams = marketParams;
+  },
   // 认证类型
   updateautonymType(state, type) {
     state.autonymType = type;

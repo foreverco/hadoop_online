@@ -231,8 +231,10 @@ export default {
         .then(res => {
           console.log(res);
           const resData = res.data.data;
-          if (resData) {
+          if (resData && resData.records) {
             this.table_data = resData.records;
+          } else if (resData && !resData.records) {
+            this.table_data = resData;
           }
           this.total = resData.total;
           this.loadingTable = false;

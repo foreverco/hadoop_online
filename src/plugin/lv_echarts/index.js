@@ -7,12 +7,16 @@ export default {
       methods: {
         initChart(container, option, onclick) {
           const myChart = this.$echarts.init(container);
+          myChart.off("click");
           // 绘制图表
+          console.log(option);
+          option.color = ["#FF9539", "#3ab54c"];
           myChart.setOption(option);
           if (onclick) {
             myChart.on("click", onclick);
           }
-          this.$store.state.app.myChart.push(myChart);
+          // this.$store.state.app.myChart.push(myChart);
+          console.log(myChart);
         }
       }
     });

@@ -146,15 +146,32 @@ let baseRoutes = [
             ]
           },
           {
-            path: "/plantingvideo/norm",
-            name: "NormVideo",
+            path: "/plantingvideo/plantingnorm",
+            name: "plantingnorm",
             class_true: false,
-            component: () => import("@/views/Planting/components/norm.vue"),
+            component: () =>
+              import("@/views/Planting/components/Norm/index.vue"),
             hidden: false,
             meta: {
               title: "标准化种植规范",
               icon: "navmenu"
             }
+            // children: [
+            //   {
+            //     path: "/plantingvideo/index",
+            //     name: "ExpertVideo",
+            //     class_true: false,
+            //     component: () =>
+            //       import(
+            //         "@/views/Planting/components/ExpertVideo/component/videolist.vue"
+            //       ),
+            //     hidden: true,
+            //     meta: {
+            //       title: "专家教学视频",
+            //       icon: "navmenu"
+            //     }
+            //   }
+            // ]
           }
         ]
       },
@@ -192,24 +209,56 @@ let baseRoutes = [
         },
         children: [
           {
-            path: "/Market1",
+            path: "/Market1/index",
             name: "Market1",
             class_true: false,
-            component: () => import("@/views/Market/components/Market1.vue"),
+            component: () =>
+              import("@/views/Market/components/Market1/index.vue"),
             hidden: false,
             meta: {
-              title: "产地价格",
+              title: "市场价格",
               icon: "navmenu"
-            }
+            },
+            children: [
+              {
+                path: "/Market1/index",
+                name: "Market1",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Market/components/Market1/component/marketTable.vue"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "市场价格",
+                  icon: "navmenu"
+                }
+              },
+              {
+                path: "/Market1/msg",
+                name: "Market1",
+                class_true: false,
+                component: () =>
+                  import(
+                    "@/views/Market/components/Market1/component/marketMsg.vue"
+                  ),
+                hidden: false,
+                meta: {
+                  title: "市场价格详情",
+                  icon: "navmenu"
+                }
+              }
+            ]
           },
           {
             path: "/market2",
             name: "Market2",
             class_true: false,
-            component: () => import("@/views/Market/components/Market2.vue"),
+            component: () =>
+              import("@/views/Market/components/Market2/index.vue"),
             hidden: false,
             meta: {
-              title: "市场价格",
+              title: "市场价格1",
               icon: "navmenu"
             }
           }

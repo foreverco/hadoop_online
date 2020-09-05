@@ -12,6 +12,10 @@ const requestUrl = {
   // 首页获取我的求购
   homebuyList: "/view/buying/queryRecentList",
   // 获取用户调查列表
-  surveyList: "/view/survey/member/queryList"
+  surveyList: "/view/survey/member/queryList",
+  // 获取近期市场价格
+  marketList: "/view/marketPrice/getRecentlyMarketPrice",
+  //  获取综合排行榜涨/跌排名-列表页面
+  marketRankList: "/view/marketPrice/getRank"
 };
 export default requestUrl;

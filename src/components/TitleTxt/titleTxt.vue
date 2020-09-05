@@ -3,8 +3,13 @@
     <span class="titleSpan">
       {{ titleTxt }}
     </span>
-    <span class="btnSpan" v-if="btnShow" @click="titleClick">
-      {{ btnMsg }} > >
+    <span
+      class="btnSpan"
+      v-if="btnShow"
+      @click="titleClick"
+      :style="{ color: btnColor }"
+    >
+      {{ btnMsg }}
     </span>
   </div>
 </template>
@@ -22,7 +27,11 @@ export default {
     },
     btnMsg: {
       type: String,
-      default: "更多"
+      default: "更多 > >"
+    },
+    btnColor: {
+      type: String,
+      default: "#3ab54c"
     }
   },
   methods: {
@@ -55,7 +64,7 @@ export default {
     letter-spacing: 4px;
   }
   .btnSpan {
-    color: $maincolor;
+    // color: $maincolor;
     &:hover {
       cursor: pointer;
     }
